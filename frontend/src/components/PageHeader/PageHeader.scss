@@ -1,0 +1,25 @@
+@use "../../styles/colors" as *;
+@use "../../styles/typography" as *;
+@use "../../styles/button" as *;
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    h1 {
+      @include title("sm", $weight: 500);
+      color: var(--grey-900);
+    }
+    h2 {
+      @include text("md");
+      color: var(--grey-600);
+    }
+  }
+}
