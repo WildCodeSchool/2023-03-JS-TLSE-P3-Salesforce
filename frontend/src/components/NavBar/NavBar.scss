@@ -1,0 +1,53 @@
+@use "../../styles/colors" as *;
+@use "../../styles/shadows" as *;
+
+.globalNavBar {
+  display: flex;
+
+  .mainNavBar {
+    background-color: var(--primary-600);
+    left: 0px;
+    height: 100vh;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 0px 16px 0px;
+
+    .logoCompanyNavBar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 64px;
+      height: 64px;
+      @include shadow("xs");
+      background-color: $color-grey-200;
+      border-radius: 12px;
+      margin-bottom: 15px;
+    }
+
+    .iconNavBar {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      i {
+        padding: 12px;
+        color: $indigo-200;
+        border-radius: 12px;
+      }
+      i:hover {
+        background-color: $indigo-500;
+      }
+    }
+    .LogoSalesForceNavBar {
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 12px;
+      img {
+        width: 80%;
+      }
+    }
+  }
+}
