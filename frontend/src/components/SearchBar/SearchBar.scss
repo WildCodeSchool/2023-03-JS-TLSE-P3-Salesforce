@@ -1,0 +1,21 @@
+.search-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0;
+  gap: 0.5rem;
+
+  position: absolute;
+  width: auto;
+  height: auto;
+
+  border: 1px solid blue;
+  border-radius: 0.4rem;
+}
+.search-input {
+  border: none;
+  margin: 0;
+}
+.fi-rs-search {
+  background-color: brown;
+}
