@@ -1,3 +1,11 @@
+import IdeaCard from "../components/IdeaCard/IdeaCard";
+
 export default function Home() {
-  return <h1>Bienvenue, Pierre</h1>;
+  return (
+    <div>
+      <h1>Bienvenue, Pierre</h1>
+
+      <IdeaCard />
+    </div>
+  );
 }
