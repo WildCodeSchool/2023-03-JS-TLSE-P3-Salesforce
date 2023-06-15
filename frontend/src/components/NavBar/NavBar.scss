@@ -1,8 +1,11 @@
 @use "../../styles/colors" as *;
 @use "../../styles/shadows" as *;
+@use "../../styles/typography" as *;
 
 .globalNavBar {
   display: flex;
+  height: 100vh;
+  width: 350px;
 
   .mainNavBar {
     background-color: var(--primary-600);
@@ -22,7 +25,7 @@
       width: 64px;
       height: 64px;
       @include shadow("xs");
-      background-color: $color-grey-200;
+      background-color: $grey-200;
       border-radius: 12px;
       margin-bottom: 15px;
     }
@@ -47,6 +50,42 @@
       margin-top: 12px;
       img {
         width: 80%;
+      }
+    }
+  }
+  .firstSubNavBar {
+    display: none;
+    background-color: var(--primary-700);
+    left: 100px;
+    height: 100vh;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 16px;
+    .titleSubNavBar {
+      color: $indigo-100;
+      @include text(md);
+    }
+    .buttonForMoment {
+      background-color: var(--primary-600);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 7px 0px;
+      margin: 10px 0px;
+      color: $indigo-100;
+      width: 100%;
+
+      i {
+        padding: 7px;
+        color: $indigo-200;
+        border-radius: 12px;
+      }
+      .textBoardComponentNavBar {
+        .titleBoardComponentNavBar {
+          @include text(sm);
+        }
       }
     }
   }

@@ -1,5 +1,5 @@
 import "./NavBar.scss";
-import BoardSubNavBar from "../BoardSubNavBar/BoardSubNavBar";
+import BoardComponentNavBar from "../BoardSubNavBar/BoardComponentNavBar";
 
 export default function NavBar() {
   return (
@@ -34,7 +34,16 @@ export default function NavBar() {
         </div>
       </div>
       <div className="firstSubNavBar">
-        <BoardSubNavBar />
+        <p className="titleSubNavBar">Tableaux</p>
+        <div className="buttonForMoment">
+          <i className="fi fi-rr-plus" />
+          <div className="textBoardComponentNavBar">
+            <p className="titleBoardComponentNavBar">Nouveau tableau</p>
+          </div>
+        </div>
+        <BoardComponentNavBar />
+        <BoardComponentNavBar />
+        <BoardComponentNavBar />
       </div>
     </div>
   );

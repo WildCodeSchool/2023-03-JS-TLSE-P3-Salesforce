@@ -1,0 +1,27 @@
+@use "../../styles/colors" as *;
+@use "../../styles/shadows" as *;
+@use "../../styles/typography" as *;
+
+.globalBoardComponentNavBar {
+  background-color: $indigo-800;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 7px 0px;
+  margin: 10px 0px;
+
+  i {
+    padding: 7px;
+    color: $indigo-200;
+    border-radius: 12px;
+  }
+
+  .titleBoardComponentNavBar {
+    color: $indigo-100;
+    @include text(sm);
+  }
+  .subtitleBoardComponentNavBar {
+    color: $indigo-100;
+    @include text(xs);
+  }
+}
