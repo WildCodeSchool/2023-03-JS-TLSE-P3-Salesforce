@@ -13,7 +13,6 @@ export default function Home() {
     welcomeString = "Bienvenue";
   }
   return (
-
     <main>
       <PageHeader
         title={welcomeString}
@@ -26,6 +25,5 @@ export default function Home() {
       </PageHeader>
       <IdeaCard />
     </main>
-
   );
 }
