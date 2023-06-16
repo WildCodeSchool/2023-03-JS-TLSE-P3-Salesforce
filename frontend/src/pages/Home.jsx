@@ -1,6 +1,8 @@
 import Button from "../components/Button/Button";
 import PageHeader from "../components/PageHeader/PageHeader";
 
+import IdeaCard from "../components/IdeaCard/IdeaCard";
+
 export default function Home() {
   const firstname = "Pierre";
   let welcomeString = "";
@@ -11,6 +13,7 @@ export default function Home() {
     welcomeString = "Bienvenue";
   }
   return (
+
     <main>
       <PageHeader
         title={welcomeString}
@@ -21,6 +24,8 @@ export default function Home() {
           Ajouter une idée
         </Button>
       </PageHeader>
+      <IdeaCard />
     </main>
+
   );
 }
