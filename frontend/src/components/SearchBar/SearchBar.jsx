@@ -4,22 +4,31 @@ import "./SearchBar.scss";
 function SearchBar() {
   // state data
   const [value, setValue] = useState("searching");
+  // instructions
   function HandleChange(event) {
     setValue(event.target.value);
   }
-  // instructions
+  function HandleClear() {
+    setValue("");
+  }
 
   // render
   return (
     <div className="search-bar">
-      <div className="search-input">
+      <div>
         <input
+          className="search-input"
           type="text"
-          className="fi fi-rs-search"
           value={value}
           onChange={HandleChange}
+          placeholder="Rechercher"
         />
-        <button type="button">SSS</button>
+        <button type="button" className="search-clear" onClick={HandleClear}>
+          <i className="fi fi-rr-cross" />
+        </button>
+        <button type="button">
+          <i className="fi fi-rr-search" />
+        </button>
       </div>
     </div>
   );
