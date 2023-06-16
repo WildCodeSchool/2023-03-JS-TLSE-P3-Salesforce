@@ -1,4 +1,4 @@
-// import "./Button.scss";
+import PropTypes from "prop-types";
 
 export default function Button({
   size,
@@ -20,3 +20,23 @@ export default function Button({
     </button>
   );
 }
+
+Button.propTypes = {
+  size: PropTypes.string,
+  color: PropTypes.string,
+  children: PropTypes.node,
+  onClick: PropTypes.func,
+  disabled: PropTypes.bool,
+  className: PropTypes.string,
+  type: PropTypes.string,
+};
+
+Button.defaultProps = {
+  size: "md",
+  color: "primary",
+  children: null,
+  onClick: null,
+  disabled: false,
+  className: "",
+  type: "solid",
+};
