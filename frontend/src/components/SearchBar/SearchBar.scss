@@ -1,22 +1,39 @@
+@import"../../styles/colors";
 .search-bar {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 0;
-  gap: 0.5rem;
+  padding: 0.5rem;
+  margin: 1rem;
   position: absolute;
   width: auto;
   height: auto;
-  border: 1px solid blue;
+  background-color: $color-white ;
+  border: 1px solid $color-grey-200;
   border-radius: 0.4rem;
 }
 .search-input {
+  outline: none;
   border: none;
-  margin: 0;
-  &::placeholder {
-    color: $color-grey-200;
+  margin-right:1rem;
+  &::placeholder {   
+    color: $color-grey-400;
   }
+}
+.search-input:hover{
+  background-color: $color-grey-100;
 }
 .fi-rs-search {
   background-color: brown;
+}
+.search{
+  border: none;
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+}
+.search:hover{
+  transform: scale(1.08);
+}
+.search.clear{
+  margin-right: 0.2rem;
 }

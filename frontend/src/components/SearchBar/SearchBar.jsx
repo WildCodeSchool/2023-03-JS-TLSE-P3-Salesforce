@@ -11,6 +11,9 @@ function SearchBar() {
   function HandleClear() {
     setValue("");
   }
+  function HandleSend() {
+    console.log(value);
+  }
 
   // render
   return (
@@ -23,10 +26,10 @@ function SearchBar() {
           onChange={HandleChange}
           placeholder="Rechercher"
         />
-        <button type="button" className="search-clear" onClick={HandleClear}>
+        <button type="button" className="search clear" onClick={HandleClear}>
           <i className="fi fi-rr-cross" />
         </button>
-        <button type="button">
+        <button type="button" className="search search" onClick={HandleSend}>
           <i className="fi fi-rr-search" />
         </button>
       </div>
