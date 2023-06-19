@@ -1,7 +1,10 @@
 import "./NavBar.scss";
+import React, { useState } from "react";
 import BoardComponentNavBar from "../BoardSubNavBar/BoardComponentNavBar";
 
 export default function NavBar() {
+  const [isSubNavBarOpen, setIsSubNavBarOpen] = useState(false);
+
   return (
     <div className="globalNavBar">
       <div className="mainNavBar">
@@ -13,17 +16,34 @@ export default function NavBar() {
             />
           </div>
           <div className="iconNavBar">
-            <i className="fi fi-rr-home" />
-            <i className="fi fi-rr-users" />
-            <i className="fi fi-rr-bulb" />
-            <i className="fi fi-rr-apps" />
-            <i className="fi fi-rr-settings-sliders" />
+            <button type="button">
+              <i className="fi fi-rr-home" />
+            </button>
+            <button type="button">
+              <i className="fi fi-rr-users" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsSubNavBarOpen(!isSubNavBarOpen)}
+            >
+              <i className="fi fi-rr-bulb" />
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsSubNavBarOpen(!isSubNavBarOpen)}
+            >
+              <i className="fi fi-rr-apps" />
+            </button>
+            <button type="button">
+              <i className="fi fi-rr-settings-sliders" />
+            </button>
           </div>
         </div>
-
         <div className="secondPartButtonsNavBar">
           <div className="iconNavBar">
-            <i className="fi fi-rr-interrogation" />
+            <button type="button">
+              <i className="fi fi-rr-interrogation" />
+            </button>
           </div>
           <div className="LogoSalesForceNavBar">
             <img
@@ -33,18 +53,24 @@ export default function NavBar() {
           </div>
         </div>
       </div>
-      <div className="firstSubNavBar">
-        <p className="titleSubNavBar">Tableaux</p>
-        <div className="buttonForMoment">
-          <i className="fi fi-rr-plus" />
-          <div className="textBoardComponentNavBar">
-            <p className="titleBoardComponentNavBar">Nouveau tableau</p>
+      {isSubNavBarOpen && (
+        <div className="firstSubNavBar">
+          <div>
+            <p className="titleSubNavBar">Tableaux</p>
+            <div className="buttonForMoment">
+              <i className="fi fi-rr-plus" />
+              <div className="textBoardComponentNavBar">
+                <p className="titleBoardComponentNavBar">Nouveau tableau</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <BoardComponentNavBar />
+            <BoardComponentNavBar />
+            <BoardComponentNavBar />
           </div>
         </div>
-        <BoardComponentNavBar />
-        <BoardComponentNavBar />
-        <BoardComponentNavBar />
-      </div>
+      )}
     </div>
   );
 }
