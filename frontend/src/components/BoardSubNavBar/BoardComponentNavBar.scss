@@ -2,8 +2,8 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
 
-.globalBoardComponentNavBar {
-  background-color: $indigo-800;
+.global-board-component-nav-bar {
+  background-color: var(--indigo-800);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -12,16 +12,16 @@
 
   i {
     padding: 7px;
-    color: $indigo-200;
+    color: var(--indigo-200);
     border-radius: 12px;
   }
 
-  .titleBoardComponentNavBar {
-    color: $indigo-100;
+  .title-board-component-nav-bar {
+    color: var(--indigo-100);
     @include text(sm);
   }
-  .subtitleBoardComponentNavBar {
-    color: $indigo-100;
+  .subtitle-board-component-nav-bar {
+    color: var(--indigo-100);
     @include text(xs);
   }
 }

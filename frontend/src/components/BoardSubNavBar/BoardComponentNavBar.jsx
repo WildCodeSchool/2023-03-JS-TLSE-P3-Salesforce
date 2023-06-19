@@ -2,11 +2,11 @@ import "./BoardComponentNavBar.scss";
 
 export default function BoardSubNavBar() {
   return (
-    <div className="globalBoardComponentNavBar">
+    <div className="global-board-component-nav-bar">
       <i className="fi fi-rr-apps" />
-      <div className="textBoardComponentNavBar">
-        <p className="titleBoardComponentNavBar">Refonde des extranets</p>
-        <p className="subtitleBoardComponentNavBar">Pierre Dupont</p>
+      <div className="text-board-component-nav-bar">
+        <p className="title-board-component-nav-bar">Refonde des extranets</p>
+        <p className="subtitle-board-component-nav-bar">Pierre Dupont</p>
       </div>
       <div>
         <i className="fi fi-rr-menu-dots-vertical" />

@@ -6,17 +6,17 @@ export default function NavBar() {
   const [isSubNavBarOpen, setIsSubNavBarOpen] = useState(false);
 
   return (
-    <div className="globalNavBar">
-      <div className="mainNavBar">
-        <div className="firstPartButtonsNavBar">
-          <div className="logoCompanyNavBar">
+    <div className="global-nav-bar">
+      <div className="main-nav-bar">
+        <div className="first-part-buttons-nav-bar">
+          <div className="logo-company-nav-bar">
             <img
               src="/src/public/assets/logo/Logo-default.png"
               alt="logo default company"
             />
           </div>
-          <div className="iconNavBar">
-            <button type="button">
+          <div className="icon-nav-bar">
+            <button type="button" className="active">
               <i className="fi fi-rr-home" />
             </button>
             <button type="button">
@@ -24,12 +24,14 @@ export default function NavBar() {
             </button>
             <button
               type="button"
+              // au click, on fait apparaitre le sous-menu
               onClick={() => setIsSubNavBarOpen(!isSubNavBarOpen)}
             >
               <i className="fi fi-rr-bulb" />
             </button>
             <button
               type="button"
+              // au click, on fait apparaitre le sous-menu
               onClick={() => setIsSubNavBarOpen(!isSubNavBarOpen)}
             >
               <i className="fi fi-rr-apps" />
@@ -39,13 +41,13 @@ export default function NavBar() {
             </button>
           </div>
         </div>
-        <div className="secondPartButtonsNavBar">
-          <div className="iconNavBar">
+        <div className="second-part-buttons-nav-bar">
+          <div className="icon-nav-bar">
             <button type="button">
               <i className="fi fi-rr-interrogation" />
             </button>
           </div>
-          <div className="LogoSalesForceNavBar">
+          <div className="logo-sales-force-nav-bar">
             <img
               src="/src/public/assets/logo/logo_SalesForce_Theme_Clair.svg"
               alt="logo SalesForce"
@@ -53,14 +55,16 @@ export default function NavBar() {
           </div>
         </div>
       </div>
+      {/* ternaire pour faire apparaitre le sous menu en fonction du state.
+      L'action est déclenchée par le onClick du bouttons (L28) */}
       {isSubNavBarOpen && (
-        <div className="firstSubNavBar">
+        <div className="first-sub-nav-bar">
           <div>
-            <p className="titleSubNavBar">Tableaux</p>
-            <div className="buttonForMoment">
+            <p className="title-sub-nav-bar">Tableaux</p>
+            <div className="button-for-moment">
               <i className="fi fi-rr-plus" />
-              <div className="textBoardComponentNavBar">
-                <p className="titleBoardComponentNavBar">Nouveau tableau</p>
+              <div className="text-board-component-nav-bar">
+                <p className="title-board-component-nav-bar">Nouveau tableau</p>
               </div>
             </div>
           </div>

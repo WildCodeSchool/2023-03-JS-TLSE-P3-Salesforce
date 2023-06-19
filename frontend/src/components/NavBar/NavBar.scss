@@ -2,12 +2,12 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
 
-.globalNavBar {
+.global-nav-bar {
   display: flex;
   height: 100vh;
   width: 350px;
 
-  .mainNavBar {
+  .main-nav-bar {
     background-color: var(--primary-600);
     left: 0px;
     height: 100vh;
@@ -18,37 +18,43 @@
     justify-content: space-between;
     padding: 32px 0px 16px 0px;
 
-    .logoCompanyNavBar {
+    .logo-company-nav-bar {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 64px;
       height: 64px;
       @include shadow("xs");
-      background-color: $grey-200;
+      background-color: var(--grey-200);
       border-radius: 12px;
       margin-bottom: 15px;
+    
     }
 
-    .iconNavBar {
+    .icon-nav-bar{
       display: flex;
       flex-direction: column;
       align-items: center;
       button {
-        padding: 12px;
-        color: $indigo-200;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+        color: var(--indigo-200);
         border-radius: 12px;
         border: none;
         background-color: transparent;
-        
+        i{
+          font-size: 18px;
+        }
+        &:hover, &.active {
+          background-color: var(--indigo-500);
+        }
       }
-      
-      button:hover {
-        background-color: $indigo-500;
-      }
+
     }
-    .LogoSalesForceNavBar {
-      max-width: 100%;
+    .logo-sales-force-nav-bar {
+      max-width: 64px;
       display: flex;
       justify-content: center;
       margin-top: 12px;
@@ -57,7 +63,7 @@
       }
     }
   }
-  .firstSubNavBar {
+  .first-sub-nav-bar {
     background-color: var(--primary-700);
     left: 100px;
     height: 100vh;
@@ -66,27 +72,27 @@
     flex-direction: column;
     align-items: left;
     padding: 36px 16px;
-    .titleSubNavBar {
-      color: $indigo-100;
+    .title-sub-nav-bar {
+      color: var(--indigo-100);
       @include text(md);
     }
-    .buttonForMoment {
+    .button-for-moment {
       background-color: var(--primary-600);
       border-radius: 12px;
       display: flex;
       align-items: center;
       padding: 7px 15px 7px 5px;
       margin: 10px 0px;
-      color: $indigo-100;
+      color: var(--indigo-100);
       width: 100%;
 
       i {
         padding: 7px;
-        color: $indigo-200;
+        color: var(--indigo-200);
         border-radius: 12px;
       }
-      .textBoardComponentNavBar {
-        .titleBoardComponentNavBar {
+      .text-board-component-nav-bar {
+        .title-board-component-nav-bar {
           @include text(sm);
         }
       }
