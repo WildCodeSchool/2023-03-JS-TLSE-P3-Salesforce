@@ -1,8 +1,8 @@
-import Button from "../components/Button/Button";
 import PageHeader from "../components/PageHeader/PageHeader";
 
 import SearchBar from "../components/SearchBar/SearchBar";
 // import IdeaCard from "../components/IdeaCard/IdeaCard";
+import HorizontalTabs from "../components/HorizontalTabs/HorizontalTabs";
 
 export default function Home() {
   const firstname = "Pierre";
@@ -13,10 +13,14 @@ export default function Home() {
         title={firstname ? `Bienvenue, ${firstname}` : "Bienvenue"}
         subtitle="Découvrez les dernières idées de votre entreprise"
       >
-        <Button size="md" color="primary" type="solid">
+        <button className="button-primary-solid" type="button">
           <i className="fi fi-rr-plus" />
           Ajouter une idée
-        </Button>
+        </button>
+        <HorizontalTabs type="tabs">
+          <li className="active">Idées</li>
+          <li>Groupes</li>
+        </HorizontalTabs>
       </PageHeader>
       <SearchBar />
       {/* <IdeaCard /> */}

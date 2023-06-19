@@ -1,4 +1,5 @@
 @use "../../styles/typography" as *;
+@use "../../styles/button" as *;
 
 .page-header {
   display: flex;
@@ -32,6 +33,32 @@
     gap: 1rem;
     flex-direction: column;
     width: 100%;
+    .button {
+      &-primary {
+        &-solid {
+          @include button("lg", $color: "primary", $style: "solid");
+        }
+        &-outline {
+          @include button("lg", $color: "primary", $style: "outline");
+        }
+      }
+      &-grey {
+        &-solid {
+          @include button("lg", $color: "grey", $style: "solid");
+        }
+        &-outline {
+          @include button("lg", $color: "grey", $style: "outline");
+        }
+      }
+      &-error {
+        &-solid {
+          @include button("lg", $color: "error", $style: "solid");
+        }
+        &-outline {
+          @include button("lg", $color: "error", $style: "outline");
+        }
+      }
+    }
   }
 }
 
@@ -42,6 +69,33 @@
     .actions {
       flex-direction: row;
       width: initial;
+      align-items: center;
+      .button {
+        &-primary {
+          &-solid {
+            @include button("md", $color: "primary", $style: "solid");
+          }
+          &-outline {
+            @include button("md", $color: "primary", $style: "outline");
+          }
+        }
+        &-grey {
+          &-solid {
+            @include button("md", $color: "grey", $style: "solid");
+          }
+          &-outline {
+            @include button("md", $color: "grey", $style: "outline");
+          }
+        }
+        &-error {
+          &-solid {
+            @include button("md", $color: "error", $style: "solid");
+          }
+          &-outline {
+            @include button("md", $color: "error", $style: "outline");
+          }
+        }
+      }
     }
   }
 }
