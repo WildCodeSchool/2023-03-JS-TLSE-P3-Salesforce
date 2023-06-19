@@ -1,6 +1,6 @@
 import Button from "../components/Button/Button";
 import PageHeader from "../components/PageHeader/PageHeader";
-import IdeaCard from "../components/IdeaCard";
+
 import SearchBar from "../components/SearchBar/SearchBar";
 
 export default function Home() {
@@ -18,7 +18,7 @@ export default function Home() {
         </Button>
       </PageHeader>
       <SearchBar />
-      <IdeaCard />
+      {/* <IdeaCard /> */}
     </main>
   );
 }
