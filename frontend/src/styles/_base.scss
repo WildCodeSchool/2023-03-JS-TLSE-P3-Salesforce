@@ -1,12 +1,12 @@
 @use "./colors" as *;
 @use "./typography" as *;
-// @use "./button" as *;
+@use "./button" as *;
 
 html,
 body {
   font-feature-settings: "tnum" on, "lnum" on;
   font-family: $font-family;
-  color: $grey-900;
+  color: var(--grey-900);
 }
 
 body {
@@ -16,7 +16,7 @@ body {
 main {
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: $white;
+  background-color: var(--white);
   padding: 2rem 1rem;
 }
 
