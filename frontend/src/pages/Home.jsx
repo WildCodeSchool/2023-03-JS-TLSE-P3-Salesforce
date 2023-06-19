@@ -7,11 +7,8 @@ export default function Home() {
   const firstname = "Pierre";
   let welcomeString = "";
 
-  if (firstname) {
-    welcomeString = `Bienvenue, ${firstname}`;
-  } else {
-    welcomeString = "Bienvenue";
-  }
+  welcomeString = firstname ? `Bienvenue, ${firstname}` : "Bienvenue";
+
   return (
     <main>
       <PageHeader
