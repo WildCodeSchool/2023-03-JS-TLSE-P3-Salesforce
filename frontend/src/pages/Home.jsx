@@ -1,5 +1,24 @@
+import Button from "../components/Button/Button";
+import PageHeader from "../components/PageHeader/PageHeader";
+import IdeaCard from "../components/IdeaCard";
 import SearchBar from "../components/SearchBar/SearchBar";
 
 export default function Home() {
-  return <SearchBar />;
+  const firstname = "Pierre";
+
+  return (
+    <main>
+      <PageHeader
+        title={firstname ? `Bienvenue, ${firstname}` : "Bienvenue"}
+        subtitle="Découvrez les dernières idées de votre entreprise"
+      >
+        <Button size="md" color="primary" type="solid">
+          <i className="fi fi-rr-plus" />
+          Ajouter une idée
+        </Button>
+      </PageHeader>
+      <SearchBar />
+      <IdeaCard />
+    </main>
+  );
 }

@@ -1,4 +1,4 @@
-@import"../../styles/colors";
+@import "../../styles/colors";
 .search-bar {
   display: flex;
   flex-direction: row;
@@ -8,32 +8,32 @@
   position: absolute;
   width: auto;
   height: auto;
-  background-color: $color-white ;
-  border: 1px solid $color-grey-200;
+  background-color: var(--white);
+  border: 1px solid var(--grey-200);
   border-radius: 0.4rem;
 }
 .search-input {
   outline: none;
   border: none;
-  margin-right:1rem;
-  &::placeholder {   
-    color: $color-grey-400;
+  margin-right: 1rem;
+  &::placeholder {
+    color: var(--grey-400);
   }
 }
-.search-input:hover{
-  background-color: $color-grey-100;
+.search-input:hover {
+  background-color: var(--grey-100);
 }
 .fi-rs-search {
-  background-color: brown;
+  background-color: var(--white);
 }
-.search{
+.search {
   border: none;
   padding: 0.3rem;
   border-radius: 0.2rem;
 }
-.search:hover{
+.search:hover {
   transform: scale(1.08);
 }
-.search.clear{
+.search.clear {
   margin-right: 0.2rem;
 }

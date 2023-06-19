@@ -12,7 +12,7 @@ function SearchBar() {
     setValue("");
   }
   function HandleSend() {
-    console.log(value);
+    // console.log(value);
   }
 
   // render
