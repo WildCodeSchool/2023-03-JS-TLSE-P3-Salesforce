@@ -1,3 +1,5 @@
+@use "../../styles/colors" as *;
+
 .idea-comment {
   justify-content: flex-end;
   align-items: center;
@@ -5,19 +7,8 @@
   gap: 20px;
   width: 506.67px;
   height: 44px;
-
-  /* grey/grey | 200 */
-
-  border-top: 1px solid #e2e8f0;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0;
 }
 .idea-comment-icon {
   border: 0;
-  background-color: #fff;
+  background-color: var(--white);
 }

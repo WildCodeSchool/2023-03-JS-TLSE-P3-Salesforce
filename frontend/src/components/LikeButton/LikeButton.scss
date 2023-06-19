@@ -1,17 +1,21 @@
+@use "../../styles/colors" as *;
+
 .idea-like-icon {
   cursor: pointer;
 }
 .idea-comment-icon {
   cursor: pointer;
 }
-.fi-sr-heart {
-  color: #4f46e5;
+.fi-rr-heart {
+  color:var(--grey-700);
 }
-
+.fi-sr-heart {
+  color:var(--primary-600);
+}
 .fi-sr-heart-crack {
-  color: red;
+  color:var(--red-600);
 }
 .idea-like {
   border: 0;
-  background-color: #fff;
+  background-color: var(--white);
 }
