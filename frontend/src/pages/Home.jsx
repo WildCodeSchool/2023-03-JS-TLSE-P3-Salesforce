@@ -5,14 +5,11 @@ import IdeaCard from "../components/IdeaCard/IdeaCard";
 
 export default function Home() {
   const firstname = "Pierre";
-  let welcomeString = "";
-
-  welcomeString = firstname ? `Bienvenue, ${firstname}` : "Bienvenue";
 
   return (
     <main>
       <PageHeader
-        title={welcomeString}
+        title={firstname ? `Bienvenue, ${firstname}` : "Bienvenue"}
         subtitle="Découvrez les dernières idées de votre entreprise"
       >
         <Button size="md" color="primary" type="solid">
