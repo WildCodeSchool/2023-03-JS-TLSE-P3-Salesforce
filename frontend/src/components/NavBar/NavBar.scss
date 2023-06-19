@@ -28,10 +28,9 @@
       background-color: var(--grey-200);
       border-radius: 12px;
       margin-bottom: 15px;
-    
     }
 
-    .icon-nav-bar{
+    .icon-nav-bar {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -44,14 +43,14 @@
         border-radius: 12px;
         border: none;
         background-color: transparent;
-        i{
+        i {
           font-size: 18px;
         }
-        &:hover, &.active {
+        &:hover,
+        &.active {
           background-color: var(--indigo-500);
         }
       }
-
     }
     .logo-sales-force-nav-bar {
       max-width: 64px;
