@@ -1,9 +1,11 @@
 import "./NavBar.scss";
 import React, { useState } from "react";
 import BoardComponentNavBar from "../BoardSubNavBar/BoardComponentNavBar";
+import IdeaSubNavBar from "../IdeaSubNavBar/IdeaComponentNavBar";
 
 export default function NavBar() {
-  const [isSubNavBarOpen, setIsSubNavBarOpen] = useState(false);
+  const [isSubNavBarArrayOpen, setIsSubNavBarArrayOpen] = useState(false);
+  const [isSubNavBarIdeaOpen, setIsSubNavBarIdeaOpen] = useState(false);
 
   return (
     <div className="global-nav-bar">
@@ -25,14 +27,14 @@ export default function NavBar() {
             <button
               type="button"
               // au click, on fait apparaitre le sous-menu
-              onClick={() => setIsSubNavBarOpen(!isSubNavBarOpen)}
+              onClick={() => setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen)}
             >
               <i className="fi fi-rr-bulb" />
             </button>
             <button
               type="button"
               // au click, on fait apparaitre le sous-menu
-              onClick={() => setIsSubNavBarOpen(!isSubNavBarOpen)}
+              onClick={() => setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen)}
             >
               <i className="fi fi-rr-apps" />
             </button>
@@ -57,7 +59,7 @@ export default function NavBar() {
       </div>
       {/* ternaire pour faire apparaitre le sous menu en fonction du state.
       L'action est déclenchée par le onClick du bouttons (L28) */}
-      {isSubNavBarOpen && (
+      {isSubNavBarArrayOpen && (
         <div className="first-sub-nav-bar">
           <div>
             <p className="title-sub-nav-bar">Tableaux</p>
@@ -72,6 +74,25 @@ export default function NavBar() {
             <BoardComponentNavBar />
             <BoardComponentNavBar />
             <BoardComponentNavBar />
+          </div>
+        </div>
+      )}
+      ;
+      {isSubNavBarIdeaOpen && (
+        <div className="first-sub-nav-bar">
+          <div>
+            <p className="title-sub-nav-bar">Idées</p>
+            <div className="button-for-moment">
+              <i className="fi fi-rr-plus" />
+              <div className="text-board-component-nav-bar">
+                <p className="title-board-component-nav-bar">Nouvelle idée</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <IdeaSubNavBar />
+            <IdeaSubNavBar />
+            <IdeaSubNavBar />
           </div>
         </div>
       )}
