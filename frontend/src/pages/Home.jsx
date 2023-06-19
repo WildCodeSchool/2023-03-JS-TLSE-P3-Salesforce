@@ -2,6 +2,7 @@ import Button from "../components/Button/Button";
 import PageHeader from "../components/PageHeader/PageHeader";
 
 import SearchBar from "../components/SearchBar/SearchBar";
+// import IdeaCard from "../components/IdeaCard/IdeaCard";
 
 export default function Home() {
   const firstname = "Pierre";
