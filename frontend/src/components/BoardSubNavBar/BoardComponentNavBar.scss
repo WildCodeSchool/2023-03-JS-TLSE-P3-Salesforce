@@ -1,9 +1,8 @@
-@use "../../styles/colors" as *;
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
 
 .global-board-component-nav-bar {
-  background-color: var(--indigo-800);
+  background-color: var(--primary-800);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -12,16 +11,16 @@
 
   i {
     padding: 7px;
-    color: var(--indigo-200);
+    color: var(--primary-200);
     border-radius: 12px;
   }
 
   .title-board-component-nav-bar {
-    color: var(--indigo-100);
+    color: var(--primary-100);
     @include text(sm);
   }
   .subtitle-board-component-nav-bar {
-    color: var(--indigo-100);
+    color: var(--primary-100);
     @include text(xs);
   }
 }

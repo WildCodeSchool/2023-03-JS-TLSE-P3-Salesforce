@@ -1,98 +1,323 @@
 @use "../../styles/colors" as *;
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
+@use "../../styles/button" as *;
 
 .global-nav-bar {
   display: flex;
-  height: 100vh;
-  width: 350px;
+  justify-content: space-between;
+  align-items: center;
+  height: 72px;
+  width: 100%;
+
+  .logo-company-nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    @include shadow("xs");
+    background-color: var(--white);
+    border-radius: 12px;
+    margin-left: 16px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
 
   .main-nav-bar {
-    background-color: var(--primary-600);
-    left: 0px;
-    height: 100vh;
-    width: 100px;
+    display: none;
+  }
+
+  .burger-nav-bar {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px 0px 16px 0px;
+    width: 20%;
+    height: 100%;
 
-    .logo-company-nav-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      @include shadow("xs");
-      background-color: var(--grey-200);
-      border-radius: 12px;
-      margin-bottom: 15px;
-    }
-
-    .icon-nav-bar {
+    .no-animation {
       display: flex;
       flex-direction: column;
+      margin: auto;
+
+      span {
+        width: 30px;
+        height: 2px;
+        margin-bottom: 10px;
+        transition: transform 0.5s;
+        background-color: var(--white);
+        color: var(--white);
+        display: block;
+      }
+
+      span:nth-child(1),
+      span:nth-child(3) {
+        transform-origin: right center;
+      }
+
+      span:nth-child(2),
+      span:nth-child(3) {
+        transform-origin: left center;
+      }
+    }
+    div#nav-links {
+      background-color: var(--primary-600);
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      z-index: 2;
+      .main-part-nav-bar-menu-burger {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        height: 100%;
+        .logo-icon-and-mentionslegales-menu-burger {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          height: 75%;
+          .logo-and-icon-menu-burger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            .logo-company-menu-burger {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 48px;
+              height: 48px;
+              @include shadow("xs");
+              background-color: var(--white);
+              border-radius: 8px;
+              margin-left: 16px;
+              margin-top: 56px;
+              margin-bottom: 20px;
+              img {
+                width: 20px;
+                height: 20px;
+              }
+            }
+            .part-menu-burger {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              padding: 4px 8px 8px 16px;
+              border-radius: 12px;
+              &:hover {
+                background-color: var(--primary-500);
+              }
+              .icon-and-text-part-menu-burger {
+                display: flex;
+                align-items: center;
+              }
+              .icon-nav-bar {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                button {
+                  display: flex;
+                  flex-direction: column;
+                  padding: 8px;
+                  color: var(--primary-200);
+                  border-radius: 12px;
+                  border: none;
+                  background-color: transparent;
+                  i {
+                    font-size: 18px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .profil-and-logosalesforce-menu-burger {
+          .profil-menu-burger {
+            margin: 20px 16px;
+            display: flex;
+            .photo-profil-menu-burger {
+              margin-right: 16px;
+            }
+            .text-profil-menu-burger {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+          }
+          .logo-salesforce-menu-burger {
+            img {
+              margin-left: 16px;
+              width: 70px;
+              height: auto;
+            }
+          }
+        }
+      }
+      .close-menu-burger {
+        display: flex;
+        justify-content: center;
+        width: 20%;
+      }
+    }
+
+    .burger-close {
+      width: 0vw;
+      overflow: hidden;
+      transition: width 1s ease;
+    }
+
+    .burger-open {
+      width: 40vw;
+      transition: width 1s ease;
+    }
+
+    span.no_animation span:nth-child(1),
+    span.no_animation span:nth-child(5) {
+      background-color: var(--white);
+      display: none;
+    }
+
+    span.no_animation span:nth-child(3) {
+      background-color: var(--white);
+      display: block;
+    }
+
+    span.no_animation span:nth-child(2),
+    span.no_animation span:nth-child(4) {
+      background-color: var(--white);
+      display: block;
+    }
+
+    span.animationOpen span:nth-child(1) {
+      transform: translate(-15px, 17px) rotate(+45deg) scale(0.7, 1);
+      background-color: var(--white);
+      display: block;
+      z-index: 3;
+    }
+
+    span.animationOpen span:nth-child(2) {
+      transform: scaleX(0);
+    }
+
+    span.animationOpen span:nth-child(3) {
+      transform: translate(15px, 5px) rotate(45deg) scale(0.7, 1);
+      background: var(--white);
+      display: block;
+    }
+
+    // span.animationOpen span:nth-child(4) {
+    //   transform: translate(15px, -7px) rotate(135deg) scale(0.7, 1);
+    //   background: var(--white);
+    //   display: block;
+    // }
+
+    // span.animationOpen span:nth-child(5) {
+    //   transform: translate(-15px, -19px) rotate(135deg) scale(0.7, 1);
+    //   background: var(--white);
+    //   display: block;
+    // }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .global-nav-bar {
+    display: flex;
+    height: 100vh;
+    width: 350px;
+    .burger-nav-bar {
+      display: none;
+    }
+    .main-nav-bar {
+      background-color: var(--primary-600);
+      left: 0px;
+      height: 100vh;
+      width: 100px;
+      display: flex;
+      // flex-direction: column;
       align-items: center;
-      button {
+      justify-content: space-between;
+      padding: 32px 0px 16px 0px;
+
+      .logo-company-nav-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 64px;
+        @include shadow("xs");
+        background-color: var(--white);
+        border-radius: 12px;
+        margin-bottom: 15px;
+      }
+
+      .icon-nav-bar {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 16px;
-        color: var(--indigo-200);
+        button {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding: 16px;
+          color: var(--primary-200);
+          border-radius: 12px;
+          border: none;
+          background-color: transparent;
+          i {
+            font-size: 18px;
+          }
+          &:hover,
+          &.active {
+            background-color: var(--primary-500);
+          }
+        }
+      }
+      .logo-sales-force-nav-bar {
+        max-width: 64px;
+        display: flex;
+        justify-content: center;
+        margin-top: 12px;
+        img {
+          width: 80%;
+        }
+      }
+    }
+    .first-sub-nav-bar {
+      background-color: var(--primary-700);
+      left: 100px;
+      height: 100vh;
+      width: 250px;
+      display: flex;
+      flex-direction: column;
+      align-items: left;
+      padding: 36px 16px;
+      .title-sub-nav-bar {
+        color: var(--primary-100);
+        @include text(md);
+      }
+      .nav-bar-button {
+        background-color: var(--primary-600);
         border-radius: 12px;
-        border: none;
-        background-color: transparent;
-        i {
-          font-size: 18px;
-        }
-        &:hover,
-        &.active {
-          background-color: var(--indigo-500);
-        }
-      }
-    }
-    .logo-sales-force-nav-bar {
-      max-width: 64px;
-      display: flex;
-      justify-content: center;
-      margin-top: 12px;
-      img {
-        width: 80%;
-      }
-    }
-  }
-  .first-sub-nav-bar {
-    background-color: var(--primary-700);
-    left: 100px;
-    height: 100vh;
-    width: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    padding: 36px 16px;
-    .title-sub-nav-bar {
-      color: var(--indigo-100);
-      @include text(md);
-    }
-    .button-for-moment {
-      background-color: var(--primary-600);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      padding: 7px 15px 7px 5px;
-      margin: 10px 0px;
-      color: var(--indigo-100);
-      width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 7px 15px 7px 5px;
+        margin: 10px 0px;
+        color: var(--primary-100);
+        width: 100%;
 
-      i {
-        padding: 7px;
-        color: var(--indigo-200);
-        border-radius: 12px;
-      }
-      .text-board-component-nav-bar {
-        .title-board-component-nav-bar {
-          @include text(sm);
+        i {
+          padding: 7px;
+          color: var(--primary-200);
+          border-radius: 12px;
+        }
+        .text-board-component-nav-bar {
+          .title-board-component-nav-bar {
+            @include text(sm);
+          }
         }
       }
     }

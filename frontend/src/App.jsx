@@ -6,7 +6,7 @@ import "./styles/index.scss";
 
 function App() {
   // eslint-disable-next-line no-unused-vars
-  const [colorTheme, setColorTheme] = useState("indigo");
+  const [colorTheme, setColorTheme] = useState("teal");
 
   function importThemeColor(colorThemeChosen) {
     switch (colorThemeChosen) {
