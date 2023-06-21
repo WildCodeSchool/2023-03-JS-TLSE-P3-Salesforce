@@ -9,34 +9,32 @@ export default function SubmenuIdeaButton({ showSubmenu, setShowSubmenu }) {
   };
 
   return (
-    <div>
+    <>
       {/* ajout du sous menu en entete */}
       <button type="button" className="idea-menu-icon" onClick={toggleSubmenu}>
-        &#8942;
+        <i className="fi fi-rr-menu-dots-vertical" />
       </button>
-
-      {/* lorsque le sous menu est actif , on fait apparaitre les éléments du sous menu */}
       {showSubmenu && (
-        <div className="submenu-idea">
-          <ul>
-            <li className="submenu-modify-idea">Modifier</li>
-            <li className="submenu-cancel-idea">Supprimer</li>
-            <li className="submenu-duplicate-idea">Dupliquer</li>
-          </ul>
-        </div>
+        <ul className="submenu-idea">
+          <li onClick={toggleSubmenu} aria-hidden="true">
+            <i className="fi fi-rr-attribution-pencil" />
+            <a href="/modifier">Modifier</a>
+          </li>
+          <li onClick={toggleSubmenu} aria-hidden="true">
+            <i className="fi fi-rr-trash" />
+            <a href="/supprimer">Supprimer</a>
+          </li>
+          <li onClick={toggleSubmenu} aria-hidden="true">
+            <i className="fi fi-rr-copy" />
+            <a href="/dupliquer">Dupliquer</a>
+          </li>
+        </ul>
       )}
-    </div>
+    </>
   );
 }
+
 SubmenuIdeaButton.propTypes = {
-  showSubmenu: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool])
-    )
-  ).isRequired,
-  setShowSubmenu: PropTypes.arrayOf(
-    PropTypes.objectOf(
-      PropTypes.oneOfType([PropTypes.string, PropTypes.number, PropTypes.bool])
-    )
-  ).isRequired,
+  showSubmenu: PropTypes.bool.isRequired,
+  setShowSubmenu: PropTypes.func.isRequired,
 };

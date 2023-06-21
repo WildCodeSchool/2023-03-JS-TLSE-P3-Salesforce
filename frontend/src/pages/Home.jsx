@@ -1,6 +1,6 @@
 import PageHeader from "../components/PageHeader/PageHeader";
-
 import IdeaCard from "../components/IdeaCard/IdeaCard";
+import "../components/IdeaCard/IdeaCard.scss";
 import HorizontalTabs from "../components/HorizontalTabs/HorizontalTabs";
 
 export default function Home() {
@@ -21,6 +21,8 @@ export default function Home() {
           <li>Groupes</li>
         </HorizontalTabs>
       </PageHeader>
+      <IdeaCard />
+      <IdeaCard />
       <IdeaCard />
     </main>
   );

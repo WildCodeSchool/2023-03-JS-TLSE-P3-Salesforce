@@ -1,0 +1,246 @@
+@use "../../styles/typography" as *;
+
+.badge {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  gap: 4px;
+  border-radius: 16px;
+  @include text("sm", $weight: 500);
+
+  i:before {
+    line-height: unset;
+    font-size: 12px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+  }
+
+  //rouge
+
+  &-red {
+    border: 1px solid var(--red-200);
+    color: var(--red-700);
+
+    .dot {
+      background-color: var(--red-500);
+    }
+    i {
+      color: var(--red-500);
+    }
+  }
+  //vert
+  &-green {
+    border: 1px solid var(--green-200);
+    color: var(--green-700);
+    .dot {
+      background-color: var(--green-500);
+    }
+    i {
+      color: var(--green-500);
+    }
+  }
+
+  //amber
+  &-amber {
+    border: 1px solid var(--amber-200);
+    color: var(--amber-700);
+
+    .dot {
+      background-color: var(--amber-500);
+    }
+    i {
+      color: var(--amber-500);
+    }
+  }
+  //blue
+  &-blue {
+    border: 1px solid var(--blue-200);
+    color: var(--blue-700);
+
+    .dot {
+      background-color: var(--blue-500);
+    }
+    i {
+      color: var(--blue-500);
+    }
+  }
+
+  //cyan
+  &-cyan {
+    border: 1px solid var(--cyan-200);
+    color: var(--cyan-700);
+
+    .dot {
+      background-color: var(--cyan-500);
+    }
+    i {
+      color: var(--cyan-500);
+    }
+  }
+
+  //emerald
+  &-emerald {
+    border: 1px solid var(--emerald-200);
+    color: var(--emerald-700);
+
+    .dot {
+      background-color: var(--emerald-500);
+    }
+    i {
+      color: var(--emerald-500);
+    }
+  }
+  //fuchsia
+  &-fuchsia {
+    border: 1px solid var(--fuchsia-200);
+    color: var(--fuchsia-700);
+
+    .dot {
+      background-color: var(--fuchsia-500);
+    }
+    i {
+      color: var(--fuchsia-500);
+    }
+  }
+  //indigo
+  &-indigo {
+    border: 1px solid var(--indigo-200);
+    color: var(--indigo-700);
+
+    .dot {
+      background-color: var(--indigo-500);
+    }
+    i {
+      color: var(--indigo-500);
+    }
+  }
+  //lime
+  &-lime {
+    border: 1px solid var(--lime-200);
+    color: var(--lime-700);
+
+    .dot {
+      background-color: var(--lime-500);
+    }
+    i {
+      color: var(--lime-500);
+    }
+  }
+
+  //orange
+  &-orange {
+    border: 1px solid var(--orange-200);
+    color: var(--orange-700);
+
+    .dot {
+      background-color: var(--orange-500);
+    }
+    i {
+      color: var(--orange-500);
+    }
+  }
+  //pink
+  &-pink {
+    border: 1px solid var(--pink-200);
+    color: var(--pink-700);
+
+    .dot {
+      background-color: var(--pink-500);
+    }
+    i {
+      color: var(--pink-500);
+    }
+  }
+  //purple
+  &-purple {
+    border: 1px solid var(--purple-200);
+    color: var(--purple-700);
+
+    .dot {
+      background-color: var(--purple-500);
+    }
+    i {
+      color: var(--purple-500);
+    }
+  }
+  //rose
+  &-rose {
+    border: 1px solid var(--rose-200);
+    color: var(--rose-700);
+
+    .dot {
+      background-color: var(--rose-500);
+    }
+    i {
+      color: var(--rose-500);
+    }
+  }
+  //sky
+  &-sky {
+    border: 1px solid var(--sky-200);
+    color: var(--sky-700);
+
+    .dot {
+      background-color: var(--sky-500);
+    }
+    i {
+      color: var(--sky-500);
+    }
+  }
+  //teal
+  &-teal {
+    border: 1px solid var(--teal-200);
+    color: var(--teal-700);
+
+    .dot {
+      background-color: var(--teal-500);
+    }
+    i {
+      color: var(--teal-500);
+    }
+  }
+  //violet
+  &-violet {
+    border: 1px solid var(--violet-200);
+    color: var(--violet-700);
+
+    .dot {
+      background-color: var(--violet-500);
+    }
+    i {
+      color: var(--violet-500);
+    }
+  }
+  //yellow
+  &-yellow {
+    border: 1px solid var(--yellow-200);
+    color: var(--yellow-700);
+
+    .dot {
+      background-color: var(--yellow-500);
+    }
+    i {
+      color: var(--yellow-500);
+    }
+  }
+  //grey
+  &-grey {
+    border: 1px solid var(--grey-200);
+    color: var(--grey-700);
+
+    .dot {
+      background-color: var(--grey-500);
+    }
+    i {
+      color: var(--grey-500);
+    }
+  }
+}
