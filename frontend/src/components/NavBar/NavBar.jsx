@@ -15,18 +15,25 @@ export default function NavBar() {
   const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuBoard, setShowSubMenuBoard] = useState(false);
   const [showSubMenuIdea, setShowSubMenuIdea] = useState(false);
+
+  /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
+
   function openNavBarArray() {
     setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
     if (isSubNavBarIdeaOpen === true) {
       setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
     }
   }
+
+  /* au click, ouvre ou ferme la subnavbar Idea et ferme la subnavbar tableau si elle est ouverte */
   function openNavBarIdea() {
     setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
     if (isSubNavBarArrayOpen === true) {
       setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
     }
   }
+
+  /* au click, ferme les navbar pouvant être ouvertes ailleurs */
   function closeSubNavBar() {
     if (isSubNavBarArrayOpen === true) {
       setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
@@ -60,6 +67,7 @@ export default function NavBar() {
               />
             </div>
             <div className="icon-nav-bar">
+              {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
               <button
                 type="button"
                 className="active"
