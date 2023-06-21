@@ -5,9 +5,14 @@
   background-color: var(--primary-800);
   border-radius: 12px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 7px 0px;
   margin: 10px 0px;
+  .logo-and-text-component-nav-bar {
+    display: flex;
+    align-items: center;
+  }
 
   i {
     padding: 7px;

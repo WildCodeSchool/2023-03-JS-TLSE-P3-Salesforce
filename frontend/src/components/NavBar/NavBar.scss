@@ -104,7 +104,6 @@
             button {
               display: flex;
               flex-direction: column;
-              justify-content: center;
               padding: 8px;
               color: var(--primary-200);
               border-radius: 12px;
@@ -112,6 +111,9 @@
               background-color: transparent;
 
               i {
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 font-size: 18px;
               }
             }
@@ -131,7 +133,7 @@
       }
     }
     .profil-and-logosalesforce-menu-burger {
-      margin-top: 8px;
+      margin-top: 8px 0px 8px 0px;
       border-top: var(--primary-100) solid 0.5px;
       .profil-menu-burger {
         padding: 20px 16px;
@@ -158,6 +160,7 @@
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+            color: var(--primary-100);
           }
         }
       }
@@ -201,9 +204,12 @@
 
 @media screen and (min-width: 768px) {
   .global-nav-bar {
-    display: flex;
     height: 100vh;
     width: 350px;
+    padding: 0px;
+    .logo-company-nav-bar {
+      display: none;
+    }
     .burger-nav-bar {
       display: none;
     }
@@ -213,7 +219,7 @@
       height: 100vh;
       width: 100px;
       display: flex;
-      // flex-direction: column;
+      flex-direction: column;
       align-items: center;
       justify-content: space-between;
       padding: 32px 0px 16px 0px;
@@ -263,38 +269,37 @@
         }
       }
     }
-    .first-sub-nav-bar {
-      background-color: var(--primary-700);
-      left: 100px;
-      height: 100vh;
-      width: 250px;
+  }
+  .first-sub-nav-bar {
+    background-color: var(--primary-700);
+    height: 100vh;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    padding: 36px 16px;
+    .title-sub-nav-bar {
+      color: var(--primary-100);
+      @include text(md);
+    }
+    .nav-bar-button {
+      background-color: var(--primary-600);
+      border-radius: 12px;
       display: flex;
-      flex-direction: column;
-      align-items: left;
-      padding: 36px 16px;
-      .title-sub-nav-bar {
-        color: var(--primary-100);
-        @include text(md);
-      }
-      .nav-bar-button {
-        background-color: var(--primary-600);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        padding: 7px 15px 7px 5px;
-        margin: 10px 0px;
-        color: var(--primary-100);
-        width: 100%;
+      align-items: center;
+      padding: 7px 15px 7px 5px;
+      margin: 10px 0px;
+      color: var(--primary-100);
+      width: 100%;
 
-        i {
-          padding: 7px;
-          color: var(--primary-200);
-          border-radius: 12px;
-        }
-        .text-board-component-nav-bar {
-          .title-board-component-nav-bar {
-            @include text(sm);
-          }
+      i {
+        padding: 7px;
+        color: var(--primary-200);
+        border-radius: 12px;
+      }
+      .text-board-component-nav-bar {
+        .title-board-component-nav-bar {
+          @include text(sm);
         }
       }
     }

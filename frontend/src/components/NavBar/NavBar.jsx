@@ -27,6 +27,13 @@ export default function NavBar() {
       setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
     }
   }
+  function closeSubNavBar() {
+    if (isSubNavBarArrayOpen === true) {
+      setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
+    } else if (isSubNavBarIdeaOpen === true) {
+      setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
+    }
+  }
 
   return (
     <>
@@ -53,10 +60,14 @@ export default function NavBar() {
               />
             </div>
             <div className="icon-nav-bar">
-              <button type="button" className="active">
+              <button
+                type="button"
+                className="active"
+                onClick={() => closeSubNavBar()}
+              >
                 <i className="fi fi-rr-home" />
               </button>
-              <button type="button">
+              <button type="button" onClick={() => closeSubNavBar()}>
                 <i className="fi fi-rr-users" />
               </button>
               <button
@@ -73,7 +84,7 @@ export default function NavBar() {
               >
                 <i className="fi fi-rr-apps" />
               </button>
-              <button type="button">
+              <button type="button" onClick={() => closeSubNavBar()}>
                 <i className="fi fi-rr-settings-sliders" />
               </button>
             </div>
@@ -92,48 +103,46 @@ export default function NavBar() {
             </div>
           </div>
           {/* ternaire pour faire apparaitre le sous menu des tableaux en fonction du state */}
-          {isSubNavBarArrayOpen && (
-            <div className="first-sub-nav-bar">
-              <div>
-                <p className="title-sub-nav-bar">Tableaux</p>
-                <div className="nav-bar-button">
-                  <i className="fi fi-rr-plus" />
-                  <div className="text-board-component-nav-bar">
-                    <p className="title-board-component-nav-bar">
-                      Nouveau tableau
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <BoardComponentNavBar />
-                <BoardComponentNavBar />
-                <BoardComponentNavBar />
-              </div>
-            </div>
-          )}
-          {/* ternaire pour faire apparaitre le sous menu des idées en fonction du state */}
-          {isSubNavBarIdeaOpen && (
-            <div className="first-sub-nav-bar">
-              <div>
-                <p className="title-sub-nav-bar">Idées</p>
-                <div className="nav-bar-button">
-                  <i className="fi fi-rr-plus" />
-                  <div className="text-board-component-nav-bar">
-                    <p className="title-board-component-nav-bar">
-                      Nouvelle idée
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <IdeaSubNavBar />
-                <IdeaSubNavBar />
-                <IdeaSubNavBar />
-              </div>
-            </div>
-          )}
         </div>
+        {isSubNavBarArrayOpen && (
+          <div className="first-sub-nav-bar">
+            <div>
+              <p className="title-sub-nav-bar">Tableaux</p>
+              <div className="nav-bar-button">
+                <i className="fi fi-rr-plus" />
+                <div className="text-board-component-nav-bar">
+                  <p className="title-board-component-nav-bar">
+                    Nouveau tableau
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <BoardComponentNavBar />
+              <BoardComponentNavBar />
+              <BoardComponentNavBar />
+            </div>
+          </div>
+        )}
+        {/* ternaire pour faire apparaitre le sous menu des idées en fonction du state */}
+        {isSubNavBarIdeaOpen && (
+          <div className="first-sub-nav-bar">
+            <div>
+              <p className="title-sub-nav-bar">Idées</p>
+              <div className="nav-bar-button">
+                <i className="fi fi-rr-plus" />
+                <div className="text-board-component-nav-bar">
+                  <p className="title-board-component-nav-bar">Nouvelle idée</p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <IdeaSubNavBar />
+              <IdeaSubNavBar />
+              <IdeaSubNavBar />
+            </div>
+          </div>
+        )}
       </div>
       {showMenu && (
         <div id="nav-links">
