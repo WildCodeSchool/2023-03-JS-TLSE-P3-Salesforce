@@ -31,7 +31,7 @@ export default function CommentButton() {
           className="idea-comment-icon"
           onClick={openCommentModal}
         >
-          <span className="idea-comment-count">{commentCount}</span>
+          <span className="idea-comment-count">{commentCount} </span>
           <i className="fi fi-rr-comment-alt" />
         </button>
       </div>
@@ -51,7 +51,8 @@ export default function CommentButton() {
             className="idea-button-comment"
             onClick={handleComment}
           >
-            Ajouter
+            {" "}
+            Ajouter{" "}
           </button>
         </div>
       )}

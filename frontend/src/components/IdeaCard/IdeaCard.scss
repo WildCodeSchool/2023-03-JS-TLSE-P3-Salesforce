@@ -1,15 +1,22 @@
-@use "../../styles/colors" as *;
+@use "../../styles/typography" as *;
+@use "../../styles/shadows" as *;
 
 .idea-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 0px;
-  width: 506.67px;
-  height: 224px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0px 1px 2px rgba(25, 52, 65, 0.05);
+  margin-top: 2%;
+  width: 30vw;
+  border: 1px solid var(--grey-200);
+  @include shadow("xs");
+  cursor: pointer;
   border-radius: 12px;
+  transition: box-shadow 0.3s, border-color 0.3s;
+  &:hover{
+    @include shadow("md");
+    border: 1px solid var(--grey-300);
+  }
 
   .header-card {
     display: flex;
@@ -18,45 +25,17 @@
     justify-content: space-between;
     padding: 12px 20px;
     gap: 20px;
-    box-shadow: 0px 1px 2px rgba(25, 52, 65, 0.05);
-    width: 506.67px;
-    height: 48px;
+    width: 100%;
+    border-bottom: 1px solid var(--grey-200);
 
-    /* grey/grey | 200 */
-
-    border: 1px solid var(--grey-200);
-
-    /* Inside auto layout */
-
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
     .title-idea {
-      width: 439px;
-      height: 24px;
-
-      /* Text md/Semi Bold */
-
-      font-family: "Inter";
-      font-style: normal;
-      font-weight: 600;
-      font-size: 16px;
-      line-height: 24px;
-      /* identical to box height, or 150% */
-
-      /* grey/grey | 900 */
-
+      width: 100%;
+      @include text("md", $weight: 600);
       color: var(--grey-900);
-
-      /* Inside auto layout */
-
-      flex: none;
-      order: 0;
-      flex-grow: 1;
     }
     .idea-menu-icon {
       cursor: pointer;
+      background-color: var(--white);
     }
   }
 
@@ -66,102 +45,29 @@
     align-items: flex-start;
     padding: 20px;
     gap: 8px;
-    width: 506.67px;
-    height: 132px;
+    width: 100%;
 
-    /* Inside auto layout */
-
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-
-    .labels-idea {
+    .badges-idea {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
+      flex-wrap: wrap;
       padding: 0px;
-      gap: 10%;
-      width: 133px;
-      height: 24px;
-
-      /* Inside auto layout */
-
-      flex: none;
-      order: 0;
-      flex-grow: 0;
-      .label-idea1 {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 2px 10px;
-        gap: 4px;
-
-        /* white */
-
-        background: #ffffff;
-        /* teal/teal | 200 */
-
-        border: 1px solid #be123c;
-        color: #be123c;
-        border-radius: 16px;
-
-        /* Inside auto layout */
-
-        flex: none;
-        order: 0;
-        flex-grow: 0;
-      }
-      .label-idea2 {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding: 2px 10px;
-        gap: 4px;
-
-        /* white */
-
-        background: var(--white);
-        /* teal/teal | 200 */
-
-        border: 1px solid #fef08a;
-        color: #fef08a;
-        border-radius: 16px;
-
-        /* Inside auto layout */
-
-        flex: none;
-        order: 0;
-        flex-grow: 0;
-      }
+      gap: 4px;
+      width: 100%;
+  
+   
     }
 
     .idea-description {
-      width: 475px;
-      height: 40px;
+      max-height: auto;
 
       /* Text sm/Regular */
-
-      font-family: "Inter";
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 20px;
-      /* or 143% */
-
-      /* grey/grey | 600 */
-
-      color: #475569;
-
-      /* Inside auto layout */
-
-      flex: none;
-      order: 1;
-      align-self: stretch;
-      flex-grow: 0;
+      max-width: 100%;
+      color: var(--grey-600);
+      @include text("sm", $weight: 400);
     }
   }
-
   .footer-idea {
     display: flex;
     flex-direction: row;
@@ -169,18 +75,13 @@
     align-items: center;
     padding: 12px 20px;
     gap: 20px;
-    width: 506.67px;
-    height: 44px;
+    max-width: 100%;
+    border-top: 1px solid var(--grey-200);
+  }
+}
 
-    /* grey/grey | 200 */
-
-    border-top: 1px solid #e2e8f0;
-
-    /* Inside auto layout */
-
-    flex: none;
-    order: 2;
-    align-self: stretch;
-    flex-grow: 0;
+@media screen and (max-width: 768px) {
+  .idea-card {
+    width: 100%;
   }
 }

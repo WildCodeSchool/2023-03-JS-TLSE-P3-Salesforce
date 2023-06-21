@@ -40,10 +40,8 @@ export default function LikeButton({
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
       >
-        <span className="idea-like-count">{likeCount} </span>
-        <span className="idea-like-icon">
-          <i className={likeIcon} />
-        </span>
+        {likeCount}
+        <i className={likeIcon} />
       </button>
     </div>
   );
