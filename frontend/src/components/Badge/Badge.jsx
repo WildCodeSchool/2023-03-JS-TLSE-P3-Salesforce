@@ -6,7 +6,12 @@ export default function Badge({ color, children }) {
   return <div className={`badge badge-${color}`}>{children}</div>;
 }
 
+Badge.defaultProps = {
+  color: "blue",
+  children: null,
+};
+
 Badge.propTypes = {
-  color: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  children: PropTypes.node,
 };

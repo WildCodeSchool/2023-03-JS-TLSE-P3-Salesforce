@@ -34,12 +34,9 @@ function IdeaCard() {
                 <i className="dot" /> En cours{" "}
                 <i className="fi fi-rr-cross-small" />
               </Badge>
-              <Badge color="red">label</Badge>
-              <Badge color="green">labeeel</Badge>
-              <Badge color="blue">labeeeeel</Badge>
-              <Badge color="yellow">labeeeeeeel</Badge>
-              <Badge color="fuchsia">labeeeeeeeeel</Badge>
-              <Badge color="red">coucou</Badge>
+              <Badge color="red">RH</Badge>
+              <Badge color="green">Marketing</Badge>
+              <Badge color="blue">Comptabilité</Badge>
             </div>
 
             <p className="idea-description">

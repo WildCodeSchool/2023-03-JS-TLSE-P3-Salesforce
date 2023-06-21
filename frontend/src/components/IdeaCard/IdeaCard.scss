@@ -13,7 +13,7 @@
   cursor: pointer;
   border-radius: 12px;
   transition: box-shadow 0.3s, border-color 0.3s;
-  &:hover{
+  &:hover {
     @include shadow("md");
     border: 1px solid var(--grey-300);
   }
@@ -55,8 +55,6 @@
       padding: 0px;
       gap: 4px;
       width: 100%;
-  
-   
     }
 
     .idea-description {
