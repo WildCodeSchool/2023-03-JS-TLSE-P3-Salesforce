@@ -15,8 +15,8 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
-    "sass": "^1.63.4",
     "react-router-dom": "^6.12.1",
+    "sass": "^1.63.4",
     "vite": "^4.0.4"
   },
   "devDependencies": {
