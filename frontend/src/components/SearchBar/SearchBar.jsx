@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./SearchBar.scss";
+
 const availableNames = [
   "Alice",
   "Bob",
@@ -28,7 +29,7 @@ function SearchBar() {
   const [dataArray, setDataArray] = useState([]);
 
   // instructions
-  function HandleClear(event) {
+  function HandleClear() {
     setValue([]);
     setDataArray([]);
   }
@@ -41,7 +42,6 @@ function SearchBar() {
       name.toLowerCase().includes(value.toLowerCase())
     );
     setDataArray(results);
-    console.log(results);
   }
 
   // render
