@@ -55,10 +55,10 @@ DROP TABLE IF EXISTS `contract`;
 
 CREATE TABLE IF NOT EXISTS `contract` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `company_id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `expiration_date` DATETIME NULL,
-  `company_id` INT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -383,4 +383,156 @@ VALUES
   ("amber"),
   ("orange"),
   ("red");
+
+-- USERS
+INSERT INTO
+  `user` (
+    `firstname`,
+    `lastname`,
+    `email`,
+    `password`,
+    `is_salesforce_admin`,
+    `has_accepted_invitation`
+  )
+VALUES
+  (
+    'Jean',
+    'Dupont',
+    'jeandupont@example.com',
+    'hello',
+    1,
+    1
+  ),
+  (
+    'Marie',
+    'Martin',
+    'mariemartin@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'Pierre',
+    'Durand',
+    'pierredurand@example.com',
+    'hello',
+    0,
+    0
+  ),
+  (
+    'Sophie',
+    'Lefèvre',
+    'sophielefevre@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'François',
+    'Dubois',
+    'francoisdubois@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'Émilie',
+    'Moreau',
+    'emiliemoreau@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'Nicolas',
+    'Leroy',
+    'nicolasleroy@example.com',
+    'hello',
+    0,
+    0
+  ),
+  (
+    'Charlotte',
+    'Garcia',
+    'charlottegarcia@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'Thomas',
+    'Fournier',
+    'thomasfournier@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'Julie',
+    'Robin',
+    'julierobin@example.com',
+    'hello',
+    0,
+    1
+  ),
+  (
+    'Antoine',
+    'Petit',
+    'antoinepetit@example.com',
+    'hello',
+    0,
+    0
+  ),
+  (
+    'Camille',
+    'Rousseau',
+    'camillerousseau@example.com',
+    'hello',
+    0,
+    1
+  );
+
+-- COMPANIES
+INSERT INTO
+  `company` (
+    `name`,
+    `siret`,
+    `type`,
+    `sector`,
+    `creation_date`,
+    `color_id`
+  )
+VALUES
+  (
+    'Acme Corporation',
+    '12345678900010',
+    'SA',
+    'Technologie',
+    '2023-05-21 11:00:00',
+    6
+  ),
+  (
+    'Globex Industries',
+    '98765432100020',
+    'SARL',
+    'Manufacturing',
+    '2022-12-21 17:30:00',
+    6
+  ),
+  (
+    'Innovate Solutions',
+    '56789012300030',
+    'SAS',
+    'Services',
+    '2023-05-21 11:00:00',
+    10
+  ),
+  (
+    'EcoTech Ventures',
+    '45678901200040',
+    'SCOP',
+    'Environnement',
+    '2023-05-21 11:00:00',
+    1
+  );
 
