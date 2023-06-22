@@ -3,12 +3,14 @@ import "./Home.scss";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
+import NavBar from "../../components/NavBar/NavBar";
 
 export default function Home() {
   const firstname = "Pierre";
 
   return (
     <main>
+      <NavBar />
       <PageHeader
         title={firstname ? `Bienvenue, ${firstname}` : "Bienvenue"}
         subtitle="Découvrez les dernières idées de votre entreprise"
