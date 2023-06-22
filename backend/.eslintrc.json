@@ -9,6 +9,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
+  "root": true,
   "rules": {
     "no-console": "off",
     "no-restricted-syntax": [

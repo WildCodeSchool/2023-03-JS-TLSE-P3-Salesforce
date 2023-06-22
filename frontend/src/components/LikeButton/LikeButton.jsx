@@ -23,11 +23,11 @@ export default function LikeButton({
     setIsHovered(!isHovered);
   };
 
-  let iconClassName = "fi fi-rr-heart";
+  let likeIcon = "fi fi-rr-heart";
   if (likeActive) {
-    iconClassName = "fi fi-sr-heart";
+    likeIcon = "fi fi-sr-heart";
     if (isHovered) {
-      iconClassName = "fi fi-sr-heart-crack";
+      likeIcon = "fi fi-sr-heart-crack";
     }
   }
 
@@ -40,10 +40,8 @@ export default function LikeButton({
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
       >
-        <span className="idea-like-count">{likeCount} </span>
-        <span className="idea-like-icon">
-          <i className={iconClassName} />
-        </span>
+        {likeCount}
+        <i className={likeIcon} />
       </button>
     </div>
   );
