@@ -1,5 +1,5 @@
 import PageHeader from "../components/PageHeader/PageHeader";
-import IdeaCard from "../components/IdeaCard/IdeaCard";
+// import IdeaCard from "../components/IdeaCard/IdeaCard";
 import HorizontalTabs from "../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../components/NavBar/NavBar";
 
@@ -23,7 +23,7 @@ export default function Home() {
             <li>Groupes</li>
           </HorizontalTabs>
         </PageHeader>
-        <IdeaCard />
+        {/* <IdeaCard /> */}
       </main>
     </>
   );

@@ -5,21 +5,22 @@ import BoardComponentNavBar from "../BoardSubNavBar/BoardComponentNavBar";
 import IdeaSubNavBar from "../IdeaSubNavBar/IdeaComponentNavBar";
 // eslint-disable-next-line import/no-unresolved
 import TeamSubNavBar from "../TeamSubNavBar/TeamSubNavbar";
-import BoardComponentMenuBurger from "../BoardComponentMenuBurger/BoardComponentMenuBurger";
-import IdeaMenuBurger from "../IdeaMenuBurger/IdeaMenuBurger";
+// import BoardComponentMenuBurger from "../BoardComponentMenuBurger/BoardComponentMenuBurger";
+// import IdeaMenuBurger from "../IdeaMenuBurger/IdeaMenuBurger";
 
 export default function NavBar() {
-  const [isSubNavBarArrayOpen, setIsSubNavBarArrayOpen] = useState(false);
+  const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
+    useState(false);
   const [isSubNavBarIdeaOpen, setIsSubNavBarIdeaOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
-  const [showSubMenuBoard, setShowSubMenuBoard] = useState(false);
+  const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
   const [showSubMenuIdea, setShowSubMenuIdea] = useState(false);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
   function openNavBarArray() {
-    setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
+    setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
     if (isSubNavBarIdeaOpen === true) {
       setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
     }
@@ -28,23 +29,23 @@ export default function NavBar() {
   /* au click, ouvre ou ferme la subnavbar Idea et ferme la subnavbar tableau si elle est ouverte */
   function openNavBarIdea() {
     setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
-    if (isSubNavBarArrayOpen === true) {
-      setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
+    if (isSubNavBarWorkspaceOpen === true) {
+      setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
     }
   }
 
   /* au click, ferme les navbar pouvant être ouvertes ailleurs */
   function closeSubNavBar() {
-    if (isSubNavBarArrayOpen === true) {
-      setIsSubNavBarArrayOpen(!isSubNavBarArrayOpen);
+    if (isSubNavBarWorkspaceOpen === true) {
+      setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
     } else if (isSubNavBarIdeaOpen === true) {
       setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
     }
   }
 
   return (
-    <>
-      <div className="global-nav-bar">
+    <div className="global-nav-bar">
+      <nav>
         <div className="logo-company-nav-bar">
           <img
             src="/src/public/assets/logo/Logo-default.png"
@@ -112,189 +113,185 @@ export default function NavBar() {
           </div>
           {/* ternaire pour faire apparaitre le sous menu des tableaux en fonction du state */}
         </div>
-        {isSubNavBarArrayOpen && (
-          <div className="first-sub-nav-bar">
-            <div>
-              <p className="title-sub-nav-bar">Tableaux</p>
-              <div className="nav-bar-button">
-                <i className="fi fi-rr-plus" />
-                <div className="text-board-component-nav-bar">
-                  <p className="title-board-component-nav-bar">
-                    Nouveau tableau
-                  </p>
-                </div>
+      </nav>
+      {isSubNavBarWorkspaceOpen && (
+        <div className="first-sub-nav-bar">
+          <div>
+            <p className="title-sub-nav-bar">Tableaux</p>
+            <div className="nav-bar-button">
+              <i className="fi fi-rr-plus" />
+              <div className="text-board-component-nav-bar">
+                <p className="title-board-component-nav-bar">Nouveau tableau</p>
               </div>
             </div>
-            <div>
-              <BoardComponentNavBar />
-              <BoardComponentNavBar />
-              <BoardComponentNavBar />
-            </div>
           </div>
-        )}
-        {/* ternaire pour faire apparaitre le sous menu des idées en fonction du state */}
-        {isSubNavBarIdeaOpen && (
-          <div className="first-sub-nav-bar">
-            <div>
-              <p className="title-sub-nav-bar">Idées</p>
-              <div className="nav-bar-button">
-                <i className="fi fi-rr-plus" />
-                <div className="text-board-component-nav-bar">
-                  <p className="title-board-component-nav-bar">Nouvelle idée</p>
-                </div>
+          <div>
+            <BoardComponentNavBar />
+            <BoardComponentNavBar />
+            <BoardComponentNavBar />
+          </div>
+        </div>
+      )}
+      {/* ternaire pour faire apparaitre le sous menu des idées en fonction du state */}
+      {isSubNavBarIdeaOpen && (
+        <div className="first-sub-nav-bar">
+          <div>
+            <p className="title-sub-nav-bar">Idées</p>
+            <div className="nav-bar-button">
+              <i className="fi fi-rr-plus" />
+              <div className="text-board-component-nav-bar">
+                <p className="title-board-component-nav-bar">Nouvelle idée</p>
               </div>
             </div>
-            <div>
-              <IdeaSubNavBar />
-              <IdeaSubNavBar />
-              <IdeaSubNavBar />
-            </div>
           </div>
-        )}
-      </div>
+          <div>
+            <IdeaSubNavBar />
+            <IdeaSubNavBar />
+            <IdeaSubNavBar />
+          </div>
+        </div>
+      )}
       {showMenu && (
         <div id="nav-links">
           <div className="main-part-nav-bar-menu-burger">
-            <div className="logo-icon-and-mentionslegales-menu-burger">
-              <div className="logo-and-icon-menu-burger">
-                <div className="logo-company-menu-burger">
-                  <img
-                    src="/src/public/assets/logo/Logo-default.png"
-                    alt="logo default company"
-                  />
-                </div>
-                <div className="part-menu-burger">
-                  <div className="icon-and-text-part-menu-burger">
-                    <div className="icon-nav-bar">
-                      <button type="button" className="active">
-                        <i className="fi fi-rr-home" />
-                      </button>
-                    </div>
-                    <p> Accueil</p>
+            <div className="top">
+              <div className="logo">
+                <img
+                  src="/src/public/assets/logo/Logo-default.png"
+                  alt="logo default company"
+                />
+              </div>
+              <div className="content">
+                <div className="link">
+                  <div className="text">
+                    <i className="fi fi-rr-home" />
+                    <p>Accueil</p>
                   </div>
-                  <p />
                 </div>
-                <div className="part-menu-burger">
-                  <div className="icon-and-text-part-menu-burger">
-                    <div className="icon-nav-bar">
-                      <button type="button">
-                        <i className="fi fi-rr-users" />
-                      </button>
-                    </div>
-                    <p>Équipes</p>
-                  </div>
+                <div
+                  className={`link-with-sub-links ${
+                    showSubMenuTeam ? "active" : ""
+                  }`}
+                >
                   <div
-                    className="icon-nav-bar"
+                    className="link"
                     onClick={() => setShowSubMenuTeam(!showSubMenuTeam)}
                     onKeyDown={() => {}}
                     role="button"
                     tabIndex="0"
                   >
-                    <button type="button">
-                      <i className="fi fi-rr-angle-small-down" />
-                    </button>
+                    <div className="text">
+                      <i className="fi fi-rr-users" />
+                      <p>Équipes</p>
+                    </div>
+                    <div className="arrow">
+                      <i
+                        className={`fi fi-rr-angle-small-${
+                          showSubMenuTeam ? "up" : "down"
+                        }`}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div>
                   {showSubMenuTeam && (
-                    <div className="sub-part-menu-burger">
-                      <TeamSubNavBar />
-                      <TeamSubNavBar />
-                      <TeamSubNavBar />
+                    <div className="sub-links">
+                      <div className="sub-part-menu-burger">
+                        <TeamSubNavBar />
+                        <TeamSubNavBar />
+                        <TeamSubNavBar />
+                      </div>
                     </div>
                   )}
                 </div>
-                <div className="part-menu-burger">
-                  <div className="icon-and-text-part-menu-burger">
-                    <div className="icon-nav-bar">
-                      <button type="button">
-                        <i className="fi fi-rr-apps" />
-                      </button>
-                    </div>
-                    <p>Tableaux</p>
-                  </div>
+                <div
+                  className={`link-with-sub-links ${
+                    showSubMenuWorkspace ? "active" : ""
+                  }`}
+                >
                   <div
-                    className="icon-nav-bar"
-                    onClick={() => setShowSubMenuBoard(!showSubMenuBoard)}
+                    className="link"
+                    onClick={() =>
+                      setShowSubMenuWorkspace(!showSubMenuWorkspace)
+                    }
                     onKeyDown={() => {}}
                     role="button"
                     tabIndex="0"
                   >
-                    <button type="button">
-                      <i className="fi fi-rr-angle-small-down" />
-                    </button>
+                    <div className="text">
+                      <i className="fi fi-rr-apps" />
+                      <p>Tableaux</p>
+                    </div>
+                    <div className="arrow">
+                      <i
+                        className={`fi fi-rr-angle-small-${
+                          showSubMenuWorkspace ? "up" : "down"
+                        }`}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  {showSubMenuBoard && (
-                    <div className="sub-part-menu-burger">
-                      <BoardComponentMenuBurger />
-                      <BoardComponentMenuBurger />
-                      <BoardComponentMenuBurger />
+                  {showSubMenuWorkspace && (
+                    <div className="sub-links">
+                      <div className="sub-part-menu-burger">
+                        <TeamSubNavBar />
+                        <TeamSubNavBar />
+                        <TeamSubNavBar />
+                      </div>
                     </div>
                   )}
                 </div>
-                <div className="part-menu-burger">
-                  <div className="icon-and-text-part-menu-burger">
-                    <div className="icon-nav-bar">
-                      <button type="button">
-                        <i className="fi fi-rr-bulb" />
-                      </button>
-                    </div>
-                    <p>Idées</p>
-                  </div>
+                <div
+                  className={`link-with-sub-links ${
+                    showSubMenuIdea ? "active" : ""
+                  }`}
+                >
                   <div
-                    className="icon-nav-bar"
+                    className="link"
                     onClick={() => setShowSubMenuIdea(!showSubMenuIdea)}
                     onKeyDown={() => {}}
                     role="button"
                     tabIndex="0"
                   >
-                    <button type="button">
-                      <i className="fi fi-rr-angle-small-down" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-              {showSubMenuIdea && (
-                <div className="sub-part-menu-burger">
-                  <IdeaMenuBurger />
-                  <IdeaMenuBurger />
-                  <IdeaMenuBurger />
-                </div>
-              )}
-              <div className="logo-and-icon-menu-burger">
-                <div className="part-menu-burger">
-                  <div className="icon-and-text-part-menu-burger">
-                    <div className="icon-nav-bar">
-                      <button type="button">
-                        <i className="fi fi-rr-interrogation" />
-                      </button>
+                    <div className="text">
+                      <i className="fi fi-rr-bulb" />
+                      <p>Idées</p>
                     </div>
-                    <p> Mentions légales</p>
+                    <div className="arrow">
+                      <i
+                        className={`fi fi-rr-angle-small-${
+                          showSubMenuIdea ? "up" : "down"
+                        }`}
+                      />
+                    </div>
                   </div>
-                  <p />
+                  {showSubMenuIdea && (
+                    <div className="sub-links">
+                      <div className="sub-part-menu-burger">
+                        <TeamSubNavBar />
+                        <TeamSubNavBar />
+                        <TeamSubNavBar />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-            <div className="profil-and-logosalesforce-menu-burger">
-              <div className="profil-menu-burger">
-                <div className="photo-profil-menu-burger">
-                  <img
-                    src="/src/public/assets/logo/Logo-default.png"
-                    alt="logo default company"
-                  />
-                </div>
-                <div className="text-profil-menu-burger">
-                  <p>Jean-Jacques Goldman</p>
-                  <p>jean-jacques.goldman@retraite.com</p>
+            <div className="bottom">
+              <div className="link">
+                <div className="text">
+                  <i className="fi fi-rr-interrogation" />
+                  <p>Mentions légales</p>
                 </div>
               </div>
-              <div className="logo-salesforce-menu-burger">
-                <img
-                  src="/src/public/assets/logo/logo_SalesForce_Theme_Clair.svg"
-                  alt="logo SalesForce"
-                />
+              <div className="profile">
+                <div className="avatar">
+                  <img
+                    src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80"
+                    alt="Profile"
+                  />
+                </div>
+                <div className="content">
+                  <p className="name">Jean-Jacques GOLDMAN</p>
+                  <p className="email">jeanjacquesgoldman@monentreprise.com</p>
+                </div>
               </div>
             </div>
           </div>
@@ -314,6 +311,9 @@ export default function NavBar() {
           </div>
         </div>
       )}
-    </>
+      {isSubNavBarWorkspaceOpen || isSubNavBarIdeaOpen || showMenu ? (
+        <div className="filter" onClick={closeSubNavBar} aria-hidden="true" />
+      ) : null}
+    </div>
   );
 }
