@@ -1,5 +1,4 @@
 import PageHeader from "../components/PageHeader/PageHeader";
-
 import IdeaCard from "../components/IdeaCard/IdeaCard";
 import HorizontalTabs from "../components/HorizontalTabs/HorizontalTabs";
 

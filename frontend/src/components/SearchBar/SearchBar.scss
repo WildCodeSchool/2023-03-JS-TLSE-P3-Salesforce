@@ -1,6 +1,9 @@
 @use "../../styles/typography" as *;
 .search-component {
   width: min-content;
+  height: 40vh;
+  display: flex;
+  flex-direction: column;
 }
 .search-bar {
   display: flex;

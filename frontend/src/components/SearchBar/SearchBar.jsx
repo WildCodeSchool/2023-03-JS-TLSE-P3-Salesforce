@@ -1,49 +1,74 @@
 import { useState } from "react";
 import "./SearchBar.scss";
 
+// const availableNames = [
+//   "Alice",
+//   "Bob",
+//   "Charlie",
+//   "David",
+//   "Eve",
+//   "Frank",
+//   "Grace",
+//   "Henry",
+//   "Isabella",
+//   "Jack",
+//   "Katherine",
+//   "Liam",
+//   "Mia",
+//   "Noah",
+//   "Olivia",
+//   "Patrick",
+//   "Quinn",
+//   "Ryan",
+//   "Sophia",
+//   "Thomas",
+// ];
 const availableNames = [
-  "Alice",
-  "Bob",
-  "Charlie",
-  "David",
-  "Eve",
-  "Frank",
-  "Grace",
-  "Henry",
-  "Isabella",
-  "Jack",
-  "Katherine",
-  "Liam",
-  "Mia",
-  "Noah",
-  "Olivia",
-  "Patrick",
-  "Quinn",
-  "Ryan",
-  "Sophia",
-  "Thomas",
+  { id: 1, name: "Sophia" },
+  { id: 2, name: "Charlie" },
+  { id: 3, name: "David" },
+  { id: 4, name: "Frank" },
+  { id: 5, name: "Grace" },
+  { id: 6, name: "Alice" },
+  { id: 7, name: "Eve" },
+  { id: 8, name: "Henry" },
+  { id: 9, name: "Isabella" },
+  { id: 10, name: "Jack" },
+  { id: 11, name: "Bob" },
+  { id: 12, name: "Olivia" },
+  { id: 13, name: "Katherine" },
+  { id: 14, name: "Ryan" },
+  { id: 15, name: "Liam" },
+  { id: 16, name: "Mia" },
+  { id: 17, name: "Noah" },
+  { id: 18, name: "Thomas" },
+  { id: 19, name: "Patrick" },
+  { id: 20, name: "Quinn" },
 ];
 function SearchBar() {
   // state data
-  const [value, setValue] = useState();
+  const [value, setValue] = useState([]);
   const [dataArray, setDataArray] = useState([]);
 
   // instructions
-  function HandleClear() {
-    setValue([]);
-    setDataArray([]);
-  }
   function HandleChange(event) {
     setValue(event.target.value);
   }
+  function HandleClear() {
+    setValue([]);
+    console.log(dataArray);
+    dataArray.length ? setDataArray([]) : setDataArray(availableNames);
+  }
   function HandleSearch() {
-    const sortedList = availableNames.sort((a, b) => a.localeCompare(b));
+    const sortedList = [...dataArray].sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+    console.log(sortedList);
     const results = sortedList.filter((name) =>
-      name.toLowerCase().includes(value.toLowerCase())
+      name.name.toLowerCase().includes(value.toLowerCase())
     );
     setDataArray(results);
   }
-
   // render
   return (
     <div className="search-component">
@@ -52,6 +77,7 @@ function SearchBar() {
           className="search-input"
           type="text"
           value={value}
+          onClick={HandleClear}
           onChange={HandleChange}
           placeholder="Rechercher"
         />
@@ -65,8 +91,8 @@ function SearchBar() {
       <ul className="search-result">
         {dataArray.map((el) => {
           return (
-            <li className="line-result" key="el">
-              {el}
+            <li className="line-result" key={el.id}>
+              {el.name}
             </li>
           );
         })}
@@ -74,4 +100,17 @@ function SearchBar() {
     </div>
   );
 }
+
 export default SearchBar;
+
+// function HandleChange(event) {
+//   setValue(event.target.value);
+// }
+// function HandleSearch(event) {
+//   setValue(event.target.value);
+//   // const sortedList = availableNames.sort((a, b) => a.localeCompare(b));
+//   const results = dataArray.filter((el) => {
+//     el.name.toLowerCase().includes(value.toLowerCase());
+//   });
+//   setDataArray(results);
+// }
