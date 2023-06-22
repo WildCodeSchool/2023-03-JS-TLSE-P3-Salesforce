@@ -1,8 +1,20 @@
 .idea-cards-list {
+  border-top: 1px solid var(--grey-200);
+  margin-top: 1rem;
+  padding-top: 2rem;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start;
-  align-content: flex-start;
   gap: 24px;
-  justify-content: center;
+  & > * {
+    flex-basis: 100%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .idea-cards-list {
+    & > * {
+      flex-basis: calc(100% / 3 - (24px / 3) * 2);
+    }
+  }
 }

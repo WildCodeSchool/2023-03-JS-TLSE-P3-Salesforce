@@ -14,6 +14,7 @@ body {
   top: 0;
   left: 0;
   width: 100vw;
+  z-index: 1;
 
   .filter {
     position: fixed;
@@ -25,7 +26,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1;
+    z-index: 2;
     animation: show-filter 0.5s linear;
   }
   nav {
@@ -68,7 +69,7 @@ body {
     position: fixed;
     height: 100dvh;
     height: 100vh;
-    z-index: 2;
+    z-index: 3;
 
     width: 100vw;
     top: 0px;
@@ -234,6 +235,8 @@ body {
 
         button {
           display: flex;
+          justify-content: center;
+          align-items: center;
           flex-direction: column;
           color: var(--white);
           border-radius: 12px;
@@ -267,7 +270,7 @@ body {
     nav {
       padding: 0;
       height: initial;
-      z-index: 3;
+      z-index: 4;
       width: initial;
 
       .logo-company-nav-bar {
@@ -297,6 +300,12 @@ body {
           background-color: var(--white);
           border-radius: 12px;
           margin-bottom: 15px;
+          padding: 0.5rem;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
         }
 
         .icon-nav-bar {
@@ -319,8 +328,15 @@ body {
             border: none;
             background-color: transparent;
             i {
-              font-size: 18px;
+              &:before {
+                line-height: unset;
+                font-size: 18px;
+
+                display: inline-block;
+                vertical-align: middle;
+              }
             }
+
             &:hover {
               background-color: var(--primary-700);
             }
@@ -350,7 +366,7 @@ body {
       flex-direction: column;
       align-items: stretch;
       gap: 1rem;
-      z-index: 2;
+      z-index: 3;
 
       animation: show-sub-nav-container 0.5s ease-in-out;
       .title-sub-nav-bar {
