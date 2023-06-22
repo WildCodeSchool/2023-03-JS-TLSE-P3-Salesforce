@@ -1,34 +1,27 @@
 import "./NavBar.scss";
 import React, { useState } from "react";
-// import { NavLink } from "react-router-dom";
-import BoardComponentNavBar from "../BoardSubNavBar/BoardComponentNavBar";
-import IdeaSubNavBar from "../IdeaSubNavBar/IdeaComponentNavBar";
-// eslint-disable-next-line import/no-unresolved
-import TeamSubNavBar from "../TeamSubNavBar/TeamSubNavbar";
-// import BoardComponentMenuBurger from "../BoardComponentMenuBurger/BoardComponentMenuBurger";
-// import IdeaMenuBurger from "../IdeaMenuBurger/IdeaMenuBurger";
+import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
 
 export default function NavBar() {
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
-  const [isSubNavBarIdeaOpen, setIsSubNavBarIdeaOpen] = useState(false);
+  const [isSubNavBarTeamOpen, setIsSubNavBarTeamOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
-  const [showSubMenuIdea, setShowSubMenuIdea] = useState(false);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
-  function openNavBarArray() {
+  function openNavBarWorkspace() {
     setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
-    if (isSubNavBarIdeaOpen === true) {
-      setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
+    if (isSubNavBarTeamOpen === true) {
+      setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
     }
   }
 
   /* au click, ouvre ou ferme la subnavbar Idea et ferme la subnavbar tableau si elle est ouverte */
-  function openNavBarIdea() {
-    setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
+  function openNavBarTeam() {
+    setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
     if (isSubNavBarWorkspaceOpen === true) {
       setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
     }
@@ -38,8 +31,8 @@ export default function NavBar() {
   function closeSubNavBar() {
     if (isSubNavBarWorkspaceOpen === true) {
       setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
-    } else if (isSubNavBarIdeaOpen === true) {
-      setIsSubNavBarIdeaOpen(!isSubNavBarIdeaOpen);
+    } else if (isSubNavBarTeamOpen === true) {
+      setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
     }
   }
 
@@ -76,22 +69,18 @@ export default function NavBar() {
               >
                 <i className="fi fi-rr-home" />
               </button>
-              <button type="button" onClick={() => closeSubNavBar()}>
+              <button type="button" onClick={() => openNavBarTeam()}>
                 <i className="fi fi-rr-users" />
               </button>
               <button
                 type="button"
                 // au click, on fait apparaitre le sous-menu
-                onClick={() => openNavBarIdea()}
-              >
-                <i className="fi fi-rr-bulb" />
-              </button>
-              <button
-                type="button"
-                // au click, on fait apparaitre le sous-menu
-                onClick={() => openNavBarArray()}
+                onClick={() => openNavBarWorkspace()}
               >
                 <i className="fi fi-rr-apps" />
+              </button>
+              <button type="button">
+                <i className="fi fi-rr-bulb" />
               </button>
               <button type="button" onClick={() => closeSubNavBar()}>
                 <i className="fi fi-rr-settings-sliders" />
@@ -116,38 +105,34 @@ export default function NavBar() {
       </nav>
       {isSubNavBarWorkspaceOpen && (
         <div className="first-sub-nav-bar">
-          <div>
-            <p className="title-sub-nav-bar">Tableaux</p>
-            <div className="nav-bar-button">
-              <i className="fi fi-rr-plus" />
-              <div className="text-board-component-nav-bar">
-                <p className="title-board-component-nav-bar">Nouveau tableau</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <BoardComponentNavBar />
-            <BoardComponentNavBar />
-            <BoardComponentNavBar />
+          <p className="title-sub-nav-bar">Tableaux</p>
+          <button className="nav-bar-button" type="button">
+            <i className="fi fi-rr-plus" />
+            Nouveau tableau
+          </button>
+          <div className="links-sub-nav-bar">
+            <SubNavBarLink title="Direction" subtitle="6 personnes" />
+            <SubNavBarLink
+              title="Ressources Humaines"
+              subtitle="14 personnes"
+            />
           </div>
         </div>
       )}
-      {/* ternaire pour faire apparaitre le sous menu des idées en fonction du state */}
-      {isSubNavBarIdeaOpen && (
+      {/* ternaire pour faire apparaitre le sous menu des équipes en fonction du state */}
+      {isSubNavBarTeamOpen && (
         <div className="first-sub-nav-bar">
-          <div>
-            <p className="title-sub-nav-bar">Idées</p>
-            <div className="nav-bar-button">
-              <i className="fi fi-rr-plus" />
-              <div className="text-board-component-nav-bar">
-                <p className="title-board-component-nav-bar">Nouvelle idée</p>
-              </div>
-            </div>
-          </div>
-          <div>
-            <IdeaSubNavBar />
-            <IdeaSubNavBar />
-            <IdeaSubNavBar />
+          <p className="title-sub-nav-bar">Équipes</p>
+          <button className="nav-bar-button" type="button">
+            <i className="fi fi-rr-plus" />
+            Nouvelle équipe
+          </button>
+          <div className="links-sub-nav-bar">
+            <SubNavBarLink title="Direction" subtitle="6 personnes" />
+            <SubNavBarLink
+              title="Ressources Humaines"
+              subtitle="14 personnes"
+            />
           </div>
         </div>
       )}
@@ -195,9 +180,14 @@ export default function NavBar() {
                   {showSubMenuTeam && (
                     <div className="sub-links">
                       <div className="sub-part-menu-burger">
-                        <TeamSubNavBar />
-                        <TeamSubNavBar />
-                        <TeamSubNavBar />
+                        <SubNavBarLink
+                          title="Direction"
+                          subtitle="6 personnes"
+                        />
+                        <SubNavBarLink
+                          title="Ressources Humaines"
+                          subtitle="14 personnes"
+                        />
                       </div>
                     </div>
                   )}
@@ -231,46 +221,23 @@ export default function NavBar() {
                   {showSubMenuWorkspace && (
                     <div className="sub-links">
                       <div className="sub-part-menu-burger">
-                        <TeamSubNavBar />
-                        <TeamSubNavBar />
-                        <TeamSubNavBar />
+                        <SubNavBarLink
+                          title="Refonte des extranets"
+                          subtitle="Pierre DUPONT"
+                        />
+                        <SubNavBarLink
+                          title="Bien être au travail"
+                          subtitle="Direction"
+                        />
                       </div>
                     </div>
                   )}
                 </div>
-                <div
-                  className={`link-with-sub-links ${
-                    showSubMenuIdea ? "active" : ""
-                  }`}
-                >
-                  <div
-                    className="link"
-                    onClick={() => setShowSubMenuIdea(!showSubMenuIdea)}
-                    onKeyDown={() => {}}
-                    role="button"
-                    tabIndex="0"
-                  >
-                    <div className="text">
-                      <i className="fi fi-rr-bulb" />
-                      <p>Idées</p>
-                    </div>
-                    <div className="arrow">
-                      <i
-                        className={`fi fi-rr-angle-small-${
-                          showSubMenuIdea ? "up" : "down"
-                        }`}
-                      />
-                    </div>
+                <div className="link">
+                  <div className="text">
+                    <i className="fi fi-rr-bulb" />
+                    <p>Idées</p>
                   </div>
-                  {showSubMenuIdea && (
-                    <div className="sub-links">
-                      <div className="sub-part-menu-burger">
-                        <TeamSubNavBar />
-                        <TeamSubNavBar />
-                        <TeamSubNavBar />
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
             </div>
@@ -293,6 +260,17 @@ export default function NavBar() {
                   <p className="email">jeanjacquesgoldman@monentreprise.com</p>
                 </div>
               </div>
+              <a
+                className="salesforce-logo"
+                href="https://www.salesforce.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/src/public/assets/logo/logo_SalesForce_Theme_Clair.svg"
+                  alt=""
+                />
+              </a>
             </div>
           </div>
 
@@ -311,7 +289,7 @@ export default function NavBar() {
           </div>
         </div>
       )}
-      {isSubNavBarWorkspaceOpen || isSubNavBarIdeaOpen || showMenu ? (
+      {isSubNavBarWorkspaceOpen || isSubNavBarTeamOpen || showMenu ? (
         <div className="filter" onClick={closeSubNavBar} aria-hidden="true" />
       ) : null}
     </div>

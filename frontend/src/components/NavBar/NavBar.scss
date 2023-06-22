@@ -1,7 +1,11 @@
-@use "../../styles/colors" as *;
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
-@use "../../styles/button" as *;
+
+body {
+  main {
+    margin-top: 72px;
+  }
+}
 
 .global-nav-bar {
   display: flex;
@@ -131,7 +135,7 @@
           }
         }
 
-        .content {
+        & > .content {
           display: flex;
           padding: 0.5rem;
           flex-direction: column;
@@ -143,83 +147,14 @@
             align-self: stretch;
             display: flex;
             flex-direction: column;
+            border: 1px solid transparent;
+            border-radius: 0.75rem;
+            overflow: hidden;
 
             &.active {
+              border: 1px solid var(--primary-600);
               .link {
-                border-radius: 0.5rem;
                 background-color: var(--primary-600);
-              }
-            }
-          }
-
-          .logo-and-icon-menu-burger {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            .logo-company-menu-burger {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 48px;
-              height: 48px;
-              @include shadow("xs");
-              background-color: var(--white);
-              border-radius: 8px;
-              margin-left: 16px;
-              margin-top: 56px;
-              margin-bottom: 20px;
-              img {
-                width: 20px;
-                height: 20px;
-              }
-            }
-            .part-menu-burger {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              padding: 4px 8px 8px 16px;
-              border-radius: 12px;
-              &:hover {
-                background-color: var(--primary-500);
-              }
-              .icon-and-text-part-menu-burger {
-                display: flex;
-                align-items: center;
-                color: var(--primary-100);
-              }
-              .icon-nav-bar {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-
-                button {
-                  display: flex;
-                  flex-direction: column;
-                  padding: 8px;
-                  color: var(--primary-200);
-                  border-radius: 12px;
-                  border: none;
-                  background-color: transparent;
-
-                  i {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 18px;
-                  }
-                }
-              }
-            }
-            .sub-part-menu-burger {
-              background-color: var(--primary-700);
-              display: flex;
-              flex-direction: column;
-              align-items: left;
-              padding: 0px 8px 8px 0px;
-              .title-sub-nav-bar {
-                color: var(--primary-100);
-                @include text(md);
               }
             }
           }
@@ -277,6 +212,11 @@
             }
           }
         }
+        .salesforce-logo {
+          img {
+            width: 4.5rem;
+          }
+        }
       }
     }
     .close-menu-burger {
@@ -312,6 +252,7 @@
   body {
     main {
       margin-left: 100px;
+      margin-top: 0.75rem;
     }
   }
   .global-nav-bar {
@@ -404,35 +345,56 @@
       height: 100vh;
       width: 250px;
       display: flex;
+      width: 17rem;
+      padding: 2.25rem 1rem;
       flex-direction: column;
-      align-items: left;
-      padding: 36px 16px;
+      align-items: stretch;
+      gap: 1rem;
       z-index: 2;
 
       animation: show-sub-nav-container 0.5s ease-in-out;
       .title-sub-nav-bar {
         color: var(--primary-100);
-        @include text(md);
+        @include text("md", $weight: 600);
       }
       .nav-bar-button {
         background-color: var(--primary-600);
-        border-radius: 12px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
-        padding: 7px 15px 7px 5px;
-        margin: 10px 0px;
+        padding: 0.625rem 1rem;
         color: var(--primary-100);
-        width: 100%;
+        border: none;
+        @include text("sm");
+
+        display: flex;
+        height: 2.29188rem;
+        padding: 0.625rem 1rem;
+        align-items: center;
+        gap: 0.5rem;
+        flex-shrink: 0;
+        align-self: stretch;
+        cursor: pointer;
 
         i {
           padding: 7px;
           color: var(--primary-200);
           border-radius: 12px;
         }
-        .text-board-component-nav-bar {
-          .title-board-component-nav-bar {
-            @include text(sm);
-          }
+        &:hover {
+          background-color: var(--primary-800);
+        }
+      }
+
+      .links-sub-nav-bar {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        i:before {
+          line-height: unset;
+          font-size: 1rem;
+          display: inline-block;
+          vertical-align: middle;
         }
       }
     }
