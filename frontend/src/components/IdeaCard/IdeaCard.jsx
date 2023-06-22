@@ -3,6 +3,7 @@ import LikeButton from "../LikeButton/LikeButton";
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 import CommentButton from "../CommentButton/CommentButton";
 import "./IdeaCard.scss";
+import Badge from "../Badge/Badge";
 
 function IdeaCard() {
   const [commentCount, setCommentCount] = useState(0);
@@ -13,7 +14,7 @@ function IdeaCard() {
   const [showSubmenu, setShowSubmenu] = useState(false);
 
   return (
-    <div>
+    <div className="idea-card-main">
       {/* creation de la carte de l'idée */}
       <div className="idea-card">
         <div className="header-card">
@@ -27,9 +28,15 @@ function IdeaCard() {
         <div>
           {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}
           <div className="content-idea">
-            <div className="labels-idea">
-              <span className="label-idea1">Direction </span>
-              <span className="label-idea2">Comptabilité </span>
+            <div className="badges-idea">
+              {/* Afficher les composants de catégorie uniquement si une catégorie est sélectionnée */}
+              <Badge color="green">
+                <i className="dot" /> En cours{" "}
+                <i className="fi fi-rr-cross-small" />
+              </Badge>
+              <Badge color="red">RH</Badge>
+              <Badge color="green">Marketing</Badge>
+              <Badge color="blue">Comptabilité</Badge>
             </div>
 
             <p className="idea-description">

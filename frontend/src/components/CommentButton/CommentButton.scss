@@ -1,22 +1,21 @@
-.idea-comment {
-  justify-content: flex-end;
-  align-items: center;
-  padding: 12px 20px;
-  gap: 20px;
-  width: 506.67px;
-  height: 44px;
+@use "../../styles/typography" as *;
 
-  /* grey/grey | 200 */
-
-  border-top: 1px solid #e2e8f0;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 2;
-  align-self: stretch;
-  flex-grow: 0;
+//
+i:before {
+  line-height: unset;
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: middle;
 }
+
 .idea-comment-icon {
-  border: 0;
+  color: var(--grey-700);
+  border: none;
+  background-color: var(--white);
+}
+.idea-comment-count {
+  font-size: 14px;
+  line-height: 20px;
+  @include text("sm", $weight: 600);
+  color: var(--grey-700);
 }
