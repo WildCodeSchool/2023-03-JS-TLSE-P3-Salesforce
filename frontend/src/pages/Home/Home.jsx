@@ -1,7 +1,8 @@
-import PageHeader from "../components/PageHeader/PageHeader";
-import IdeaCard from "../components/IdeaCard/IdeaCard";
-import "../components/IdeaCard/IdeaCard.scss";
-import HorizontalTabs from "../components/HorizontalTabs/HorizontalTabs";
+import "../../components/IdeaCard/IdeaCard.scss";
+import "./Home.scss";
+import PageHeader from "../../components/PageHeader/PageHeader";
+import IdeaCard from "../../components/IdeaCard/IdeaCard";
+import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 
 export default function Home() {
   const firstname = "Pierre";
@@ -21,9 +22,19 @@ export default function Home() {
           <li>Groupes</li>
         </HorizontalTabs>
       </PageHeader>
-      <IdeaCard />
-      <IdeaCard />
-      <IdeaCard />
+      <div className="idea-cards-list">
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+        <IdeaCard />
+      </div>
     </main>
   );
 }
