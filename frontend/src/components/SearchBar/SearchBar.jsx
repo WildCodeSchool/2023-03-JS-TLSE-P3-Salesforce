@@ -1,28 +1,6 @@
 import { useState } from "react";
 import "./SearchBar.scss";
 
-// const availableNames = [
-//   "Alice",
-//   "Bob",
-//   "Charlie",
-//   "David",
-//   "Eve",
-//   "Frank",
-//   "Grace",
-//   "Henry",
-//   "Isabella",
-//   "Jack",
-//   "Katherine",
-//   "Liam",
-//   "Mia",
-//   "Noah",
-//   "Olivia",
-//   "Patrick",
-//   "Quinn",
-//   "Ryan",
-//   "Sophia",
-//   "Thomas",
-// ];
 const availableNames = [
   { id: 1, name: "Sophia" },
   { id: 2, name: "Charlie" },
@@ -56,14 +34,17 @@ function SearchBar() {
   }
   function HandleClear() {
     setValue([]);
-    console.log(dataArray);
-    dataArray.length ? setDataArray([]) : setDataArray(availableNames);
+    if (dataArray.length) {
+      setDataArray([]);
+    } else {
+      setDataArray(availableNames);
+    }
   }
   function HandleSearch() {
     const sortedList = [...dataArray].sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    console.log(sortedList);
+
     const results = sortedList.filter((name) =>
       name.name.toLowerCase().includes(value.toLowerCase())
     );
@@ -100,17 +81,4 @@ function SearchBar() {
     </div>
   );
 }
-
 export default SearchBar;
-
-// function HandleChange(event) {
-//   setValue(event.target.value);
-// }
-// function HandleSearch(event) {
-//   setValue(event.target.value);
-//   // const sortedList = availableNames.sort((a, b) => a.localeCompare(b));
-//   const results = dataArray.filter((el) => {
-//     el.name.toLowerCase().includes(value.toLowerCase());
-//   });
-//   setDataArray(results);
-// }

@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import { useState } from "react";
 import "./SortButton.scss";
 
@@ -34,7 +33,6 @@ function SortButton() {
       a.name.localeCompare(b.name)
     );
     setResults(sortedList);
-    console.log(sortedList);
   }
   // render
   return (

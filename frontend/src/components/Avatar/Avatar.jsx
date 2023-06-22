@@ -1,20 +1,22 @@
-import React, { useState } from "react";
 import image from "./portrait.jpg";
 import "./Avatar.scss";
 
 function Avatar() {
   // state
-
   // instructions
   function HandleMenu() {
-    console.log("Hello");
     // route to page: mon compte
   }
-
-  //render
+  // render
   return (
     <div className="vignette">
-      <img className="vignette-img" src={image} onClick={HandleMenu}></img>
+      <option
+        className="vignette-img"
+        alt="Avatar"
+        src={image}
+        onClick={HandleMenu}
+        onKeyDown={HandleMenu}
+      />
     </div>
   );
 }
