@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import "./styles/reset.css";
 import "./styles/index.scss";
 
-import defineColorTheme from "../utils";
+import { defineColorTheme } from "../utils";
 
 const colorTheme = "indigo";
 

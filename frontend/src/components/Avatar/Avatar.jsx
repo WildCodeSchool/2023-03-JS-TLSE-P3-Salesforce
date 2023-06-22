@@ -4,18 +4,18 @@ import "./Avatar.scss";
 function Avatar() {
   // state
   // instructions
-  function HandleMenu() {
+  function handleMenu() {
     // route to page: mon compte
   }
   // render
   return (
     <div className="vignette">
       <option
-        className="vignette-img"
+        className="img"
         alt="Avatar"
         src={image}
-        onClick={HandleMenu}
-        onKeyDown={HandleMenu}
+        onClick={handleMenu}
+        onKeyDown={handleMenu}
       />
     </div>
   );
