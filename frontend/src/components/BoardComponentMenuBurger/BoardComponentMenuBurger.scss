@@ -1,0 +1,32 @@
+@use "../../styles/shadows" as *;
+@use "../../styles/typography" as *;
+
+.global-team-component-nav-bar {
+  background-color: var(--primary-800);
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0px;
+  margin: 8px 0px 0px 8px;
+  .logo-and-text-component-nav-bar {
+    display: flex;
+    align-items: center;
+  }
+
+  i {
+    padding: 7px;
+    margin-right: 8px;
+    color: var(--primary-200);
+    border-radius: 12px;
+  }
+
+  .title-team-component-nav-bar {
+    color: var(--primary-100);
+    @include text(sm);
+  }
+  .subtitle-team-component-nav-bar {
+    color: var(--primary-100);
+    @include text(xs);
+  }
+}

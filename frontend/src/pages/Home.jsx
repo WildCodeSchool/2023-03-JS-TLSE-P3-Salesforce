@@ -2,7 +2,6 @@ import PageHeader from "../components/PageHeader/PageHeader";
 import IdeaCard from "../components/IdeaCard/IdeaCard";
 import "../components/IdeaCard/IdeaCard.scss";
 import HorizontalTabs from "../components/HorizontalTabs/HorizontalTabs";
-import SearchBar from "../components/SearchBar/SearchBar";
 
 export default function Home() {
   const firstname = "Pierre";
@@ -25,7 +24,6 @@ export default function Home() {
       <IdeaCard />
       <IdeaCard />
       <IdeaCard />
-      <SearchBar />
     </main>
   );
 }
