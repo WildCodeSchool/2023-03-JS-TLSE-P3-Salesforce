@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `email` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `phone_number` VARCHAR(22) NULL,
-  `picture_url` VARCHAR(45) NULL,
+  `picture_url` LONGTEXT NULL,
   `is_salesforce_admin` TINYINT NOT NULL DEFAULT 0,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `color_id` INT NULL,
@@ -166,9 +166,9 @@ CREATE TABLE IF NOT EXISTS `comment` (
 ) ENGINE = InnoDB;
 
 -- CREATING LIKE TABLE
-DROP TABLE IF EXISTS `like`;
+DROP TABLE IF EXISTS `liked`;
 
-CREATE TABLE IF NOT EXISTS `like` (
+CREATE TABLE IF NOT EXISTS `liked` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `date` DATETIME NULL,
   `idea_id` INT NOT NULL,
@@ -322,11 +322,11 @@ ADD
 
 -- LIKE
 ALTER TABLE
-  `like`
+  `liked`
 ADD
-  CONSTRAINT `fk_like_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`),
+  CONSTRAINT `fk_liked_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`),
 ADD
-  CONSTRAINT `fk_like_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  CONSTRAINT `fk_liked_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 -- CATEGORY
 ALTER TABLE
@@ -510,7 +510,7 @@ VALUES
   );
 
 INSERT INTO
-  user ('firstname', 'lastname', 'email', 'password', 'phone_number', 'picture_url', 'is_salesforce_admin', 'creation_date', 'color_id', 'has_accepted_invitation')
+  `user` (`firstname`, `lastname`, `email`, `password`, `phone_number`, `picture_url`, `is_salesforce_admin`, `creation_date`, `color_id`, `has_accepted_invitation`)
 VALUES
   ('Guillaume', 'Cabernac', 'guigui12truite@me.com', 'admin123', '0478950000', 'https://unsplash.com/fr/photos/une-figurine-de-chat-assise-sur-une-chaise-Sv527La47lY', 0, '2023-06-21 15:37:12', 1, 1),
   ('Alice', 'Johnson', 'alice.johnson@example.com', 'qwerty', '+987654321', 'https://example.com/profile.jpg', 1, '2023-06-21 14:45:00', NULL, 1),
@@ -561,17 +561,17 @@ VALUES
     1
   );
 
-INSERT INTO company (`name`, `baseline`, `siret`, `type`, `sector`, `logo_url`, `creation_date`, `color_id`) 
+INSERT INTO `company` (`name`, `baseline`, `siret`, `type`, `sector`, `logo_url`, `creation_date`, `color_id`) 
 VALUES 
   ('ABC Corporation', 'Building a better future', '123456789', 'Public', 'Technology', 'https://example.com/logo1.png', '2022-01-15 09:30:00', 3),
-  ('XYZ Corporation', 'Innovating for a better tomorrow', '987654321', 'Private', 'Engineering', 'https://example.com/logo2.png', '2022-03-10 14:45:00', 2);
+  ('XYZ Corporation', 'Innovating for a better tomorrow', '987654321', 'Private', 'Engineering', 'https://example.com/logo2.png', '2022-03-10 14:45:00', 2),
   ('123 Industries', 'Quality products for every need', '9876543210', 'Private', 'Manufacturing', 'https://example.com/logo3.png', '2022-06-05 11:20:00', 4);
 
 
 -- CONTRACT
 
 INSERT INTO 
-  contract (`company_id`, `name`, `creation_date`, `expiration_date`)
+  `contract` (`company_id`, `name`, `creation_date`, `expiration_date`)
 VALUES 
 (1, 'Contract 1', '2023-06-21 12:00:00', '2024-06-21 12:00:00'),
 (2, 'Contract 2', '2023-06-21 13:30:00', NULL),
@@ -580,10 +580,10 @@ VALUES
 
 
 
---TEAM
+-- TEAM
 
 INSERT INTO 
-  team (`name`, `creation_date`, `is_private`, `picture_url`, `description`, `objective`, `status`, `user_id`)
+  `team` (`name`, `creation_date`, `is_private`, `picture_url`, `description`, `objective`, `status`, `user_id`)
 VALUES 
 ('La team1', '2023-06-21 12:00:00', 1, 'https://example.com/team1.jpg', 'Description of Team 1', 'Objective of Team 1', 'Active', 1),
 ('Team 2', '2023-06-21 13:30:00', 0, NULL, 'Description of Team 2', 'Objective of Team 2', 'Inactive', 2),
@@ -594,7 +594,7 @@ VALUES
 --  WORKSPACE 
 
 INSERT INTO 
-  workspace (`name`, `creation_date`, `update_date`, `description`, `is_private`, `team_id`)
+  `workspace` (`name`, `creation_date`, `update_date`, `description`, `is_private`, `team_id`)
 VALUES 
 ('Workspace 1', '2023-06-21 12:00:00', '2023-06-21 14:30:00', 'Description of Workspace 1', 1, 1),
 ('Workspace 2', '2023-06-21 13:30:00', '2023-06-21 16:45:00', 'Description of Workspace 2', 0, NULL),
@@ -605,7 +605,7 @@ VALUES
 --  IDEAS GROUP 
 
 INSERT INTO 
-  ideas_group (`name`, `workspace_id`, `x_coordinate`, `y_coordinate`)
+  `ideas_group` (`name`, `workspace_id`, `x_coordinate`, `y_coordinate`)
 VALUES 
 ('Group 1', 1, 0, 0),
 ('Group 2', 2, 50, 150),
@@ -616,7 +616,7 @@ VALUES
 --  IDEA 
 
 INSERT INTO 
-idea ('parent_idea_id', 'creation_date', 'title', 'description', 'status', 'x_coordinate', 'y_coordinate', 'color_id', 'company_id', 'user_id', 'workspace_id', 'ideas_group_id', 'team_id', 'file_id', 'is_in_board')
+`idea` (`parent_idea_id`, `creation_date`, `title`, `description`, `status`, `x_coordinate`, `y_coordinate`, `color_id`, `company_id`, `user_id`, `workspace_id`, `ideas_group_id`, `team_id`, `file_id`, `is_in_board`)
 VALUES
 (NULL, '2023-06-21 12:00:00', 'Idea 1', 'Description of Idea 1', 'published', 100, 200, 1, NULL, 1, 1, NULL, NULL, NULL, 1),
 (4, '2023-06-21 14:45:00', 'Idea 3', 'Description of Idea 3', 'published', 150, 250, 1, NULL, 1, 2, NULL, NULL, NULL, 0),
@@ -627,7 +627,7 @@ VALUES
 --  FILE 
 
 INSERT INTO 
-  file (`name`, `import_date`, `type`, `url`, `idea_id`, `user_id`)
+  `file` (`name`, `import_date`, `type`, `url`, `idea_id`, `user_id`)
 VALUES 
 ('File 1', '2023-06-21 12:00:00', 'pdf', 'https://example.com/file1.pdf', 1, 1),
 ('File 2', '2023-06-21 13:30:00', 'pdf', 'https://example.com/file2.pdf', 2, 2),
@@ -637,21 +637,21 @@ VALUES
 
 --  COMMENT 
 
-INSERT INTO comment (`content`, `creation_date`, `idea_id`, `user_id`)
+INSERT INTO `comment` (`content`, `creation_date`, `idea_id`, `user_id`)
 VALUES ('Comment 1', '2023-06-21 12:00:00', 1, 1),
 ('Comment 2', '2023-06-21 13:30:00', 2, 2),
 ('Comment 3', '2023-06-21 14:45:00', 3, 1),
 ('Comment 4', '2023-06-21 15:15:00', 4, 3),
 ('Comment 5', '2023-06-21 12:45:00', 3, 5),
-('Comment 6', '2023-06-21 20:15:00', 4, 1),
+('Comment 6', '2023-06-21 20:15:00', 4, 1);
 
 
 
 
---  LIKE
+-- LIKE
 
-INSERT INTO 
-  like (`date`, `idea_id`, `user_id`)
+INSERT INTO
+`liked` (`date`, `idea_id`, `user_id`)
 VALUES 
 ('2023-06-21 12:00:00', 1, 1),
 ('2023-06-21 13:30:00', 2, 2),
@@ -662,10 +662,10 @@ VALUES
 ('2023-06-21 14:45:00', 3, 6),
 ('2023-06-21 15:15:00', 4, 2);
 
---  CATEGORY 
+-- CATEGORY 
 
 INSERT INTO 
-  category (`name`, `color_id`, `company_id`)
+  `category` (`name`, `color_id`, `company_id`)
 VALUES 
 ('Category 1', 1, 1),
 ('Category 2', 2, 2),
@@ -686,7 +686,7 @@ VALUES
 
 
 INSERT INTO 
-team_has_user (`team_id`, `user_id`, `joining_date`, `is_favorite_team`)
+`team_has_user` (`team_id`, `user_id`, `joining_date`, `is_favorite_team`)
 VALUES 
 (1, 1, '2023-06-21 12:00:00', 1),
 (2, 2, '2023-06-21 13:30:00', 0),
@@ -698,7 +698,7 @@ VALUES
 
 
 INSERT INTO 
-category_has_idea (`category_id`, `idea_id`)
+`category_has_idea` (`category_id`, `idea_id`)
 VALUES 
 (1, 1),
 (2, 2),
@@ -709,7 +709,7 @@ VALUES
 --  USER HAS COMPANY 
 
 INSERT INTO 
-user_has_company (`user_id`, `company_id`, `biography`, `function`, `is_company_admin`)
+`user_has_company` (`user_id`, `company_id`, `biography`, `function`, `is_company_admin`)
 VALUES 
 (1, 1, 'Biography 1', 'Function 1', 1),
 (2, 2, 'Biography 2', 'Function 2', 0),
@@ -723,7 +723,7 @@ VALUES
 
 
 INSERT INTO 
-workspace_has_user (`workspace_id`, `user_id`, `is_favorite_workspace`)
+`workspace_has_user` (`workspace_id`, `user_id`, `is_favorite_workspace`)
 VALUES 
 (1, 1, 1),
 (2, 2, 0),
