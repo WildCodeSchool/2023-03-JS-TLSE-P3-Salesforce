@@ -1,0 +1,48 @@
+@use "../../styles/typography" as *;
+
+.sub-navbar-link {
+  display: flex;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  align-self: stretch;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--primary-800);
+  border-bottom: 1px solid var(--primary-600);
+
+  .icon {
+    i {
+      font-size: 1.25rem;
+      color: var(--primary-300);
+    }
+  }
+  .content {
+    color: var(--primary-200);
+    .title {
+      @include text("md", $weight: 600);
+    }
+    .subtitle {
+      @include text("sm");
+    }
+  }
+}
+
+.first-sub-nav-bar {
+  .sub-navbar-link {
+    border-radius: 8px;
+    border-bottom: none;
+    .icon {
+      i {
+        font-size: 1rem;
+      }
+    }
+    .content {
+      .title {
+        @include text("sm", $weight: 600);
+      }
+      .subtitle {
+        @include text("xs");
+      }
+    }
+  }
+}

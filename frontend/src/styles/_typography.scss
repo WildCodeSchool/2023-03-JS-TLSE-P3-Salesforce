@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+$font-family: "Inter", sans-serif;
+
+$titles: (
+  xs: (
+    font-size: 1.5rem,
+    line-height: 1.875rem,
+    letter-spacing: 0em,
+  ),
+  sm: (
+    font-size: 1.875rem,
+    line-height: 2rem,
+    letter-spacing: 0em,
+  ),
+  md: (
+    font-size: 2.25rem,
+    line-height: 2.75rem,
+    letter-spacing: -0.02em,
+  ),
+  lg: (
+    font-size: 3rem,
+    line-height: 3.75rem,
+    letter-spacing: -0.02em,
+  ),
+  xl: (
+    font-size: 3.75rem,
+    line-height: 4.625rem,
+    letter-spacing: -0.02em,
+  ),
+  2xl: (
+    font-size: 4.5rem,
+    line-height: 5.625rem,
+    letter-spacing: -0.02em,
+  ),
+);
+
+@mixin title($size, $font: $font-family, $weight: 400) {
+  @if (
+    $size !=
+      xs and
+      $size !=
+      sm and
+      $size !=
+      md and
+      $size !=
+      lg and
+      $size !=
+      xl and
+      $size !=
+      2xl
+  ) {
+    @error "Invalid title size: #{$size}";
+  }
+
+  font-family: $font;
+  font-weight: $weight;
+  $title-size: map-get($titles, $size);
+  font-size: map-get($title-size, font-size);
+  line-height: map-get($title-size, line-height);
+  letter-spacing: map-get($title-size, letter-spacing);
+}
+
+@each $size, $value in $titles {
+  .title-#{$size} {
+    @include title($size);
+  }
+}
+
+$texts: (
+  xs: (
+    font-size: 0.75rem,
+    line-height: 1.125rem,
+    letter-spacing: 0em,
+  ),
+  sm: (
+    font-size: 0.875rem,
+    line-height: 1.25rem,
+    letter-spacing: 0em,
+  ),
+  md: (
+    font-size: 1rem,
+    line-height: 1.5,
+    letter-spacing: 0em,
+  ),
+  lg: (
+    font-size: 1.125rem,
+    line-height: 1.75rem,
+    letter-spacing: 0em,
+  ),
+  xl: (
+    font-size: 1.25rem,
+    line-height: 1.875rem,
+    letter-spacing: 0em,
+  ),
+);
+
+@mixin text($size, $font: $font-family, $weight: 400) {
+  @if (
+    $size != xs and $size != sm and $size != md and $size != lg and $size != xl
+  ) {
+    @error "Invalid text size: #{$size}";
+  }
+
+  font-family: $font;
+  font-weight: $weight;
+  $title-size: map-get($texts, $size);
+  font-size: map-get($title-size, font-size);
+  line-height: map-get($title-size, line-height);
+  letter-spacing: map-get($title-size, letter-spacing);
+}
+
+@each $size, $value in $texts {
+  .text-#{$size} {
+    @include text($size);
+    p,
+    a,
+    li,
+    ul,
+    ol {
+      @include text($size);
+    }
+  }
+}
+
+.title,
+.text {
+  &--bold {
+    font-weight: 700;
+  }
+}
+
+p {
+  @include text("md");
+}
+
+p:last-of-type,
+p:only-of-type,
+p:last-child {
+  margin-bottom: 0;
+}

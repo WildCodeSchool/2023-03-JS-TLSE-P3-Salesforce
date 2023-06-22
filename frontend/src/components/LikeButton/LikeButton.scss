@@ -1,0 +1,36 @@
+@use "../../styles/typography" as *;
+
+.idea-like {
+  border: none;
+  background-color: var(--white);
+  @include text("sm", $weight: 600);
+  color: var(--grey-700);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: unset;
+  cursor: pointer;
+
+  i:before {
+    line-height: unset;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .fi-rr-heart {
+    color: var(--grey-700);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .fi-sr-heart {
+    color: var(--primary-600);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .fi-sr-heart-crack {
+    color: var(--red-600);
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

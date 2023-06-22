@@ -1,0 +1,21 @@
+@use "../../styles/typography" as *;
+
+//
+i:before {
+  line-height: unset;
+  font-size: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.idea-comment-icon {
+  color: var(--grey-700);
+  border: none;
+  background-color: var(--white);
+}
+.idea-comment-count {
+  font-size: 14px;
+  line-height: 20px;
+  @include text("sm", $weight: 600);
+  color: var(--grey-700);
+}

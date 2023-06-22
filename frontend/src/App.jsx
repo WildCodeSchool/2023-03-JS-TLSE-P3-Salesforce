@@ -1,12 +1,18 @@
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 
-import "./App.css";
+import "./styles/reset.css";
+import "./styles/index.scss";
+
+import defineColorTheme from "../utils";
+
+const colorTheme = "indigo";
+
+defineColorTheme(colorTheme);
 
 function App() {
   return (
     <div className="App">
       <Home />
-      <p>coucou</p>
     </div>
   );
 }

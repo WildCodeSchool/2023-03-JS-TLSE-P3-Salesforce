@@ -1,0 +1,79 @@
+@use "../../styles/typography" as *;
+@use "../../styles/shadows" as *;
+
+.idea-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid var(--grey-200);
+  @include shadow("xs");
+  cursor: pointer;
+  border-radius: 12px;
+  transition: box-shadow 0.3s;
+  &:hover {
+    @include shadow("md");
+  }
+
+  .header-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    gap: 20px;
+    width: 100%;
+    border-bottom: 1px solid var(--grey-200);
+
+    .title-idea {
+      width: 100%;
+      @include text("md", $weight: 600);
+      color: var(--grey-900);
+    }
+    .idea-menu-icon {
+      cursor: pointer;
+      background-color: var(--white);
+    }
+  }
+
+  .content-idea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 8px;
+    width: 100%;
+
+    .badges-idea {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      padding: 0px;
+      gap: 4px;
+      width: 100%;
+    }
+
+    .idea-description {
+      max-height: auto;
+      max-width: 100%;
+      color: var(--grey-600);
+      @include text("sm", $weight: 400);
+    }
+  }
+  .footer-idea {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 12px 20px;
+    gap: 8px;
+    max-width: 100%;
+    border-top: 1px solid var(--grey-200);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .idea-card {
+    width: 100%;
+  }
+}
