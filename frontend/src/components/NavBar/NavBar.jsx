@@ -42,10 +42,7 @@ export default function NavBar() {
     <div className="global-nav-bar">
       <nav>
         <div className="logo-company-nav-bar">
-          <img
-            src="/src/public/assets/logo/Logo-default.png"
-            alt="logo default company"
-          />
+          <img src={CompanyLogo} alt="Company's logo" />
         </div>
         <div className="burger-nav-bar">
           <i
@@ -57,7 +54,7 @@ export default function NavBar() {
         <div className="main-nav-bar">
           <div className="first-part-buttons-nav-bar">
             <div className="logo-company-nav-bar">
-              <img src={CompanyLogo} alt="logo default company" />
+              <img src={CompanyLogo} alt="Company's logo" />
             </div>
             <div className="icon-nav-bar">
               {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
