@@ -16,16 +16,18 @@ export default function Home() {
         title={firstname ? `Bienvenue, ${firstname}` : "Bienvenue"}
         subtitle="Découvrez les dernières idées de votre entreprise"
       >
-        <SearchBar />
         <button className="button-primary-solid" type="button">
           <i className="fi fi-rr-plus" />
           Ajouter une idée
         </button>
         <HorizontalTabs type="tabs">
           <li className="active">Idées</li>
-          <li>Groupes</li>
+          <li>Équipes</li>
         </HorizontalTabs>
       </PageHeader>
+      <div className="page-actions">
+        <SearchBar />
+      </div>
       <div className="idea-cards-list">
         <IdeaCard />
         <IdeaCard />

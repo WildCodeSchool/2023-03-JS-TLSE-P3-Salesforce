@@ -15,7 +15,7 @@ function SearchBar() {
         <input
           className="search-input"
           type="text"
-          placeholder="Rechercher"
+          placeholder="Rechercher une idée"
           onChange={handleSearchTerm}
         />
         <button
