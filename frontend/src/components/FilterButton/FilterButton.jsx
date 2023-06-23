@@ -6,7 +6,7 @@ import "./FilterButton.scss";
 // page Mes equipes: filtre sur name de la table team
 // page Mes idées: filtre sur title, category, user, team de la table idea
 // page Workspace: filtre sur title, category, user, team de la table idea
-function FilterButton() {
+function filterButton() {
   // state
 
   // code
@@ -19,4 +19,4 @@ function FilterButton() {
     </button>
   );
 }
-export default FilterButton;
+export default filterButton;

@@ -4,57 +4,56 @@
   height: 40vh;
   display: flex;
   flex-direction: column;
-}
-.search-bar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 0;
-  gap: 0.5rem;
-  position: relative;
-  width: min-content;
-  height: auto;
-  border: 1px solid var(--grey-400);
-  border-radius: 0.4rem;
-  background-color: var(--grey-50);
-}
-.search-input {
-  @include text("md");
-  border: none;
-  margin: 0.5rem;
-  width: 18rem;
-  outline: none;
-  &::placeholder {
-    color: var(--grey-400);
+  .search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 0.5rem;
+    position: relative;
+    width: min-content;
+    height: auto;
+    border: 1px solid var(--primary-400);
+    border-radius: 0.4rem;
+    background-color: var(--white);
+    .search-input {
+      @include text("md");
+      border: none;
+      margin: 0.5rem;
+      width: 18rem;
+      outline: none;
+      &::placeholder {
+        color: var(--primary-400);
+      }
+    }
+    .fi-rs-search {
+      background-color: var(--white);
+    }
+    .search-search {
+      border: none;
+      border-radius: 0.4rem;
+      background-color: var(--white);
+      margin: 0.3rem;
+      padding: 0.3em;
+      &:hover {
+        transform: scale(1.1);
+        background-color: var(--primary-100);
+      }
+    }
   }
-}
-.fi-rs-search {
-  background-color: var(--grey-50);
-}
-.search {
-  border: none;
-  border-radius: 0.2rem;
-  background-color: var(--grey-50);
-  margin: 0.3rem;
-  padding: 0.2rem;
-}
-.search:hover {
-  transform: scale(1.1);
-  background-color: var(--indigo-200);
-}
-
-.search-result {
-  background-color: var(--indigo-50);
-  width: max-content;
-  max-height: 12rem;
-  overflow-y: auto;
-  scrollbar-color: var(--grey-100) var(--indigo-600);
-}
-.line-result {
-  @include text("md");
-  padding: 0.2rem;
-}
-.line-result:hover {
-  cursor: pointer;
-  background-color: var(--indigo-100);
+  .search-result {
+    background-color: var(--white);
+    width: max-content;
+    max-height: 12rem;
+    overflow-y: auto;
+    scrollbar-color: var(--primary-600);
+  }
+  .line-result {
+    @include text("md");
+    padding: 0.2rem;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--primary-100);
+    }
+  }
 }
