@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import "./FilterButton.scss";
 // page: membres: filtre sur fisrtname, lastname, telephone de la table user
 // page: equipe : filtre sur name de la table team
