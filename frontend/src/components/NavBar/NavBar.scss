@@ -13,7 +13,9 @@ body {
   position: fixed;
   top: 0;
   left: 0;
+
   width: 100vw;
+  width: 100dvw;
   z-index: 1;
 
   .filter {
@@ -74,7 +76,7 @@ body {
     width: 100vw;
     top: 0px;
     left: 0px;
-    animation: show-sub-nav-container 0.5s ease-in-out;
+    animation: show-sub-nav-container-mobile 0.5s ease-in-out;
 
     .main-part-nav-bar-menu-burger {
       padding: 3.5rem 0rem 2rem 0rem;
@@ -327,6 +329,7 @@ body {
             border-radius: 12px;
             border: none;
             background-color: transparent;
+            position: relative;
             i {
               &:before {
                 line-height: unset;
@@ -339,19 +342,41 @@ body {
 
             &:hover {
               background-color: var(--primary-700);
+
+              .tooltip {
+                display: flex;
+              }
             }
             &.active {
               background-color: var(--primary-500);
             }
+
+            .tooltip {
+              position: absolute;
+              left: calc(50px + 0.5rem);
+              top: 0;
+              height: 100%;
+              display: none;
+              width: fit-content;
+              align-items: center;
+              span {
+                background-color: rgba(30, 41, 59, 0.8);
+                @include text("sm");
+                white-space: nowrap;
+                padding: 0.25rem 0.5rem;
+                color: var(--white);
+                border-radius: 8px;
+              }
+            }
           }
         }
-        .logo-sales-force-nav-bar {
+        .salesforce-logo-nav-bar {
           max-width: 64px;
           display: flex;
           justify-content: center;
           margin-top: 12px;
           img {
-            width: 80%;
+            width: 64px;
           }
         }
       }
@@ -368,7 +393,7 @@ body {
       gap: 1rem;
       z-index: 3;
 
-      animation: show-sub-nav-container 0.5s ease-in-out;
+      animation: show-sub-nav-container-desktop 0.5s ease-in-out;
       .title-sub-nav-bar {
         color: var(--primary-100);
         @include text("md", $weight: 600);
@@ -417,7 +442,7 @@ body {
   }
 }
 
-@keyframes show-sub-nav-container {
+@keyframes show-sub-nav-container-mobile {
   from {
     transform: translateX(-100vw);
   }
@@ -425,6 +450,16 @@ body {
     transform: translateX(0);
   }
 }
+
+@keyframes show-sub-nav-container-desktop {
+  from {
+    transform: translateX(-280px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
 @keyframes show-filter {
   from {
     opacity: 0;

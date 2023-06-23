@@ -4,6 +4,7 @@ import PageHeader from "../../components/PageHeader/PageHeader";
 import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
+import SearchBar from "../../components/SearchBar/SearchBar";
 
 export default function Home() {
   const firstname = "Pierre";
@@ -21,9 +22,12 @@ export default function Home() {
         </button>
         <HorizontalTabs type="tabs">
           <li className="active">Idées</li>
-          <li>Groupes</li>
+          <li>Équipes</li>
         </HorizontalTabs>
       </PageHeader>
+      <div className="page-actions">
+        <SearchBar />
+      </div>
       <div className="idea-cards-list">
         <IdeaCard />
         <IdeaCard />

@@ -1,6 +1,8 @@
 import "./NavBar.scss";
 import React, { useState } from "react";
 import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
+import CompanyLogo from "../../public/assets/logo/Logo-default.png";
+import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
 
 export default function NavBar() {
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
@@ -40,10 +42,7 @@ export default function NavBar() {
     <div className="global-nav-bar">
       <nav>
         <div className="logo-company-nav-bar">
-          <img
-            src="/src/public/assets/logo/Logo-default.png"
-            alt="logo default company"
-          />
+          <img src={CompanyLogo} alt="Company's logo" />
         </div>
         <div className="burger-nav-bar">
           <i
@@ -55,10 +54,7 @@ export default function NavBar() {
         <div className="main-nav-bar">
           <div className="first-part-buttons-nav-bar">
             <div className="logo-company-nav-bar">
-              <img
-                src="/src/public/assets/logo/Logo-default.png"
-                alt="logo default company"
-              />
+              <img src={CompanyLogo} alt="Company's logo" />
             </div>
             <div className="icon-nav-bar">
               {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
@@ -68,9 +64,15 @@ export default function NavBar() {
                 onClick={() => closeSubNavBar()}
               >
                 <i className="fi fi-rr-home" />
+                <div className="tooltip">
+                  <span>Accueil</span>
+                </div>
               </button>
               <button type="button" onClick={() => openNavBarTeam()}>
                 <i className="fi fi-rr-users" />
+                <div className="tooltip">
+                  <span>Mes équipes</span>
+                </div>
               </button>
               <button
                 type="button"
@@ -78,12 +80,21 @@ export default function NavBar() {
                 onClick={() => openNavBarWorkspace()}
               >
                 <i className="fi fi-rr-apps" />
+                <div className="tooltip">
+                  <span>Mes espaces de travail</span>
+                </div>
               </button>
               <button type="button">
                 <i className="fi fi-rr-bulb" />
+                <div className="tooltip">
+                  <span>Mes idées</span>
+                </div>
               </button>
               <button type="button" onClick={() => closeSubNavBar()}>
                 <i className="fi fi-rr-settings-sliders" />
+                <div className="tooltip">
+                  <span>Paramètres entreprise</span>
+                </div>
               </button>
             </div>
           </div>
@@ -91,31 +102,37 @@ export default function NavBar() {
             <div className="icon-nav-bar">
               <button type="button">
                 <i className="fi fi-rr-interrogation" />
+                <div className="tooltip">
+                  <span>Mentions légales</span>
+                </div>
               </button>
             </div>
-            <div className="logo-sales-force-nav-bar">
-              <img
-                src="/src/public/assets/logo/logo_SalesForce_Theme_Clair.svg"
-                alt="logo SalesForce"
-              />
-            </div>
+
+            <a
+              className="salesforce-logo-nav-bar"
+              href="https://www.salesforce.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img src={SalesforceLogo} alt="Salesforce logo" />
+            </a>
           </div>
           {/* ternaire pour faire apparaitre le sous menu des tableaux en fonction du state */}
         </div>
       </nav>
       {isSubNavBarWorkspaceOpen && (
         <div className="first-sub-nav-bar">
-          <p className="title-sub-nav-bar">Tableaux</p>
+          <p className="title-sub-nav-bar">Mes espaces de travail</p>
           <button className="nav-bar-button" type="button">
             <i className="fi fi-rr-plus" />
-            Nouveau tableau
+            Nouvel espace
           </button>
           <div className="links-sub-nav-bar">
-            <SubNavBarLink title="Direction" subtitle="6 personnes" />
             <SubNavBarLink
-              title="Ressources Humaines"
-              subtitle="14 personnes"
+              title="Refonte des extranets"
+              subtitle="Pierre DUPONT"
             />
+            <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
           </div>
         </div>
       )}
@@ -266,10 +283,7 @@ export default function NavBar() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <img
-                  src="/src/public/assets/logo/logo_SalesForce_Theme_Clair.svg"
-                  alt=""
-                />
+                <img src={SalesforceLogo} alt="Salesforce logo" />
               </a>
             </div>
           </div>
