@@ -17,37 +17,31 @@ const getUsers = (req, res) => {
       res.status(500).send("Error retrieving data from the database");
     });
 };
-// récupérer les équipes d'un utilisateur
+
+// récupérer un utilisateur
+const getUser = (req, res) => {
+  models.user
+    .getOneUser()
+    .then(([result]) => {
+      if (result.length > 0) {
+        res.status(200).json(result);
+      } else {
+        res.sendStatus(404).send("Not Found");
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.status(500).send("Error retrieving data from the database");
+    });
+};
 
 // ajouter un utilisateur à une entreprise
 
 const createUser = (req, res) => {
-  const {
-    firstname,
-    lastname,
-    email,
-    password,
-    phone_number,
-    picture_url,
-    is_salesforce_admin,
-    creation_date,
-    color_id,
-    has_accepted_invitation,
-  } = req.body;
+  const { firstname, lastname, email, company_id } = req.body;
 
   models.user
-    .postUser(
-      firstname,
-      lastname,
-      email,
-      password,
-      phone_number,
-      picture_url,
-      is_salesforce_admin,
-      creation_date,
-      color_id,
-      has_accepted_invitation
-    )
+    .postUser(firstname, lastname, email, company_id)
     .then(([result]) => {
       if (result.insertId) {
         res.location(`/:company_id/users/${result.insertId}`).sendStatus(201);
@@ -118,6 +112,7 @@ const eraseUser = (req, res) => {
 
 module.exports = {
   getUsers,
+  getUser,
   createUser,
   updateProfileUser,
   eraseUser,

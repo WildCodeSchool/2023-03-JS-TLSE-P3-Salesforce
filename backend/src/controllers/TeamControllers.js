@@ -75,7 +75,6 @@ const getTeamByUserId = (req, res) => {
 const createTeam = (req, res) => {
   const {
     name,
-    creation_date,
     is_private,
     picture_url,
     description,
@@ -87,7 +86,6 @@ const createTeam = (req, res) => {
   models.team
     .postTeam(
       name,
-      creation_date,
       is_private,
       picture_url,
       description,
@@ -110,32 +108,10 @@ const createTeam = (req, res) => {
 
 // ajouter un membre à une equipe
 const addUserTeam = (req, res) => {
-  const {
-    firstname,
-    lastname,
-    email,
-    password,
-    phone_number,
-    picture_url,
-    is_salesforce_admin,
-    creation_date,
-    color_id,
-    has_accepted_invitation,
-  } = req.body;
+  const { user_id, team_id } = req.body;
 
   models.team
-    .postUserByTeam(
-      firstname,
-      lastname,
-      email,
-      password,
-      phone_number,
-      picture_url,
-      is_salesforce_admin,
-      creation_date,
-      color_id,
-      has_accepted_invitation
-    )
+    .postUserByTeam(user_id, team_id)
     .then(([result]) => {
       if (result.insertId) {
         res
@@ -154,21 +130,13 @@ const addUserTeam = (req, res) => {
 // modifier une equipe
 const updateProfileTeam = (req, res) => {
   const { id } = req.params;
-  const {
-    name,
-    creation_date,
-    is_private,
-    picture_url,
-    description,
-    objective,
-    status,
-  } = req.body;
+  const { name, is_private, picture_url, description, objective, status } =
+    req.body;
 
   models.team
     .updateTeam(
       id,
       name,
-      creation_date,
       is_private,
       picture_url,
       description,

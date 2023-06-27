@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
 // routes utilisateur
 
 router.get("/:company_id/users", userControllers.getUsers);
+router.get("/:company_id/:user_id", userControllers.getUser);
 router.post("/:company_id/users", userControllers.createUser);
 router.put("/:user_id", userControllers.updateProfileUser);
 router.delete("/:user_id", userControllers.eraseUser);

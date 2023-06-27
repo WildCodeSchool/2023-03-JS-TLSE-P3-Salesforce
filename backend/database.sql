@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS `team`;
 CREATE TABLE IF NOT EXISTS `team` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `creation_date` VARCHAR(45) NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_private` TINYINT NOT NULL DEFAULT 0,
   `picture_url` LONGTEXT NULL,
   `description` VARCHAR(255) NULL,
@@ -91,7 +91,7 @@ DROP TABLE IF EXISTS `workspace`;
 CREATE TABLE IF NOT EXISTS `workspace` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
-  `creation_date` DATETIME NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `update_date` DATETIME NOT NULL,
   `description` VARCHAR(255) NULL,
   `is_private` TINYINT NOT NULL DEFAULT 0,
@@ -119,7 +119,7 @@ DROP TABLE IF EXISTS `idea`;
 CREATE TABLE IF NOT EXISTS `idea` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent_idea_id` INT NULL,
-  `creation_date` DATETIME NOT NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` VARCHAR(255) NOT NULL,
   `description` MEDIUMTEXT NULL,
   `status` VARCHAR(45) NOT NULL DEFAULT 'published',
@@ -144,7 +144,7 @@ DROP TABLE IF EXISTS `file`;
 CREATE TABLE IF NOT EXISTS `file` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `import_date` DATETIME NOT NULL,
+  `import_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` VARCHAR(45) NULL,
   `url` LONGTEXT NOT NULL,
   `idea_id` INT NOT NULL,
@@ -159,7 +159,7 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `content` MEDIUMTEXT NULL,
-  `creation_date` DATETIME NOT NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idea_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`)
@@ -170,7 +170,7 @@ DROP TABLE IF EXISTS `liked`;
 
 CREATE TABLE IF NOT EXISTS `liked` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `date` DATETIME NULL,
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idea_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`)
@@ -211,7 +211,7 @@ DROP TABLE IF EXISTS `team_has_user`;
 CREATE TABLE IF NOT EXISTS `team_has_user` (
   `team_id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `joining_date` DATETIME NULL,
+  `joining_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_favorite_team` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
 

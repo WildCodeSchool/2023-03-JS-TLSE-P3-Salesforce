@@ -10,14 +10,18 @@ class TeamManager extends AbstractManager {
 
   // récupérer toutes les équipes
   getAllTeams() {
-    return this.database.query(`SELECT * FROM ${this.table}`);
+    return this.database.query(
+      `SELECT ${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status FROM ${this.table}`
+    );
   }
 
   // récupérer une équipe
   getOneTeam() {
-    return this.database.query(`SELECT * FROM ${this.table} where id = ?`, [
-      id,
-    ]);
+    return this.database.query(
+      `SELECT ${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status
+     FROM ${this.table} where id = ?`,
+      [id]
+    );
   }
 
   // récuperer l'ensemble des membres d'une équipe
@@ -31,7 +35,7 @@ class TeamManager extends AbstractManager {
   // récupérer toutes les teams d'un membre
   getTeamsByUser() {
     return this.database.query(
-      `SELECT ${this.table}.name FROM ${this.table}  RIGHT JOIN team_has_user thu ON ${this.table}.id = thu.team_id WHERE thu.user_id = ?;`,
+      `SELECT ${this.table}.name, ${this.table}.creation_date,${this.table}.is_private, ${this.table}.picture_url, ${this.table}.description, ${this.table}.objective,${this.table}.status FROM ${this.table} RIGHT JOIN team_has_user thu ON ${this.table}.id = thu.team_id WHERE thu.user_id = ?;`,
       [user_id]
     );
   }
@@ -56,7 +60,7 @@ class TeamManager extends AbstractManager {
     );
   }
 
-  // ajouter des membres à une equipe ( gros doute)
+  // ajouter des membres à une equipe
   postUserByTeam() {
     return this.database.query(
       `INSERT INTO team_has_user (user_id,team_id)
