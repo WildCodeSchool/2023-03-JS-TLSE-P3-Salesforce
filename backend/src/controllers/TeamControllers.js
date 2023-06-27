@@ -139,7 +139,7 @@ const addUserTeam = (req, res) => {
     .then(([result]) => {
       if (result.insertId) {
         res
-          .location(`/:company_id/:team_id/${result.insertId}`)
+          .location(`/:company_id/:team_id/members/${result.insertId}`)
           .sendStatus(201);
       } else {
         res.sendStatus(404).send("Not Found");
