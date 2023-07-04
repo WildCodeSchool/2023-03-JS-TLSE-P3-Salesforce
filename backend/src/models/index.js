@@ -34,6 +34,12 @@ const ItemManager = require("./ItemManager");
 models.item = new ItemManager();
 models.item.setDatabase(pool);
 
+// WORKSPACE
+const WorkspaceManager = require("./WorkspaceManager");
+
+models.workspace = new WorkspaceManager();
+models.workspace.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 

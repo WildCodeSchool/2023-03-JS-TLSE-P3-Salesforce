@@ -5,7 +5,7 @@ class WorkspaceManager extends AbstractManager {
     super({ table: "workspace" });
   }
 
-  getTeamWorkspaces(teamId, companyId) {
+  findWorkspaceByTeamId(teamId) {
     return this.database.query(
       `SELECT
         ${this.table}.id,
@@ -20,16 +20,15 @@ class WorkspaceManager extends AbstractManager {
         INNER JOIN idea ON ${this.table}.id = idea.workspace_id
         INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
       WHERE
-        ${this.table}.user_id = 2
-        AND ${this.table}.company_id = 2
+        ${this.table}.team_id = ?
       GROUP BY
         ${this.table}.id,
         workspace_has_user.workspace_id;`,
-      [teamId, companyId]
+      [teamId]
     );
   }
 
-  getUserWorkspaces(userId, companyId) {
+  findUserWorkspacesByUserAndCompanyId(userId, companyId) {
     return this.database.query(
       `SELECT
       ${this.table}.id,
@@ -37,23 +36,30 @@ class WorkspaceManager extends AbstractManager {
       ${this.table}.creation_date,
       ${this.table}.description,
       ${this.table}.is_private,
-      COUNT(idea.id) AS total_ideas,
-      COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+
+      (
+        SELECT COUNT(DISTINCT idea.id)
+        FROM idea
+        WHERE idea.workspace_id = ${this.table}.id
+      ) AS total_ideas,
+      (
+        SELECT COUNT(DISTINCT workspace_has_user.user_id)
+        FROM workspace_has_user
+        WHERE workspace_has_user.workspace_id = ${this.table}.id
+      ) AS total_users
     FROM
       ${this.table}
-      INNER JOIN idea ON ${this.table}.id = idea.workspace_id
-      INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
+      LEFT JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
     WHERE
-      ${this.table}.user_id = 2
-      AND ${this.table}.company_id = 2
+      ${this.table}.company_id = ?
+      AND workspace_has_user.user_id = ?
     GROUP BY
-      ${this.table}.id,
-      workspace_has_user.workspace_id;`,
-      [userId, companyId]
+      ${this.table}.id;`,
+      [companyId, userId]
     );
   }
 
-  getWorkspacesUsers(workspaceId) {
+  findWorkspacesUsersById(workspaceId) {
     return this.database.query(
       `SELECT u.firstname, u.lastname, u.email, u.picture_url
         FROM user u INNER JOIN workspace_has_user whu ON u.id = whu.user_id
@@ -62,7 +68,7 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  getWorkspaceIdeas(workspaceId) {
+  findWorkspaceIdeas(workspaceId, userId) {
     return this.database.query(
       `SELECT
       i.id,
@@ -70,59 +76,55 @@ class WorkspaceManager extends AbstractManager {
       i.title,
       i.description,
       i.status,
-      u.firstname,
-      u.lastname,
-      u.email,
-      u.picture_url,
       i.x_coordinate,
       i.y_coordinate,
       i.color_id,
       i.is_in_board,
       i.ideas_group_id,
-      COUNT(DISTINCT liked.idea_id) AS likes,
-      COUNT(DISTINCT comment.id) AS comments,
-      GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories
+      u.firstname AS creator_firstname,
+      u.lastname AS creator_lastname,
+      u.email AS creator_email,
+      u.picture_url AS creator_picture_url,
+      likes.likes_count AS likes_count,
+      COUNT(DISTINCT comment.id) AS comments_count,
+      GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
+      CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
     FROM
       idea i
       LEFT JOIN user u ON u.id = i.user_id
-      LEFT JOIN liked ON liked.idea_id = i.id
+      LEFT JOIN (
+        SELECT idea_id, COUNT(*) AS likes_count
+        FROM liked
+        GROUP BY idea_id
+      ) likes ON likes.idea_id = i.id
+      LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = i.id AND liked_by_user.user_id = ?
       LEFT JOIN comment ON comment.idea_id = i.id
       LEFT JOIN category_has_idea chi ON chi.idea_id = i.id
       LEFT JOIN category cat ON cat.id = chi.category_id
       LEFT JOIN color col ON col.id = cat.color_id
     WHERE
-      workspace_id = ?
+      i.workspace_id = ?
     GROUP BY
       i.id
     ORDER BY
       i.id DESC;`,
-      [workspaceId]
+      [userId, workspaceId]
     );
   }
 
-  insertWorkspace(workspace) {
-    const {
-      name,
-      isPrivate,
-      pictureUrl,
-      description,
-      objective,
-      status,
-      userId,
-      companyId,
-    } = workspace;
+  insertWorkspace(workspace, companyId) {
+    const { name, isPrivate, description, userId, teamId } = workspace;
+
     return this.database.query(
-      `INSERT INTO ${this.table} (name, is_private, picture_url, description, objective, status, user_id, company_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
-      [
-        name,
-        isPrivate,
-        pictureUrl,
-        description,
-        objective,
-        status,
-        userId,
-        companyId,
-      ]
+      `INSERT INTO ${this.table} (name, is_private, description, user_id, team_id, company_id) VALUES ( ?, ?, ?, ?, ?, ?);`,
+      [name, isPrivate, description, userId, teamId, companyId]
+    );
+  }
+
+  insertUserInWorkspace(workspaceId, userId) {
+    return this.database.query(
+      `INSERT INTO workspace_has_user (workspace_id, user_id) VALUES (?, ?);`,
+      [workspaceId, userId]
     );
   }
 

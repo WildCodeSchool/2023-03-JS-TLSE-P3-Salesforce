@@ -1027,29 +1027,55 @@ SELECT
   i.title,
   i.description,
   i.status,
-  u.firstname,
-  u.lastname,
-  u.email,
-  u.picture_url,
   i.x_coordinate,
   i.y_coordinate,
   i.color_id,
   i.is_in_board,
   i.ideas_group_id,
-  COUNT(DISTINCT liked.idea_id) AS likes,
-  COUNT(DISTINCT comment.id) AS comments,
-  GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories
+  u.firstname AS creator_firstname,
+  u.lastname AS creator_lastname,
+  u.email AS creator_email,
+  u.picture_url AS creator_picture_url,
+  likes.likes_count AS likes_count,
+  COUNT(DISTINCT comment.id) AS comments_count,
+  GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
+  CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
 FROM
   idea i
   LEFT JOIN user u ON u.id = i.user_id
-  LEFT JOIN liked ON liked.idea_id = i.id
+  LEFT JOIN (
+    SELECT idea_id, COUNT(*) AS likes_count
+    FROM liked
+    GROUP BY idea_id
+  ) likes ON likes.idea_id = i.id
+  LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = i.id AND liked_by_user.user_id = 2
   LEFT JOIN comment ON comment.idea_id = i.id
   LEFT JOIN category_has_idea chi ON chi.idea_id = i.id
   LEFT JOIN category cat ON cat.id = chi.category_id
   LEFT JOIN color col ON col.id = cat.color_id
 WHERE
-  workspace_id = 1
+  i.workspace_id = 1
 GROUP BY
   i.id
 ORDER BY
   i.id DESC;
+
+
+SELECT
+      workspace.id,
+      workspace.name,
+      workspace.creation_date,
+      workspace.description,
+      workspace.is_private,
+      COUNT(idea.id) AS total_ideas,
+      COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+    FROM
+      workspace
+      INNER JOIN idea ON workspace.id = idea.workspace_id
+      INNER JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
+    WHERE
+      workspace_has_user.user_id = 2
+      AND workspace.company_id = 2
+    GROUP BY
+      workspace.id,
+      workspace_has_user.workspace_id;
