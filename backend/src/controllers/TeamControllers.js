@@ -117,10 +117,10 @@ const createTeam = (req, res) => {
 
 // ajouter un membre à une equipe
 const addUserTeam = (req, res) => {
-  const { user_id, team_id } = req.body;
+  const { user_id, team_id, company_id } = req.body;
 
   models.team
-    .addUserByTeam(user_id, team_id)
+    .addUserByTeam(user_id, team_id, company_id)
     .then(([result]) => {
       if (result.insertId) {
         res

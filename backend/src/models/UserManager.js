@@ -25,11 +25,11 @@ class UserManager extends AbstractManager {
 
   // ajouter un utilisateur à une entreprise
 
-  postUser(firstname, lastname, email,picture_url) {
+  postUser(firstname, lastname, email, picture_url) {
     return this.database.query(
       `INSERT INTO ${this.table} (firstname, lastname,email,picture_url)
         VALUES (?,?,?,'',?)`,
-      [firstname, lastname, email,picture_url]
+      [firstname, lastname, email, picture_url]
     );
   }
 

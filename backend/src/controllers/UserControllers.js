@@ -38,9 +38,10 @@ const getUser = (req, res) => {
 // ajouter un utilisateur à une entreprise
 
 const createUser = (req, res) => {
-  const { firstname, lastname, email,picture_url } = req.body;
+  const { company_id } = req.params;
+  const { firstname, lastname, email, picture_url } = req.body;
   models.user
-    .postUser(firstname, lastname, email,picture_url)
+    .postUser(firstname, lastname, email, picture_url)
     .then(([result]) => {
       if (result.insertId) {
         res
