@@ -618,10 +618,13 @@ VALUES
 INSERT INTO 
 `idea` (`parent_idea_id`, `creation_date`, `title`, `description`, `status`, `x_coordinate`, `y_coordinate`, `color_id`, `company_id`, `user_id`, `workspace_id`, `ideas_group_id`, `team_id`, `file_id`, `is_in_board`)
 VALUES
-(NULL, '2023-06-21 12:00:00', 'Idea 1', 'Description of Idea 1', 'published', 100, 200, 1, NULL, 1, 1, NULL, NULL, NULL, 1),
+(NULL, '2023-06-21 12:00:00', 'Idea 1', 'Description of Idea 1', 'published', 100, 200, 1, NULL, 2, 1, NULL, NULL, NULL, 1),
 (4, '2023-06-21 14:45:00', 'Idea 3', 'Description of Idea 3', 'published', 150, 250, 1, NULL, 1, 2, NULL, NULL, NULL, 0),
 (NULL, '2023-06-21 13:30:00', 'Idea 2', NULL, 'published', 300, 400, 2, NULL, 2, 1, NULL, NULL, NULL, 1),
-(NULL, '2023-06-21 15:15:00', 'Idea 4', 'Description of Idea 4', 'published', 500, 600, 3, NULL, 3, 2, NULL, NULL, NULL, 1);
+(NULL, '2023-06-21 15:15:00', 'Idea 4', 'Description of Idea 4', 'published', 500, 600, 3, NULL, 3, 2, NULL, NULL, NULL, 1),
+(NULL, '2023-06-21 15:20:00', 'Idea 5', 'Description of Idea 5', 'published', 600, 700, 2, NULL, 4, 3, NULL, NULL, NULL, 1),
+(NULL, '2023-06-21 15:30:00', 'Idea 6', 'Description of Idea 6', 'published', 120, 30, 4, NULL, 4, 4, NULL, NULL, NULL, 0),
+(NULL, '2023-06-21 15:40:00', 'Idea 7', 'Description of Idea 7', 'published', 100, 200, 1, NULL, 1, 1, NULL, NULL, NULL, 1);
 
 
 --  FILE 
@@ -643,10 +646,13 @@ VALUES ('Comment 1', '2023-06-21 12:00:00', 1, 1),
 ('Comment 3', '2023-06-21 14:45:00', 3, 1),
 ('Comment 4', '2023-06-21 15:15:00', 4, 3),
 ('Comment 5', '2023-06-21 12:45:00', 3, 5),
-('Comment 6', '2023-06-21 20:15:00', 4, 1);
-
-
-
+('Comment 6', '2023-06-21 20:15:00', 4, 1),
+('Comment 7', '2023-06-23 20:15:00', 4, 2),
+('Comment 8', '2023-06-23 20:16:00', 1, 3),
+('Comment 9', '2023-06-23 20:16:10', 1, 2),
+('Comment 10', '2023-06-23 20:16:10', 1, 1),
+('Comment 11', '2023-06-23 20:16:30', 2, 1),
+('Comment 12', '2023-06-24 09:16:30', 1, 1);
 
 -- LIKE
 
@@ -655,32 +661,34 @@ INSERT INTO
 VALUES 
 ('2023-06-21 12:00:00', 1, 1),
 ('2023-06-21 13:30:00', 2, 2),
-('2023-06-21 14:45:00', 3, 1),
-('2023-06-21 15:15:00', 4, 3),
-('2023-06-21 12:00:00', 1, 2),
-('2023-06-21 13:30:00', 2, 3),
-('2023-06-21 14:45:00', 3, 6),
-('2023-06-21 15:15:00', 4, 2);
+('2023-06-21 14:45:11', 3, 1),
+('2023-06-21 15:15:22', 4, 3),
+('2023-06-21 12:00:35', 1, 2),
+('2023-06-21 13:30:08', 2, 3),
+('2023-06-21 14:45:50', 3, 6),
+('2023-06-21 15:15:00', 4, 2),
+('2023-06-21 12:00:02', 1, 3),
+('2023-06-21 13:30:09', 2, 4),
+('2023-06-21 14:45:30', 3, 5),
+('2023-06-21 15:15:10', 4, 1);
 
--- CATEGORY 
 
-INSERT INTO 
+--  CATEGORY 
+
+
+INSERT INTO
   `category` (`name`, `color_id`, `company_id`)
 VALUES 
 ('Category 1', 1, 1),
 ('Category 2', 2, 2),
-('Category 3', 3, 1),
-('Category 4', 4, 3);
-
-
+('Category 3', 3, 3),
+('Category 4', 4, 4),
+('Category 5', 5, 5),
+('Category 6', 6, 6);
 
 --  TAG 
 
-
-
 --  TAG HAS IDEA 
-
-
 
 --  TEAM HAS USER 
 

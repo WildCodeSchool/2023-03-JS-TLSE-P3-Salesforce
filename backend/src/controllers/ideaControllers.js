@@ -1,10 +1,68 @@
 const models = require("../models");
 
-const getAllIdeas = (req, res) => {
+const createIdea = (req, res) => {
+  const {
+    title,
+    description,
+    creationDate,
+    parentId,
+    userId,
+    companyId,
+    teamId,
+    workspaceId,
+    status,
+    isInBoard,
+    fileId,
+  } = req.body;
+
   models.idea
-    .findAll()
+    .insert({
+      title,
+      description,
+      creationDate,
+      parentId,
+      userId,
+      companyId,
+      teamId,
+      workspaceId,
+      status,
+      isInBoard,
+      fileId,
+    })
+    .then(([result]) => {
+      res.location(`/ideas/${result.insertId}`).sendStatus(201); // on reste sur res.location avec le path dédié ? (sinon on reprend le code de update?)
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const getAllIdeasByUser = (req, res) => {
+  models.idea
+    .findAllIdeasByUser(req.params.id)
     .then(([results]) => {
-      res.send(results);
+      if (results.length) {
+        res.status(200).json(results);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const getAllIdeasByCompany = (req, res) => {
+  models.idea
+    .getAllIdeasByCompany(req.params.id)
+    .then(([results]) => {
+      if (results.length) {
+        res.status(200).json(results);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       console.error(err);
@@ -28,37 +86,39 @@ const read = (req, res) => {
     });
 };
 
-const edit = (req, res) => {
-  const idea = req.body;
-
-  // TODO validations (length, format...)
-
-  idea.id = parseInt(req.params.id, 10);
+const updateIdeaById = (req, res) => {
+  const {
+    title,
+    description,
+    status,
+    isInBoard,
+    xCoordinate,
+    yCoordinate,
+    ideaGroupId,
+    colorId,
+    fileId,
+  } = req.body;
+  const { id } = req.params;
 
   models.idea
-    .update(idea)
+    .update({
+      id,
+      title,
+      description,
+      status,
+      isInBoard,
+      xCoordinate,
+      yCoordinate,
+      ideaGroupId,
+      colorId,
+      fileId,
+    })
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
       } else {
-        res.sendStatus(204);
+        res.status(204).send("l'idée a bien été modifiée");
       }
-    })
-    .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
-    });
-};
-
-const add = (req, res) => {
-  const idea = req.body;
-
-  // TODO validations (length, format...)
-
-  models.idea
-    .insert(idea)
-    .then(([result]) => {
-      res.location(`/ideas/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
@@ -73,7 +133,7 @@ const deleteIdea = (req, res) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
       } else {
-        res.sendStatus(204);
+        res.status(204).send("l'idée a bien été supprimée");
       }
     })
     .catch((err) => {
@@ -83,9 +143,10 @@ const deleteIdea = (req, res) => {
 };
 
 module.exports = {
-  getAllIdeas,
+  getAllIdeasByUser,
+  getAllIdeasByCompany,
   read,
-  edit,
-  add,
+  updateIdeaById,
+  createIdea,
   deleteIdea,
 };
