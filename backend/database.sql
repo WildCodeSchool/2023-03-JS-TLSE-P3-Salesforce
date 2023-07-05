@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `contract` (
   `company_id` INT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `expiration_date` DATETIME NULL,
+  `expiration_date` TIMESTAMP NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -113,7 +113,7 @@ DROP TABLE IF EXISTS `idea`;
 CREATE TABLE IF NOT EXISTS `idea` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent_idea_id` INT NULL,
-  `creation_date` DATETIME NOT NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `title` VARCHAR(255) NOT NULL,
   `description` MEDIUMTEXT NULL,
   `status` VARCHAR(45) NOT NULL DEFAULT 'published',
@@ -136,7 +136,7 @@ DROP TABLE IF EXISTS `file`;
 CREATE TABLE IF NOT EXISTS `file` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `import_date` DATETIME NOT NULL,
+  `import_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `type` VARCHAR(45) NULL,
   `url` LONGTEXT NOT NULL,
   `idea_id` INT NOT NULL,
@@ -150,7 +150,7 @@ DROP TABLE IF EXISTS `comment`;
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `content` MEDIUMTEXT NULL,
-  `creation_date` DATETIME NOT NULL,
+  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idea_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`)
@@ -161,7 +161,7 @@ DROP TABLE IF EXISTS `liked`;
 
 CREATE TABLE IF NOT EXISTS `liked` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `date` DATETIME NULL,
+  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `idea_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`)
@@ -201,7 +201,7 @@ DROP TABLE IF EXISTS `team_has_user`;
 CREATE TABLE IF NOT EXISTS `team_has_user` (
   `team_id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `joining_date` DATETIME NULL,
+  `joining_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_favorite_team` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
 
@@ -1020,149 +1020,3 @@ VALUES
   (2, 2, 0),
   (3, 3, 1),
   (1, 4, 0);
-
-SELECT
-  i.id,
-  i.creation_date,
-  i.title,
-  i.description,
-  i.status,
-  i.x_coordinate,
-  i.y_coordinate,
-  i.color_id,
-  i.is_in_board,
-  i.ideas_group_id,
-  u.firstname AS creator_firstname,
-  u.lastname AS creator_lastname,
-  u.email AS creator_email,
-  u.picture_url AS creator_picture_url,
-  likes.likes_count AS likes_count,
-  COUNT(DISTINCT comment.id) AS comments_count,
-  GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
-  CASE
-    WHEN liked_by_user.idea_id IS NOT NULL THEN true
-    ELSE false
-  END AS is_liked_by_user
-FROM
-  idea i
-  LEFT JOIN user u ON u.id = i.user_id
-  LEFT JOIN (
-    SELECT
-      idea_id,
-      COUNT(*) AS likes_count
-    FROM
-      liked
-    GROUP BY
-      idea_id
-  ) likes ON likes.idea_id = i.id
-  LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = i.id
-  AND liked_by_user.user_id = 2
-  LEFT JOIN comment ON comment.idea_id = i.id
-  LEFT JOIN category_has_idea chi ON chi.idea_id = i.id
-  LEFT JOIN category cat ON cat.id = chi.category_id
-  LEFT JOIN color col ON col.id = cat.color_id
-WHERE
-  i.workspace_id = 1
-GROUP BY
-  i.id
-ORDER BY
-  i.id DESC;
-
-SELECT
-  workspace.id,
-  workspace.name,
-  workspace.creation_date,
-  workspace.description,
-  workspace.is_private,
-  COUNT(idea.id) AS total_ideas,
-  COUNT(DISTINCT workspace_has_user.user_id) AS total_users
-FROM
-  workspace
-  INNER JOIN idea ON workspace.id = idea.workspace_id
-  INNER JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
-WHERE
-  workspace_has_user.user_id = 1
-  AND workspace.company_id = 1
-GROUP BY
-  workspace.id,
-  workspace_has_user.workspace_id;
-
-SELECT
-  workspace.id,
-  workspace.name,
-  workspace.creation_date,
-  workspace.description,
-  workspace.is_private,
-  COUNT(DISTINCT idea.id) AS total_ideas,
-  COUNT(DISTINCT workspace_has_user.user_id) AS total_users
-FROM
-  workspace
-  LEFT JOIN idea ON workspace.id = idea.workspace_id
-  LEFT JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
-WHERE
-  workspace.company_id = 1
-  AND workspace_has_user.user_id = 4
-GROUP BY
-  workspace.id;
-
-SELECT
-  workspace.id,
-  workspace.name,
-  workspace.creation_date,
-  workspace.description,
-  workspace.is_private,
-  (
-    SELECT
-      COUNT(DISTINCT idea.id)
-    FROM
-      idea
-    WHERE
-      idea.workspace_id = workspace.id
-  ) AS total_ideas,
-  (
-    SELECT
-      COUNT(DISTINCT workspace_has_user.user_id)
-    FROM
-      workspace_has_user
-    WHERE
-      workspace_has_user.workspace_id = workspace.id
-  ) AS total_users
-FROM
-  workspace
-  LEFT JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
-WHERE
-  workspace.company_id = 1
-  AND workspace_has_user.user_id = 2
-GROUP BY
-  workspace.id;
-
-SELECT
-  workspace.id,
-  workspace.name,
-  workspace.creation_date,
-  workspace.description,
-  workspace.is_private,
-  (
-    SELECT
-      COUNT(DISTINCT idea.id)
-    FROM
-      idea
-    WHERE
-      idea.workspace_id = workspace.id
-  ) AS total_ideas,
-  (
-    SELECT
-      COUNT(DISTINCT workspace_has_user.user_id)
-    FROM
-      workspace_has_user
-    WHERE
-      workspace_has_user.workspace_id = workspace.id
-  ) AS total_users
-FROM
-  workspace
-  LEFT JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
-WHERE
-  workspace.company_id = 1
-  AND workspace_has_user.user_id = 2
-GROUP BY
-  workspace.id;
