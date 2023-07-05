@@ -1,10 +1,11 @@
+/* eslint-disable camelcase */
 const models = require("../models");
 
 const getTeamWorkspaces = (req, res) => {
   models.workspace
     .findWorkspaceByTeamId(req.params.team_id)
     .then(([rows]) => {
-      res.send(rows);
+      res.status(200).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -13,13 +14,11 @@ const getTeamWorkspaces = (req, res) => {
 };
 
 const getUserWorkspaces = (req, res) => {
+  const { user_id, company_id } = req.params;
   models.workspace
-    .findUserWorkspacesByUserAndCompanyId(
-      req.params.user_id,
-      req.params.company_id
-    )
+    .findUserWorkspacesByUserAndCompanyId(user_id, company_id)
     .then(([rows]) => {
-      res.send(rows);
+      res.status(200).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -31,7 +30,7 @@ const getWorkspaceUsers = (req, res) => {
   models.workspace
     .findWorkspacesUsersById(req.params.workspace_id)
     .then(([rows]) => {
-      res.send(rows);
+      res.status(200).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -40,10 +39,11 @@ const getWorkspaceUsers = (req, res) => {
 };
 
 const getWorkspaceIdeas = (req, res) => {
+  const { workspace_id, user_id } = req.params;
   models.workspace
-    .findWorkspaceIdeas(req.params.workspace_id, req.params.user_id)
+    .findWorkspaceIdeas(workspace_id, user_id)
     .then(([rows]) => {
-      res.send(rows);
+      res.status(200).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -56,7 +56,7 @@ const createWorkspace = (req, res) => {
     .insertWorkspace(req.body, req.params.company_id)
     .then(([rows]) => {
       models.workspace.insertUserInWorkspace(rows.insertId, req.body.userId);
-      res.send(rows);
+      res.status(201).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -65,10 +65,11 @@ const createWorkspace = (req, res) => {
 };
 
 const addUserToWorkspace = (req, res) => {
+  const { user_id, workspace_id } = req.params;
   models.workspace
-    .insertUserInWorkspace(req.params.workspace_id, req.params.user_id)
+    .insertUserInWorkspace(workspace_id, user_id)
     .then(([rows]) => {
-      res.send(rows).status(204);
+      res.status(201).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -80,7 +81,7 @@ const updateWorkspace = (req, res) => {
   models.workspace
     .updateWorkspaceById(req.params.workspace_id, req.body)
     .then(([rows]) => {
-      res.send(rows).status(204);
+      res.status(204).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -92,7 +93,7 @@ const deleteWorkspace = (req, res) => {
   models.workspace
     .deleteWorkspaceById(req.params.workspace_id)
     .then(([rows]) => {
-      res.send(rows).status(204);
+      res.status(204).send(rows);
     })
     .catch((err) => {
       console.error(err);
@@ -101,8 +102,9 @@ const deleteWorkspace = (req, res) => {
 };
 
 const removeWorkspaceUser = (req, res) => {
+  const { user_id, workspace_id } = req.params;
   models.workspace
-    .removeWorkspaceUser(req.params.workspace_id, req.params.user_id)
+    .removeWorkspaceUser(workspace_id, user_id)
     .then(([rows]) => {
       res.send(rows).status(204);
     })
