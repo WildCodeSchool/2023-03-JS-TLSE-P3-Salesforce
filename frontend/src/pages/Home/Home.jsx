@@ -1,3 +1,6 @@
+import { useContext } from "react";
+
+import AuthContext from "../../contexts/AuthContext";
 import "../../components/IdeaCard/IdeaCard.scss";
 import "./Home.scss";
 import PageHeader from "../../components/PageHeader/PageHeader";
@@ -5,11 +8,13 @@ import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
 import SearchBar from "../../components/SearchBar/SearchBar";
+import Connection from "../../components/Connection/Connection";
 
 export default function Home() {
   const firstname = "Pierre";
+  const { userToken } = useContext(AuthContext);
 
-  return (
+  return userToken ? (
     <main>
       <NavBar />
       <PageHeader
@@ -42,5 +47,7 @@ export default function Home() {
         <IdeaCard />
       </div>
     </main>
+  ) : (
+    <Connection />
   );
 }

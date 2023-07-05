@@ -1,3 +1,7 @@
+// import { useState, useEffect } from "react";
+
+// import axios from "axios";
+
 import "./Connection.scss";
 import SalesforceLogoSombre from "../../public/assets/logo/logo_SalesForce_Theme_Sombre.svg";
 import SalesforceLogoClair from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";

@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Connection from "./pages/Connection/Connection";
 
 import { AuthProvider } from "./contexts/AuthContext";
 
@@ -19,8 +18,7 @@ function App() {
       <div className="App">
         <Router>
           <Routes>
-            <Route path="/:company_id/" element={<Connection />} />
-            <Route path="/:company_id/home" element={<Home />} />
+            <Route path="/:company_id/" element={<Home />} />
           </Routes>
         </Router>
       </div>

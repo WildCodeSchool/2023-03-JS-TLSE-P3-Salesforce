@@ -85,6 +85,16 @@ const verifySalesForceAdminRole = (req, res, next) => {
   }
 };
 
+const verifyCompanyAdminOrSalesForceAdminRole = (req, res, next) => {
+  const isCompanyAdmin = req.get("is_company_admin");
+  const isAdmin = req.get("is_admin");
+  if (isAdmin || isCompanyAdmin) {
+    next();
+  } else {
+    res.sendStatus(403).send("Forbidden");
+  }
+};
+
 const checkId = (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const payload = req.payload.sub;
@@ -101,5 +111,6 @@ module.exports = {
   verifyToken,
   verifyCompanyAdminRole,
   verifySalesForceAdminRole,
+  verifyCompanyAdminOrSalesForceAdminRole,
   checkId,
 };

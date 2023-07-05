@@ -2,14 +2,34 @@ const express = require("express");
 
 const router = express.Router();
 
-// const {
-//   hashPassword,
-//   verifyPassword,
-//   verifyToken,
-//   verifyCompanyAdminRole,
-//   verifySalesForceAdminRole,
-//   checkId,
-// } = require("./services/auth");
+const {
+  hashPassword,
+  verifyPassword,
+  verifyToken,
+  // verifyCompanyAdminRole,
+  // verifySalesForceAdminRole,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  // checkId,
+} = require("./services/auth");
+
+/* ---- USERS ROUTES ---- */
+
+const user = require("./controllers/userControllers");
+
+router.post(
+  "/user/login",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  user.authenticationCheck,
+  verifyPassword
+);
+
+router.get("/users", verifyToken, user.browse);
+router.get("/users/:user_id", verifyToken, user.read);
+
+router.post("/companies/:company_id/users", hashPassword, user.addUser);
+
+/* ---- WORKSPACES ROUTES ---- */
 
 const workspaceControllers = require("./controllers/workspaceControllers");
 const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");

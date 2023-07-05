@@ -35,6 +35,12 @@ const WorkspaceManager = require("./WorkspaceManager");
 models.workspace = new WorkspaceManager();
 models.workspace.setDatabase(pool);
 
+// USER
+const UserManager = require("./UserManager");
+
+models.user = new UserManager();
+models.user.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
