@@ -29,11 +29,6 @@ pool.getConnection().catch(() => {
 
 const models = {};
 
-const ItemManager = require("./ItemManager");
-
-models.item = new ItemManager();
-models.item.setDatabase(pool);
-
 // WORKSPACE
 const WorkspaceManager = require("./WorkspaceManager");
 

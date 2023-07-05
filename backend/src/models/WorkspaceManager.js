@@ -5,27 +5,59 @@ class WorkspaceManager extends AbstractManager {
     super({ table: "workspace" });
   }
 
-  findWorkspaceByTeamId(teamId) {
+  checkIfUserIsInWorkspace(userId, workspaceId) {
     return this.database.query(
-      `SELECT
-        ${this.table}.id,
-        ${this.table}.name,
-        ${this.table}.creation_date,
-        ${this.table}.description,
-        ${this.table}.is_private,
-        COUNT(idea.id) AS total_ideas,
-        COUNT(DISTINCT workspace_has_user.user_id) AS total_users
-      FROM
-        ${this.table}
-        INNER JOIN idea ON ${this.table}.id = idea.workspace_id
-        INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
-      WHERE
-        ${this.table}.team_id = ?
-      GROUP BY
-        ${this.table}.id,
-        workspace_has_user.workspace_id;`,
-      [teamId]
+      `SELECT * FROM workspace_has_user WHERE user_id = ? AND workspace_id = ?;`,
+      [userId, workspaceId]
     );
+  }
+
+  findWorkspacesByTeamId(teamId, userId, isSalesForceAdmin) {
+    switch (isSalesForceAdmin) {
+      case true:
+        return this.database.query(
+          `SELECT
+            ${this.table}.id,
+            ${this.table}.name,
+            ${this.table}.creation_date,
+            ${this.table}.description,
+            ${this.table}.is_private,
+            COUNT(idea.id) AS total_ideas,
+            COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+          FROM
+            ${this.table}
+            INNER JOIN idea ON ${this.table}.id = idea.workspace_id
+            INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
+          WHERE
+            ${this.table}.team_id = ?
+          GROUP BY
+            ${this.table}.id,
+            workspace_has_user.workspace_id;`,
+          [teamId]
+        );
+
+      default:
+        return this.database.query(
+          `SELECT
+            ${this.table}.id,
+            ${this.table}.name,
+            ${this.table}.creation_date,
+            ${this.table}.description,
+            ${this.table}.is_private,
+            COUNT(idea.id) AS total_ideas,
+            COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+          FROM
+            ${this.table}
+            INNER JOIN idea ON ${this.table}.id = idea.workspace_id
+            INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
+          WHERE
+            ${this.table}.team_id = ? AND workspace_has_user.user_id = ? 
+          GROUP BY
+            ${this.table}.id,
+            workspace_has_user.workspace_id;`,
+          [teamId, userId]
+        );
+    }
   }
 
   findUserWorkspacesByUserAndCompanyId(userId, companyId) {
