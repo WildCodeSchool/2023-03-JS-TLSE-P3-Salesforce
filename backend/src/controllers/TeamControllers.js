@@ -4,75 +4,81 @@ const models = require("../models");
 // afficher l'ensemble des équipes
 
 const getTeams = (req, res) => {
+  const { company_id } = req.params;
   models.team
-    .getAllTeams()
+    .getAllTeams(company_id)
     .then(([result]) => {
-      if (result.length > 0) {
+      if (result.length) {
         res.status(200).json(result);
       } else {
-        res.sendStatus(404).send("Not Found");
+        res.sendStatus(404);
       }
     })
     .catch((err) => {
       console.error(err.message);
-      res.status(500).send("Error retrieving data from the database");
+      res.sendStatus(500);
     });
 };
 
 // afficher une équipe
 
 const getTeam = (req, res) => {
+  const { team_id, company_id } = req.params;
   models.team
-    .getOneTeams()
+    .getOneTeam(team_id, company_id)
     .then(([result]) => {
       if (result.length > 0) {
         res.status(200).json(result);
       } else {
-        res.sendStatus(404).send("Not Found");
+        res.sendStatus(404);
       }
     })
     .catch((err) => {
       console.error(err.message);
-      res.status(500).send("Error retrieving data from the database");
+      res.sendStatus(500);
     });
 };
 
 // afficher l'ensemble des membres d'une équipe
 
 const getUsersTeam = (req, res) => {
+  const { team_id } = req.query;
   models.team
-    .getUsersByTeam()
+    .getUsersByTeamId(team_id)
     .then(([result]) => {
-      if (result.length > 0) {
+      if (result.length) {
         res.status(200).json(result);
       } else {
-        res.sendStatus(404).send("Not Found");
+        res.sendStatus(404);
       }
     })
     .catch((err) => {
       console.error(err.message);
-      res.status(500).send("Error retrieving data from the database");
-    });
-}; // récuperer les équipes d'un utilisateur
-const getTeamByUserId = (req, res) => {
-  const { user_id } = req.query;
-  models.user
-    .getTeamsById(user_id)
-    .then(([result]) => {
-      if (result.length > 0) {
-        res.status(200).json(result);
-      } else {
-        res.status(404).send("Not found");
-      }
-    })
-    .catch((err) => {
-      console.error(err.message);
-      res.status(500).send("Error retrieving data from the database");
+      res.sendStatus(500);
     });
 };
 
-// créer uen équipe
+// récuperer les équipes d'un utilisateur
+const getTeamsUser = (req, res) => {
+  const { user_id } = req.query;
+  models.team
+    .getTeamsByUserId(user_id)
+    .then(([result]) => {
+      if (result.length) {
+        res.status(200).json(result);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
+};
+
+// créer une équipe
 const createTeam = (req, res) => {
+  const { company_id } = req.params;
   const {
     name,
     is_private,
@@ -91,18 +97,21 @@ const createTeam = (req, res) => {
       description,
       objective,
       status,
-      user_id
+      user_id,
+      company_id
     )
     .then(([result]) => {
-      if (result.insertId) {
-        res.location(`/:company_id/teams/${result.insertId}`).sendStatus(201);
+      if (result.affectedRows) {
+        res
+          .location(`/companies/${company_id}/teams/${result.insertId}`)
+          .sendStatus(201);
       } else {
-        res.sendStatus(404).send("Not Found");
+        res.sendStatus(404);
       }
     })
     .catch((error) => {
       console.error(error);
-      res.sendStatus(500).send("error");
+      res.sendStatus(500);
     });
 };
 
@@ -111,83 +120,96 @@ const addUserTeam = (req, res) => {
   const { user_id, team_id } = req.body;
 
   models.team
-    .postUserByTeam(user_id, team_id)
+    .addUserByTeam(user_id, team_id)
     .then(([result]) => {
       if (result.insertId) {
         res
-          .location(`/:company_id/:team_id/members/${result.insertId}`)
+          .location(
+            `/companies/${company_id}/teams/${team_id}/users/${result.insertId}`
+          )
           .sendStatus(201);
       } else {
-        res.sendStatus(404).send("Not Found");
+        res.sendStatus(404);
       }
     })
     .catch((error) => {
       console.error(error);
-      res.sendStatus(500).send("error");
+      res.sendStatus(500);
     });
 };
 
 // modifier une equipe
 const updateProfileTeam = (req, res) => {
-  const { id } = req.params;
+  const { team_id } = req.params;
   const { name, is_private, picture_url, description, objective, status } =
     req.body;
 
   models.team
     .updateTeam(
-      id,
       name,
       is_private,
       picture_url,
       description,
       objective,
       status,
-      id
+      team_id
     )
     .then(([result]) => {
       if (result.affectedRows === 0) {
-        res.status(404).send("Not found");
+        res.sendStatus(404);
       } else {
         res.sendStatus(204);
       }
     })
     .catch((err) => {
       console.error(err.message);
-      res.status(500).send("Error updating team");
+      res.sendStatus(500);
     });
 };
 
 // supprimer une équipe
 
 const eraseTeam = (req, res) => {
-  const { id } = req.params;
-  models.team.deleteTeam(id).then(([result]) => {
-    if (result.affectedRows > 0) {
-      res.sendStatus(204);
-    } else {
-      res.sendStatus(404).send("Not Found");
-    }
-  });
+  const { team_id } = req.params;
+  models.team
+    .deleteTeam(team_id)
+    .then(([result]) => {
+      if (result.affectedRows) {
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
 };
 
 // supprimer un membre d'une équipe
 
 const eraseUserTeam = (req, res) => {
-  const { user_id } = req.params;
-  models.team.deleteUserFromTeam(user_id).then(([result]) => {
-    if (result.affectedRows > 0) {
-      res.sendStatus(204);
-    } else {
-      res.sendStatus(404).send("Not Found");
-    }
-  });
+  const { user_id, team_id } = req.params;
+  models.team
+    .deleteUserFromTeam(user_id, team_id)
+    .then(([result]) => {
+      if (result.affectedRows) {
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
 };
 
 module.exports = {
   getTeams,
   getTeam,
   getUsersTeam,
-  getTeamByUserId,
+  getTeamsUser,
   createTeam,
   addUserTeam,
   updateProfileTeam,

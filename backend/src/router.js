@@ -11,25 +11,37 @@ router.get("/", (req, res) => {
 });
 // routes utilisateur
 
-router.get("/:company_id/users", userControllers.getUsers);
-router.get("/:company_id/:user_id", userControllers.getUser);
-router.post("/:company_id/users", userControllers.createUser);
-router.put("/:user_id", userControllers.updateProfileUser);
-router.delete("/:user_id", userControllers.eraseUser);
+router.get(`/companies/:company_id/users`, userControllers.getUsers);
+router.get(`/companies/:company_id/users/:user_id`, userControllers.getUser);
+router.post(`/companies/:company_id/users`, userControllers.createUser);
+router.put(
+  `/companies/:company_id/users/:user_id`,
+  userControllers.updateProfileUser
+);
+router.delete(
+  `/companies/:company_id/users/:user_id`,
+  userControllers.eraseUser
+);
 
 // routes Team
-router.get("/:company_id/teams", teamControllers.getTeams);
-router.get("/:company_id/teams/:team_id", teamControllers.getTeam);
-router.get("/:company_id/:team_id/members", teamControllers.getUsersTeam);
-router.get("/:company_id/:user_id/teams", teamControllers.getTeamByUserId);
-router.post("/:company_id/teams", teamControllers.createTeam);
-router.post("/:company_id/:team_id/members:", teamControllers.addUserTeam);
-router.put("/:company_id/teams/:team_id", teamControllers.updateProfileTeam);
-router.delete("/:computer_id/teams/:team_id", teamControllers.eraseTeam);
-router.delete(
-  "/:computer_id/:team_id/members/:user_id",
-  teamControllers.eraseUserTeam
+router.get(`/companies/:company_id/teams`, teamControllers.getTeams);
+router.get(`/companies/:company_id/teams/:team_id`, teamControllers.getTeam);
+router.get(
+  `/companies/:company_id/teams/:team_id/users`,
+  teamControllers.getUsersTeam
 );
+router.get(
+  `/companies/:company_id/users/:user_id/teams`,
+  teamControllers.getTeamsUser
+);
+router.post(`/companies/:company_id/teams`, teamControllers.createTeam);
+router.post(
+  `/companies/:company_id/teams/:team_id/users`,
+  teamControllers.addUserTeam
+);
+router.put(`/teams/:team_id`, teamControllers.updateProfileTeam);
+router.delete(`/teams/:team_id`, teamControllers.eraseTeam);
+router.delete(`teams/:team_id/users/:user_id`, teamControllers.eraseUserTeam);
 
 router.get("/items", itemControllers.browse);
 router.get("/items/:id", itemControllers.read);

@@ -9,59 +9,78 @@ class TeamManager extends AbstractManager {
   }
 
   // récupérer toutes les équipes
-  getAllTeams() {
+  getAllTeams(company_id) {
     return this.database.query(
-      `SELECT ${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status FROM ${this.table}`
+      `SELECT ${this.table}.id,${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status FROM ${this.table}
+      JOIN company ON company.id=${this.table}.company_id 
+      WHERE ${this.table}.company_id=? `,
+      [company_id]
     );
   }
 
   // récupérer une équipe
-  getOneTeam() {
+  getOneTeam(team_id, company_id) {
     return this.database.query(
       `SELECT ${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status
-     FROM ${this.table} where id = ?`,
-      [id]
+     FROM ${this.table}
+     JOIN company ON company.id=${this.table}.company_id 
+      where ${this.table}.id = ? AND company.id= ?`,
+      [team_id, company_id]
     );
   }
 
   // récuperer l'ensemble des membres d'une équipe
-  getUsersbyTeam() {
+  getUsersByTeamId(team_id) {
     return this.database.query(
-      `SELECT u.id, u.firstname, u.lastname FROM user u RIGHT JOIN team_has_user thu ON thu.user_id = u.id WHERE thu.team_id = ?;`,
-      [user_id]
+      `SELECT u.id, u.firstname, u.lastname, u.picture_url, u.email, thu.joining_date
+       FROM user u
+       JOIN team_has_user thu ON u.id = thu.user_id
+       WHERE thu.team_id = ?`,
+      [team_id]
     );
   }
 
   // récupérer toutes les teams d'un membre
-  getTeamsByUser() {
+  getTeamsByUserId(user_id) {
     return this.database.query(
-      `SELECT ${this.table}.name, ${this.table}.creation_date,${this.table}.is_private, ${this.table}.picture_url, ${this.table}.description, ${this.table}.objective,${this.table}.status FROM ${this.table} RIGHT JOIN team_has_user thu ON ${this.table}.id = thu.team_id WHERE thu.user_id = ?;`,
+      `SELECT ${this.table}.name,${this.table}.is_private, ${this.table}.picture_url, ${this.table}.description, ${this.table}.objective,${this.table}.status,thu.joining_date
+       FROM ${this.table} 
+       JOIN team_has_user thu ON ${this.table}.id = thu.team_id
+       WHERE thu.user_id = ?`,
       [user_id]
     );
   }
 
   // créer une équipe
 
-  postTeam() {
+  postTeam(
+    name,
+    is_private,
+    picture_url,
+    description,
+    objective,
+    status,
+    user_id,
+    company_id
+  ) {
     return this.database.query(
-      `INSERT INTO ${this.table} (name, is_private, picture_url, description, objective, status, user_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO ${this.table} (name, is_private, picture_url, description, objective, status, user_id, company_id)
+         VALUES (?,?, ?, ?, ?, ?, ?, ?);`,
       [
-        // eslint-disable-next-line no-restricted-globals
         name,
-        isPrivate,
-        pictureUrl,
+        is_private,
+        picture_url,
         description,
         objective,
-        // eslint-disable-next-line no-restricted-globals
         status,
-        user_Id,
+        user_id,
+        company_id,
       ]
     );
   }
 
   // ajouter des membres à une equipe
-  postUserByTeam() {
+  addUserByTeam(user_id, team_id) {
     return this.database.query(
       `INSERT INTO team_has_user (user_id,team_id)
         VALUES (?, ?)`,
@@ -70,20 +89,28 @@ class TeamManager extends AbstractManager {
   }
 
   // modifier une equipe
-  updateTeam() {
+  updateTeam(
+    name,
+    is_private,
+    picture_url,
+    description,
+    objective,
+    status,
+    id
+  ) {
     return this.database.query(
-      `UPDATE ${this.table} SET name = ?, is_private = ?,picture_url = ?, description = ?,objective = ?,status = ? WHERE id = ?`,
+      `UPDATE ${this.table} SET name = ?, is_private = ?,picture_url = ?, description = ?,objective = ?, status = ? WHERE id = ?`,
       [name, is_private, picture_url, description, objective, status, id]
     );
   }
   // supprimer une equipe
 
-  deleteTeam() {
+  deleteTeam(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
   }
 
   // supprimer des membres d'une equipe
-  deleteUserFromTeam() {
+  deleteUserFromTeam(user_id, team_id) {
     return this.database.query(
       `DELETE FROM team_has_user WHERE user_id = ? AND team_id=?`,
       [user_id, team_id]

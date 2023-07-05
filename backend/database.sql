@@ -34,9 +34,6 @@ CREATE TABLE IF NOT EXISTS `user` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
-
-
 -- CREATING COMPANY TABLE
 DROP TABLE IF EXISTS `company`;
 
@@ -53,8 +50,6 @@ CREATE TABLE IF NOT EXISTS `company` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
-
 -- CREATING CONTRACT TABLE
 DROP TABLE IF EXISTS `contract`;
 
@@ -66,8 +61,6 @@ CREATE TABLE IF NOT EXISTS `contract` (
   `expiration_date` DATETIME NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
-
-
 
 -- CREATING TEAM TABLE
 DROP TABLE IF EXISTS `team`;
@@ -82,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `team` (
   `objective` VARCHAR(255) NULL,
   `status` VARCHAR(45) NULL,
   `user_id` INT NOT NULL,
+  `company_id` INT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -96,9 +90,10 @@ CREATE TABLE IF NOT EXISTS `workspace` (
   `description` VARCHAR(255) NULL,
   `is_private` TINYINT NOT NULL DEFAULT 0,
   `team_id` INT NULL,
+  `user_id` INT NOT NULL,
+  `company_id` INT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
-
 
 -- CREATING IDEAS GROUP TABLE
 DROP TABLE IF EXISTS `ideas_group`;
@@ -112,21 +107,20 @@ CREATE TABLE IF NOT EXISTS `ideas_group` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
 -- CREATING IDEA TABLE
 DROP TABLE IF EXISTS `idea`;
 
 CREATE TABLE IF NOT EXISTS `idea` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `parent_idea_id` INT NULL,
-  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_date` DATETIME NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `description` MEDIUMTEXT NULL,
   `status` VARCHAR(45) NOT NULL DEFAULT 'published',
   `x_coordinate` INT NULL,
   `y_coordinate` INT NULL,
   `color_id` INT NOT NULL,
-  `company_id` INT NULL,
+  `company_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `workspace_id` INT NOT NULL,
   `ideas_group_id` INT NULL,
@@ -136,15 +130,13 @@ CREATE TABLE IF NOT EXISTS `idea` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
-
 -- CREATING FILE TABLE
 DROP TABLE IF EXISTS `file`;
 
 CREATE TABLE IF NOT EXISTS `file` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL,
-  `import_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `import_date` DATETIME NOT NULL,
   `type` VARCHAR(45) NULL,
   `url` LONGTEXT NOT NULL,
   `idea_id` INT NOT NULL,
@@ -152,14 +144,13 @@ CREATE TABLE IF NOT EXISTS `file` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-
 -- CREATING COMMENT TABLE
 DROP TABLE IF EXISTS `comment`;
 
 CREATE TABLE IF NOT EXISTS `comment` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `content` MEDIUMTEXT NULL,
-  `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `creation_date` DATETIME NOT NULL,
   `idea_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`)
@@ -170,12 +161,11 @@ DROP TABLE IF EXISTS `liked`;
 
 CREATE TABLE IF NOT EXISTS `liked` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date` DATETIME NULL,
   `idea_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
-
 
 -- CREATING CATEGORY TABLE
 DROP TABLE IF EXISTS `category`;
@@ -211,10 +201,9 @@ DROP TABLE IF EXISTS `team_has_user`;
 CREATE TABLE IF NOT EXISTS `team_has_user` (
   `team_id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `joining_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `joining_date` DATETIME NULL,
   `is_favorite_team` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
-
 
 -- CREATING CATEGORY HAS IDEA TABLE
 DROP TABLE IF EXISTS `category_has_idea`;
@@ -223,7 +212,6 @@ CREATE TABLE IF NOT EXISTS `category_has_idea` (
   `category_id` INT NOT NULL,
   `idea_id` INT NOT NULL
 ) ENGINE = InnoDB;
-
 
 -- CREATING USER HAS COMPANY TABLE
 DROP TABLE IF EXISTS `user_has_company`;
@@ -236,7 +224,6 @@ CREATE TABLE IF NOT EXISTS `user_has_company` (
   `is_company_admin` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
 
-
 -- CREATING WORKSPACE HAS USER TABLE
 DROP TABLE IF EXISTS `workspace_has_user`;
 
@@ -245,7 +232,6 @@ CREATE TABLE IF NOT EXISTS `workspace_has_user` (
   `user_id` INT NOT NULL,
   `is_favorite_workspace` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
-
 
 -- -------------------------------------------------------
 -- CREATING FOREIGN KEYS
@@ -272,13 +258,19 @@ ADD
 ALTER TABLE
   `team`
 ADD
-  CONSTRAINT `fk_team_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+  CONSTRAINT `fk_team_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+ADD
+  CONSTRAINT `fk_team_company` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`);
 
--- WORKSPACE TEAM
+-- WORKSPACE 
 ALTER TABLE
   `workspace`
 ADD
-  CONSTRAINT `fk_workspace_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`);
+  CONSTRAINT `fk_workspace_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE,
+ADD
+  CONSTRAINT `fk_workspace_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+ADD
+  CONSTRAINT `fk_workspace_company` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`);
 
 -- IDEA GROUP
 ALTER TABLE
@@ -300,7 +292,7 @@ ADD
 ADD
   CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`),
 ADD
-  CONSTRAINT `fk_idea_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
+  CONSTRAINT `fk_idea_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_idea_file` FOREIGN KEY (`file_id`) REFERENCES `file` (`id`);
 
@@ -348,7 +340,7 @@ ADD
 ALTER TABLE
   `team_has_user`
 ADD
-  CONSTRAINT `fk_team_has_user_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
+  CONSTRAINT `fk_team_has_user_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_team_has_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -416,6 +408,15 @@ VALUES
     'Jean',
     'Dupont',
     'jeandupont@example.com',
+    'hello',
+    1,
+    1
+  ),
+
+  (
+    'Jacouille',
+    'lafripouille',
+    'monsieurouille@example.com',
     'hello',
     1,
     1
@@ -510,23 +511,67 @@ VALUES
   );
 
 INSERT INTO
-  `user` (`firstname`, `lastname`, `email`, `password`, `phone_number`, `picture_url`, `is_salesforce_admin`, `creation_date`, `color_id`, `has_accepted_invitation`)
+  `user` (
+    `firstname`,
+    `lastname`,
+    `email`,
+    `password`,
+    `phone_number`,
+    `picture_url`,
+    `is_salesforce_admin`,
+    `creation_date`,
+    `color_id`,
+    `has_accepted_invitation`
+  )
 VALUES
-  ('Guillaume', 'Cabernac', 'guigui12truite@me.com', 'admin123', '0478950000', 'https://unsplash.com/fr/photos/une-figurine-de-chat-assise-sur-une-chaise-Sv527La47lY', 0, '2023-06-21 15:37:12', 1, 1),
-  ('Alice', 'Johnson', 'alice.johnson@example.com', 'qwerty', '+987654321', 'https://example.com/profile.jpg', 1, '2023-06-21 14:45:00', NULL, 1),
-  ('Bob', 'Brown', 'bob.brown@example.com', 'pass123', '+555555555', NULL, 0, '2023-06-21 15:15:00', NULL, 0),
-  ('Jane', 'Smith', 'jane.smith@example.com', 'abc123', NULL, NULL, 0, '2023-06-21 13:30:00', 2, 0);
-
-INSERT INTO
- `user`(`firstname`,`lastname`,`email`,`password`,`phone_number`,`picture_url`,`is_salesforce_admin`,`has_accepted_invitation`)
-
- VALUES 
- ("jeannot","lapin","lapinou@email.fr","1234","0606060606", "https://content.ribambel.com/wp-content/uploads/2017/11/28498-le-lapin-nain-est-un-animal-calin-joueu-v2_article_big-3.jpeg",0,1 ),
- ("Brittany","Caldwell","brittany.caldwell@example.com","hello","0606060606", "https://randomuser.me/api/portraits/med/women/39.jpg",0,1),
-("Budimir","Bassa","budimir.bassa@example.com","25ddde66","0606060606", "https://randomuser.me/api/portraits/med/men/6.jpg",0,1 ),
-("Rose","Gutierrez","rose.gutierrez@example.com","qdqdqdz","0606060606", "https://randomuser.me/api/portraits/med/women/89.jpg",0,1 ),
-("Scott","Caldwell","scott.caldwell@example.com","65ddddzqfd","0606060606", "https://randomuser.me/api/portraits/med/men/61.jpg",0,1 );
-
+  (
+    'Guillaume',
+    'Cabernac',
+    'guigui12truite@me.com',
+    'admin123',
+    '0478950000',
+    'https://unsplash.com/fr/photos/une-figurine-de-chat-assise-sur-une-chaise-Sv527La47lY',
+    0,
+    '2023-06-21 15:37:12',
+    1,
+    1
+  ),
+  (
+    'Alice',
+    'Johnson',
+    'alice.johnson@example.com',
+    'qwerty',
+    '+987654321',
+    'https://example.com/profile.jpg',
+    1,
+    '2023-06-21 14:45:00',
+    NULL,
+    1
+  ),
+  (
+    'Bob',
+    'Brown',
+    'bob.brown@example.com',
+    'pass123',
+    '+555555555',
+    NULL,
+    0,
+    '2023-06-21 15:15:00',
+    NULL,
+    0
+  ),
+  (
+    'Jane',
+    'Smith',
+    'jane.smith@example.com',
+    'abc123',
+    NULL,
+    NULL,
+    0,
+    '2023-06-21 13:30:00',
+    2,
+    0
+  );
 
 -- COMPANIES
 INSERT INTO
@@ -572,233 +617,427 @@ VALUES
     1
   );
 
-INSERT INTO `company` (`name`, `baseline`, `siret`, `type`, `sector`, `logo_url`, `creation_date`, `color_id`) 
-VALUES 
-  ('ABC Corporation', 'Building a better future', '123456789', 'Public', 'Technology', 'https://example.com/logo1.png', '2022-01-15 09:30:00', 3),
-  ('XYZ Corporation', 'Innovating for a better tomorrow', '987654321', 'Private', 'Engineering', 'https://example.com/logo2.png', '2022-03-10 14:45:00', 2),
-  ('123 Industries', 'Quality products for every need', '9876543210', 'Private', 'Manufacturing', 'https://example.com/logo3.png', '2022-06-05 11:20:00', 4);
-
-
-INSERT INTO `company` (`name`, `baseline`, `siret`, `type`, `sector`, `logo_url`, `creation_date`, `color_id`) 
-VALUES 
-  ('Microsoft', 'Blablablaaaa', '123456789', 'Public', 'Technology', 'https://example.com/logo1.png', '2022-01-15 09:30:00', 3),
-  ('Google', 'Innovating for a better tomorrow', '987654321', 'Private', 'Engineering', 'https://example.com/logo2.png', '2022-03-10 14:45:00', 2),
-  ('Wild Code School', 'Quality products for every need', '9876543210', 'Private', 'Manufacturing', 'https://example.com/logo3.png', '2022-06-05 11:20:00', 4);
-
+INSERT INTO
+  `company` (
+    `name`,
+    `baseline`,
+    `siret`,
+    `type`,
+    `sector`,
+    `logo_url`,
+    `creation_date`,
+    `color_id`
+  )
+VALUES
+  (
+    'ABC Corporation',
+    'Building a better future',
+    '123456789',
+    'Public',
+    'Technology',
+    'https://example.com/logo1.png',
+    '2022-01-15 09:30:00',
+    3
+  ),
+  (
+    'XYZ Corporation',
+    'Innovating for a better tomorrow',
+    '987654321',
+    'Private',
+    'Engineering',
+    'https://example.com/logo2.png',
+    '2022-03-10 14:45:00',
+    2
+  ),
+  (
+    '123 Industries',
+    'Quality products for every need',
+    '9876543210',
+    'Private',
+    'Manufacturing',
+    'https://example.com/logo3.png',
+    '2022-06-05 11:20:00',
+    4
+  );
 
 -- CONTRACT
-
-INSERT INTO 
-  `contract` (`company_id`, `name`, `creation_date`, `expiration_date`)
-VALUES 
-(1, 'Contract 1', '2023-06-21 12:00:00', '2024-06-21 12:00:00'),
-(2, 'Contract 2', '2023-06-21 13:30:00', NULL),
-(3, 'Contract 3', '2023-06-21 14:45:00', '2025-06-21 12:00:00');
-
-INSERT INTO 
-  `contract` (`company_id`, `name`, `creation_date`, `expiration_date`)
-VALUES 
-(1, 'mensuelle', '2023-06-21 12:00:00', '2023-07-21 12:00:00'),
-(2, 'annuelle', '2023-06-21 13:30:00','2024-06-21 13:30:00' ),
-(3, 'à vie', '2023-06-21 14:45:00', NULL);
-
+INSERT INTO
+  `contract` (
+    `company_id`,
+    `name`,
+    `creation_date`,
+    `expiration_date`
+  )
+VALUES
+  (
+    1,
+    'Contract 1',
+    '2023-06-21 12:00:00',
+    '2024-06-21 12:00:00'
+  ),
+  (2, 'Contract 2', '2023-06-21 13:30:00', NULL),
+  (
+    3,
+    'Contract 3',
+    '2023-06-21 14:45:00',
+    '2025-06-21 12:00:00'
+  );
 
 -- TEAM
-
-INSERT INTO 
-  `team` (`name`, `creation_date`, `is_private`, `picture_url`, `description`, `objective`, `status`, `user_id`)
-VALUES 
-('La team1', '2023-06-21 12:00:00', 1, 'https://example.com/team1.jpg', 'Description of Team 1', 'Objective of Team 1', 'Active', 1),
-('Team 2', '2023-06-21 13:30:00', 0, NULL, 'Description of Team 2', 'Objective of Team 2', 'Inactive', 2),
-('Team 3', '2023-06-21 14:45:00', 0, 'https://example.com/team3.jpg', 'Description of Team 3', 'Objective of Team 3', 'Active', 1),
-('Team 4', '2023-06-21 15:15:00', 1, NULL, NULL, NULL, 'Active', 3);
-
 INSERT INTO
-`team`(`name`,`color_id`,`company_id`)
- VALUES
-("coffee_team",1,1),
-("afterworks",2,2),
-("better dispatching tasks",3,1),
-("co-working",4,3);
-
+  `team` (
+    `name`,
+    `creation_date`,
+    `is_private`,
+    `picture_url`,
+    `description`,
+    `objective`,
+    `status`,
+    `user_id`,
+    `company_id`
+  )
+VALUES
+  (
+    'La team1',
+    '2023-06-21 12:00:00',
+    1,
+    'https://example.com/team1.jpg',
+    'Description of Team 1',
+    'Objective of Team 1',
+    'Active',
+    1,
+    1
+  ),
+   (
+    'Team 1 rebirth',
+    '2023-06-21 12:00:00',
+    0,
+    'https://example.com/team1.jpg',
+    'Description of Team 1',
+    'Objective of Team 1 rebirth',
+    'Active',
+    1,
+    1
+  ),
+  (
+    'Team 2',
+    '2023-06-21 13:30:00',
+    0,
+    NULL,
+    'Description of Team 2',
+    'Objective of Team 2',
+    'Inactive',
+    2,
+    1
+  ),
+  (
+    'Team 3',
+    '2023-06-21 14:45:00',
+    0,
+    'https://example.com/team3.jpg',
+    'Description of Team 3',
+    'Objective of Team 3',
+    'Active',
+    1,
+    1
+  ),
+  (
+    'Team 4',
+    '2023-06-21 15:15:00',
+    1,
+    NULL,
+    NULL,
+    NULL,
+    'Active',
+    3,
+    1
+  );
 
 --  WORKSPACE 
-
-INSERT INTO 
-  `workspace` (`name`, `creation_date`, `update_date`, `description`, `is_private`, `team_id`)
-VALUES 
-('Workspace 1', '2023-06-21 12:00:00', '2023-06-21 14:30:00', 'Description of Workspace 1', 1, 1),
-('Workspace 2', '2023-06-21 13:30:00', '2023-06-21 16:45:00', 'Description of Workspace 2', 0, NULL),
-('Workspace 3', '2023-06-21 14:45:00', '2023-06-21 18:15:00', NULL, 0, 2),
-('Workspace 4', '2023-06-21 15:15:00', '2023-06-21 19:30:00', 'Description of Workspace 4', 0, 1);
-
+INSERT INTO
+  `workspace` (
+    `name`,
+    `company_id`,
+    `creation_date`,
+    `update_date`,
+    `description`,
+    `is_private`,
+    `team_id`,
+    `user_id`
+  )
+VALUES
+  (
+    'Workspace 1',
+    1,
+    '2023-06-21 12:00:00',
+    '2023-06-21 14:30:00',
+    'Description of Workspace 1',
+    1,
+    1,
+    1
+  ),
+  (
+    'Workspace 2',
+    2,
+    '2023-06-21 13:30:00',
+    '2023-06-21 16:45:00',
+    'Description of Workspace 2',
+    0,
+    NULL,
+    2
+  ),
+  (
+    'Workspace 3',
+    1,
+    '2023-06-21 14:45:00',
+    '2023-06-21 18:15:00',
+    NULL,
+    0,
+    2,
+    3
+  ),
+  (
+    'Workspace 4',
+    4,
+    '2023-06-21 15:15:00',
+    '2023-06-21 19:30:00',
+    'Description of Workspace 4',
+    0,
+    1,
+    4
+  );
 
 --  IDEAS GROUP 
-
-INSERT INTO 
-  `ideas_group` (`name`, `workspace_id`, `x_coordinate`, `y_coordinate`)
-VALUES 
-('Group 1', 1, 0, 0),
-('Group 2', 2, 50, 150),
-('Group 3', 1, 0, 0),
-('Group 4', 4, 120, 40);
-
-INSERT INTO 
-`ideas_group`(`name`,`workspace_id`,`x_coordinate`, `y_coordinate` )
- VALUES
-("coffee group",1,30,120),
-("afterworks group",1,40,90),
-("better dispatching tasks group",3,120,30),
-("co-working group",4,90,145);
-
+INSERT INTO
+  `ideas_group` (
+    `name`,
+    `workspace_id`,
+    `x_coordinate`,
+    `y_coordinate`
+  )
+VALUES
+  ('Group 1', 1, 0, 0),
+  ('Group 2', 2, 50, 150),
+  ('Group 3', 1, 0, 0),
+  ('Group 4', 4, 120, 40);
 
 --  IDEA 
-
-INSERT INTO 
-`idea` (`parent_idea_id`, `creation_date`, `title`, `description`, `status`, `x_coordinate`, `y_coordinate`, `color_id`, `company_id`, `user_id`, `workspace_id`, `ideas_group_id`, `team_id`, `file_id`, `is_in_board`)
-VALUES
-(NULL, '2023-06-21 12:00:00', 'Idea 1', 'Description of Idea 1', 'published', 100, 200, 1, NULL, 1, 1, NULL, NULL, NULL, 1),
-(4, '2023-06-21 14:45:00', 'Idea 3', 'Description of Idea 3', 'published', 150, 250, 1, NULL, 1, 2, NULL, NULL, NULL, 0),
-(NULL, '2023-06-21 13:30:00', 'Idea 2', NULL, 'published', 300, 400, 2, NULL, 2, 1, NULL, NULL, NULL, 1),
-(NULL, '2023-06-21 15:15:00', 'Idea 4', 'Description of Idea 4', 'published', 500, 600, 3, NULL, 3, 2, NULL, NULL, NULL, 1);
-
-
 INSERT INTO
-`idea`(`creation_date`,`title`,`description`,`status`,`x_coordinate`,`y_coordinate`,`color_id`,`company_id`,`user_id`,`workspace_id`,`ideas_group_id`,`team_id`,`file_id`,`is_in_board`)
- VALUES
-("2023-06-21 12:00:00","open coffee","café a volonté","published",100,200,1,NULL,1,1,NULL,NULL,NULL,1),
-("2023-06-21 14:45:00","wake earlier","venir au travail plus tard","published",150,250,1,NULL,1,2,NULL,NULL,NULL,0),
-("2023-06-21 13:30:00","pause repas","augmenter la durée de la pause repas","published",300,400,2,NULL,2,1,NULL,NULL,NULL,1),
-("2023-06-21 15:15:00","boss get out","et si on virait le patron","published",500,600,3,NULL,3,2,NULL,NULL,NULL,1);
-
+  `idea` (
+    `parent_idea_id`,
+    `creation_date`,
+    `title`,
+    `description`,
+    `status`,
+    `x_coordinate`,
+    `y_coordinate`,
+    `color_id`,
+    `company_id`,
+    `user_id`,
+    `workspace_id`,
+    `ideas_group_id`,
+    `team_id`,
+    `file_id`,
+    `is_in_board`
+  )
+VALUES
+  (
+    NULL,
+    '2023-06-21 12:00:00',
+    'Idea 1',
+    'Description of Idea 1',
+    'published',
+    100,
+    200,
+    1,
+    1,
+    1,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    1
+  ),
+  (
+    4,
+    '2023-06-21 14:45:00',
+    'Idea 3',
+    'Description of Idea 3',
+    'published',
+    150,
+    250,
+    1,
+    1,
+    1,
+    2,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-06-21 13:30:00',
+    'Idea 2',
+    NULL,
+    'published',
+    300,
+    400,
+    2,
+    2,
+    2,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    1
+  ),
+  (
+    NULL,
+    '2023-06-21 15:15:00',
+    'Idea 4',
+    'Description of Idea 4',
+    'published',
+    500,
+    600,
+    3,
+    1,
+    3,
+    2,
+    NULL,
+    NULL,
+    NULL,
+    1
+  );
 
 --  FILE 
-
-INSERT INTO 
-  `file` (`name`, `import_date`, `type`, `url`, `idea_id`, `user_id`)
-VALUES 
-('File 1', '2023-06-21 12:00:00', 'pdf', 'https://example.com/file1.pdf', 1, 1),
-('File 2', '2023-06-21 13:30:00', 'pdf', 'https://example.com/file2.pdf', 2, 2),
-('File 3', '2023-06-21 14:45:00', 'pdf', 'https://example.com/file3.pdf', 3, 1),
-('File 4', '2023-06-21 15:15:00', 'pdf', 'https://example.com/file4.pdf', 4, 3);
-
+INSERT INTO
+  `file` (
+    `name`,
+    `import_date`,
+    `type`,
+    `url`,
+    `idea_id`,
+    `user_id`
+  )
+VALUES
+  (
+    'File 1',
+    '2023-06-21 12:00:00',
+    'pdf',
+    'https://example.com/file1.pdf',
+    1,
+    1
+  ),
+  (
+    'File 2',
+    '2023-06-21 13:30:00',
+    'pdf',
+    'https://example.com/file2.pdf',
+    2,
+    2
+  ),
+  (
+    'File 3',
+    '2023-06-21 14:45:00',
+    'pdf',
+    'https://example.com/file3.pdf',
+    3,
+    1
+  ),
+  (
+    'File 4',
+    '2023-06-21 15:15:00',
+    'pdf',
+    'https://example.com/file4.pdf',
+    4,
+    3
+  );
 
 --  COMMENT 
-
-INSERT INTO `comment` (`content`, `creation_date`, `idea_id`, `user_id`)
-VALUES ('Comment 1', '2023-06-21 12:00:00', 1, 1),
-('Comment 2', '2023-06-21 13:30:00', 2, 2),
-('Comment 3', '2023-06-21 14:45:00', 3, 1),
-('Comment 4', '2023-06-21 15:15:00', 4, 3),
-('Comment 5', '2023-06-21 12:45:00', 3, 5),
-('Comment 6', '2023-06-21 20:15:00', 4, 1);
-
 INSERT INTO
-`comment`(`content`,`creation_date`,`idea_id`,`user_id`)
- VALUES
-("nul comme idée", "2023-06-21 12:00:00", 1, 1),
-("pas faux", "2023-06-21 13:30:00", 1, 2),
-("Super idée", "2023-06-21 14:45:00", 3, 1),
-("sympa", "2023-06-21 15:15:00", 4, 3),
-("je suis pas d accord", "2023-06-21 12:45:00", 3, 5),
-("ok ca me va", "2023-06-21 20:15:00", 4, 1);
-
+  `comment` (`content`, `creation_date`, `idea_id`, `user_id`)
+VALUES
+  ('Comment 1', '2023-06-21 12:00:00', 1, 1),
+  ('Comment 2', '2023-06-21 13:30:00', 2, 2),
+  ('Comment 3', '2023-06-21 14:45:00', 3, 1),
+  ('Comment 4', '2023-06-21 15:15:00', 4, 3),
+  ('Comment 5', '2023-06-21 12:45:00', 3, 5),
+  ('Comment 6', '2023-06-21 20:15:00', 4, 1);
 
 -- LIKE
-
 INSERT INTO
-`liked` (`date`, `idea_id`, `user_id`)
-VALUES 
-('2023-06-21 12:00:00', 1, 1),
-('2023-06-21 13:30:00', 2, 2),
-('2023-06-21 14:45:00', 3, 1),
-('2023-06-21 15:15:00', 4, 3),
-('2023-06-21 12:00:00', 1, 2),
-('2023-06-21 13:30:00', 2, 3),
-('2023-06-21 14:45:00', 3, 6),
-('2023-06-21 15:15:00', 4, 2);
+  `liked` (`date`, `idea_id`, `user_id`)
+VALUES
+  ('2023-06-21 12:00:00', 1, 1),
+  ('2023-06-21 13:30:00', 2, 2),
+  ('2023-06-21 14:45:00', 3, 1),
+  ('2023-06-21 15:15:00', 4, 3),
+  ('2023-06-21 12:00:00', 1, 2),
+  ('2023-06-21 13:30:00', 2, 3),
+  ('2023-06-21 14:45:00', 3, 6),
+  ('2023-06-21 15:15:00', 4, 2);
 
 -- CATEGORY 
-
-INSERT INTO 
-  `category` (`name`, `color_id`, `company_id`)
-VALUES 
-('Category 1', 1, 1),
-('Category 2', 2, 2),
-('Category 3', 3, 1),
-('Category 4', 4, 3);
-
-
 INSERT INTO
-`category`(`name`,`color_id`,`company_id`)
- VALUES
-("RH",1,1),
-("MARKETING",2,2),
-("COMMUNAUTE",3,1),
-("BIEN-ETRE",4,1);
+  `category` (`name`, `color_id`, `company_id`)
+VALUES
+  ('Category 1', 1, 1),
+  ('Category 2', 2, 2),
+  ('Category 3', 3, 1),
+  ('Category 4', 4, 3);
 
 --  TAG 
-  INSERT INTO
-`tag`(`name`,`color_id`,`company_id`)
- VALUES
-("coffee",1,1),
-("workslife",2,2),
-("teambuilding",3,1),
-("grouplife",4,1);
-
-
 --  TAG HAS IDEA 
-
-
-
 --  TEAM HAS USER 
-
-INSERT INTO 
-`team_has_user` (`team_id`, `user_id`, `joining_date`, `is_favorite_team`)
-VALUES 
-(1, 1, '2023-06-21 12:00:00', 1),
-(2, 2, '2023-06-21 13:30:00', 0),
-(3, 2, '2023-06-21 14:45:00', 1),
-(1, 4, '2023-06-21 15:15:00', 0);
-
+INSERT INTO
+  `team_has_user` (
+    `team_id`,
+    `user_id`,
+    `joining_date`,
+    `is_favorite_team`
+  )
+VALUES
+  (1, 1, '2023-06-21 12:00:00', 1),
+  (2, 2, '2023-06-21 13:30:00', 0),
+  (3, 2, '2023-06-21 14:45:00', 1),
+  (1, 4, '2023-06-21 15:15:00', 0);
 
 --  CATEGORY HAS IDEA 
-
-
-INSERT INTO 
-`category_has_idea` (`category_id`, `idea_id`)
-VALUES 
-(1, 1),
-(2, 2),
-(3, 1),
-(2, 4);
-
+INSERT INTO
+  `category_has_idea` (`category_id`, `idea_id`)
+VALUES
+  (1, 1),
+  (2, 2),
+  (3, 1),
+  (2, 4);
 
 --  USER HAS COMPANY 
-
-INSERT INTO 
-`user_has_company` (`user_id`, `company_id`, `biography`, `function`, `is_company_admin`)
-VALUES 
-(1, 1, 'Biography 1', 'Function 1', 1),
-(2, 2, 'Biography 2', 'Function 2', 0),
-(3, 1, 'Biography 3', 'Function 3', 1),
-(4, 4, 'Biography 4', 'Function 4', 0),
-(5, 4, 'Biography 5', 'Function 5', 0);
-
-
+INSERT INTO
+  `user_has_company` (
+    `user_id`,
+    `company_id`,
+    `biography`,
+    `function`,
+    `is_company_admin`
+  )
+VALUES
+  (1, 1, 'Biography 1', 'Function 1', 1),
+  (2, 2, 'Biography 2', 'Function 2', 0),
+  (3, 1, 'Biography 3', 'Function 3', 1),
+  (4, 4, 'Biography 4', 'Function 4', 0),
+  (5, 4, 'Biography 5', 'Function 5', 0);
 
 --  WORKSPACE HAS USER 
-
-
-INSERT INTO 
-`workspace_has_user` (`workspace_id`, `user_id`, `is_favorite_workspace`)
-VALUES 
-(1, 1, 1),
-(2, 2, 0),
-(3, 3, 1),
-(1, 4, 0);
-
-
-
-
+INSERT INTO
+  `workspace_has_user` (
+    `workspace_id`,
+    `user_id`,
+    `is_favorite_workspace`
+  )
+VALUES
+  (1, 1, 1),
+  (2, 2, 0),
+  (3, 3, 1),
+  (1, 4, 0);
 
