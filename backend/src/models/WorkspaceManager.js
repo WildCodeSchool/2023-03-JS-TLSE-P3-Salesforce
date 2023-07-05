@@ -128,31 +128,14 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  updateWorkspaceById(workspace) {
-    const {
-      id,
-      name,
-      isPrivate,
-      pictureUrl,
-      description,
-      objective,
-      status,
-      userId,
-      companyId,
-    } = workspace;
+  updateWorkspaceById(workspaceId, workspace) {
+    const keys = Object.keys(workspace);
+    const values = Object.values(workspace);
+    const valueQuery = keys.map((key) => `${key} = ?`).join(", ");
+
     return this.database.query(
-      `UPDATE ${this.table} SET name = ?, is_private = ?, picture_url = ?, description = ?, objective = ?, status = ?, user_id = ?, company_id = ? WHERE id = ?;`,
-      [
-        name,
-        isPrivate,
-        pictureUrl,
-        description,
-        objective,
-        status,
-        userId,
-        companyId,
-        id,
-      ]
+      `UPDATE ${this.table} SET ${valueQuery} WHERE id = ?;`,
+      [...values, workspaceId]
     );
   }
 
@@ -160,7 +143,7 @@ class WorkspaceManager extends AbstractManager {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?;`, [id]);
   }
 
-  removeWorkspaceUsers(workspaceId, userId) {
+  removeWorkspaceUser(workspaceId, userId) {
     return this.database.query(
       `DELETE FROM workspace_has_user WHERE workspace_id = ? AND user_id = ?;`,
       [workspaceId, userId]

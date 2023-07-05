@@ -276,7 +276,7 @@ ADD
 ALTER TABLE
   `ideas_group`
 ADD
-  CONSTRAINT `fk_ideas_group_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`);
+  CONSTRAINT `fk_ideas_group_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE;
 
 -- IDEA
 ALTER TABLE
@@ -288,7 +288,7 @@ ADD
 ADD
   CONSTRAINT `fk_idea_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
 ADD
-  CONSTRAINT `fk_idea_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`),
+  CONSTRAINT `fk_idea_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`),
 ADD
@@ -300,7 +300,7 @@ ADD
 ALTER TABLE
   `file`
 ADD
-  CONSTRAINT `fk_file_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`),
+  CONSTRAINT `fk_file_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_file_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -308,7 +308,7 @@ ADD
 ALTER TABLE
   `comment`
 ADD
-  CONSTRAINT `fk_comment_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`),
+  CONSTRAINT `fk_comment_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_comment_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -316,7 +316,7 @@ ADD
 ALTER TABLE
   `liked`
 ADD
-  CONSTRAINT `fk_liked_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`),
+  CONSTRAINT `fk_liked_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_liked_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -350,7 +350,7 @@ ALTER TABLE
 ADD
   CONSTRAINT `fk_category_has_idea_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
 ADD
-  CONSTRAINT `fk_category_has_idea_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`);
+  CONSTRAINT `fk_category_has_idea_idea` FOREIGN KEY (`idea_id`) REFERENCES `idea` (`id`) ON DELETE CASCADE;
 
 -- USER HAS COMPANY
 ALTER TABLE
@@ -364,7 +364,7 @@ ADD
 ALTER TABLE
   `workspace_has_user`
 ADD
-  CONSTRAINT `fk_workspace_has_user_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`),
+  CONSTRAINT `fk_workspace_has_user_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE,
 ADD
   CONSTRAINT `fk_workspace_has_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -1039,16 +1039,24 @@ SELECT
   likes.likes_count AS likes_count,
   COUNT(DISTINCT comment.id) AS comments_count,
   GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
-  CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
+  CASE
+    WHEN liked_by_user.idea_id IS NOT NULL THEN true
+    ELSE false
+  END AS is_liked_by_user
 FROM
   idea i
   LEFT JOIN user u ON u.id = i.user_id
   LEFT JOIN (
-    SELECT idea_id, COUNT(*) AS likes_count
-    FROM liked
-    GROUP BY idea_id
+    SELECT
+      idea_id,
+      COUNT(*) AS likes_count
+    FROM
+      liked
+    GROUP BY
+      idea_id
   ) likes ON likes.idea_id = i.id
-  LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = i.id AND liked_by_user.user_id = 2
+  LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = i.id
+  AND liked_by_user.user_id = 2
   LEFT JOIN comment ON comment.idea_id = i.id
   LEFT JOIN category_has_idea chi ON chi.idea_id = i.id
   LEFT JOIN category cat ON cat.id = chi.category_id
@@ -1060,22 +1068,101 @@ GROUP BY
 ORDER BY
   i.id DESC;
 
+SELECT
+  workspace.id,
+  workspace.name,
+  workspace.creation_date,
+  workspace.description,
+  workspace.is_private,
+  COUNT(idea.id) AS total_ideas,
+  COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+FROM
+  workspace
+  INNER JOIN idea ON workspace.id = idea.workspace_id
+  INNER JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
+WHERE
+  workspace_has_user.user_id = 1
+  AND workspace.company_id = 1
+GROUP BY
+  workspace.id,
+  workspace_has_user.workspace_id;
 
 SELECT
-      workspace.id,
-      workspace.name,
-      workspace.creation_date,
-      workspace.description,
-      workspace.is_private,
-      COUNT(idea.id) AS total_ideas,
-      COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+  workspace.id,
+  workspace.name,
+  workspace.creation_date,
+  workspace.description,
+  workspace.is_private,
+  COUNT(DISTINCT idea.id) AS total_ideas,
+  COUNT(DISTINCT workspace_has_user.user_id) AS total_users
+FROM
+  workspace
+  LEFT JOIN idea ON workspace.id = idea.workspace_id
+  LEFT JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
+WHERE
+  workspace.company_id = 1
+  AND workspace_has_user.user_id = 4
+GROUP BY
+  workspace.id;
+
+SELECT
+  workspace.id,
+  workspace.name,
+  workspace.creation_date,
+  workspace.description,
+  workspace.is_private,
+  (
+    SELECT
+      COUNT(DISTINCT idea.id)
     FROM
-      workspace
-      INNER JOIN idea ON workspace.id = idea.workspace_id
-      INNER JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
+      idea
     WHERE
-      workspace_has_user.user_id = 2
-      AND workspace.company_id = 2
-    GROUP BY
-      workspace.id,
-      workspace_has_user.workspace_id;
+      idea.workspace_id = workspace.id
+  ) AS total_ideas,
+  (
+    SELECT
+      COUNT(DISTINCT workspace_has_user.user_id)
+    FROM
+      workspace_has_user
+    WHERE
+      workspace_has_user.workspace_id = workspace.id
+  ) AS total_users
+FROM
+  workspace
+  LEFT JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
+WHERE
+  workspace.company_id = 1
+  AND workspace_has_user.user_id = 2
+GROUP BY
+  workspace.id;
+
+SELECT
+  workspace.id,
+  workspace.name,
+  workspace.creation_date,
+  workspace.description,
+  workspace.is_private,
+  (
+    SELECT
+      COUNT(DISTINCT idea.id)
+    FROM
+      idea
+    WHERE
+      idea.workspace_id = workspace.id
+  ) AS total_ideas,
+  (
+    SELECT
+      COUNT(DISTINCT workspace_has_user.user_id)
+    FROM
+      workspace_has_user
+    WHERE
+      workspace_has_user.workspace_id = workspace.id
+  ) AS total_users
+FROM
+  workspace
+  LEFT JOIN workspace_has_user ON workspace.id = workspace_has_user.workspace_id
+WHERE
+  workspace.company_id = 1
+  AND workspace_has_user.user_id = 2
+GROUP BY
+  workspace.id;

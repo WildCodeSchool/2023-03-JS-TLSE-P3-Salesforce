@@ -64,10 +64,62 @@ const createWorkspace = (req, res) => {
     });
 };
 
+const addUserToWorkspace = (req, res) => {
+  models.workspace
+    .insertUserInWorkspace(req.params.workspace_id, req.params.user_id)
+    .then(([rows]) => {
+      res.send(rows).status(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const updateWorkspace = (req, res) => {
+  models.workspace
+    .updateWorkspaceById(req.params.workspace_id, req.body)
+    .then(([rows]) => {
+      res.send(rows).status(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const deleteWorkspace = (req, res) => {
+  models.workspace
+    .deleteWorkspaceById(req.params.workspace_id)
+    .then(([rows]) => {
+      res.send(rows).status(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const removeWorkspaceUser = (req, res) => {
+  models.workspace
+    .removeWorkspaceUser(req.params.workspace_id, req.params.user_id)
+    .then(([rows]) => {
+      res.send(rows).status(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 module.exports = {
   getTeamWorkspaces,
   getUserWorkspaces,
   getWorkspaceUsers,
   getWorkspaceIdeas,
   createWorkspace,
+  addUserToWorkspace,
+  updateWorkspace,
+  deleteWorkspace,
+  removeWorkspaceUser,
 };

@@ -36,11 +36,31 @@ router.get(
   workspaceControllers.getWorkspaceIdeas
 );
 
+// Create a new workspace and add the creator in the workspace_has_user table
 router.post(
   "/companies/:company_id/workspaces",
   workspaceControllers.createWorkspace
-  //   workspaceControllers.createWorkspaceMiddleware,
-  //   workspaceControllers.addUserToWorkspaceMiddleware
+);
+
+// Add a user to a workspace
+router.post(
+  "/workspaces/:workspace_id/users/:user_id",
+  workspaceControllers.addUserToWorkspace
+);
+
+// Update a workspace
+router.put("/workspaces/:workspace_id", workspaceControllers.updateWorkspace);
+
+// Delete a workspace
+router.delete(
+  "/workspaces/:workspace_id",
+  workspaceControllers.deleteWorkspace
+);
+
+// Delete a user from a workspace
+router.delete(
+  "/workspaces/:workspace_id/users/:user_id",
+  workspaceControllers.removeWorkspaceUser
 );
 
 module.exports = router;
