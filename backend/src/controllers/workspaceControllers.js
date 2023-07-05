@@ -106,7 +106,7 @@ const removeWorkspaceUser = (req, res) => {
   models.workspace
     .removeWorkspaceUser(workspace_id, user_id)
     .then(([rows]) => {
-      res.send(rows).status(204);
+      res.status(204).send(rows);
     })
     .catch((err) => {
       console.error(err);
