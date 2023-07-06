@@ -7,12 +7,79 @@ const itemControllers = require("./controllers/itemControllers");
 const ideaControllers = require("./controllers/ideaControllers");
 const likeControllers = require("./controllers/likeControllers");
 const commentControllers = require("./controllers/commentControllers");
+const userControllers = require("./controllers/userControllers");
+const teamControllers = require("./controllers/teamControllers");
 
 router.get("/items", itemControllers.browse);
 router.get("/items/:id", itemControllers.read);
 router.put("/items/:id", itemControllers.edit);
 router.post("/items", itemControllers.add);
 router.delete("/items/:id", itemControllers.destroy);
+
+router.get("/", (req, res) => {
+  res.send("Bienvenue à toi sur le serveur d'Ideasforces");
+});
+
+// routes utilisateur
+
+// récupérer les users d'une entreprise
+router.get(`/companies/:company_id/users`, userControllers.getUsers);
+
+// récupérer un user d'une société
+router.get(`/companies/:company_id/users/:user_id`, userControllers.getUser);
+
+// ajouter un utilisateur à une entreprise
+router.post(
+  `/companies/:company_id/users/:user_id`,
+  userControllers.insertUser
+);
+
+// mettre à jour un profil utilisateur
+router.put(
+  `/companies/:company_id/users/:user_id`,
+  userControllers.updateUserProfile
+);
+
+// effacer un profil utilisateur
+router.delete(
+  `/companies/:company_id/users/:user_id`,
+  userControllers.deleteUser
+);
+
+// routes Team
+
+// afficher les équipes d'une entreprise
+router.get(`/companies/:company_id/teams`, teamControllers.getTeams);
+
+// afficher une équipe
+router.get(`/companies/:company_id/teams/:team_id`, teamControllers.getTeam);
+
+// afficher les membres d'une équipe
+router.get(`/teams/:team_id/users`, teamControllers.getAllUsersFromTeam);
+
+// afficher les équipes d'un utilisateur
+router.get(`/users/:user_id/teams`, teamControllers.getAllTeamsFromUser);
+
+// créer une équipe
+router.post(`/companies/:company_id/teams`, teamControllers.addTeamOnCompany);
+
+// ajouter un utilisateur dans une équipe
+
+router.post(`/teams/:team_id/users`, teamControllers.addUserOnTeam);
+
+// modifier le profil d'une équipe
+router.put(`/teams/:team_id`, teamControllers.updateTeamProfile);
+
+// supprimer une équipe
+router.delete(
+  `/companies/:company_id/teams/:team_id`,
+  teamControllers.deleteTeamFromCompany
+);
+// supprimer un membre d'une équipe
+router.delete(
+  `/teams/:team_id/users/:user_id`,
+  teamControllers.deleteUserFromTeam
+);
 
 // WORKSPACE
 // Get all workspaces for a team
