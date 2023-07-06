@@ -53,7 +53,7 @@ class IdeaManager extends AbstractManager {
     );
   }
 
-  // celle qui permet de récupérer les idées d'une entreprise est la même que celle qui permet de récupérer les idées d'un user execpté que le where est focalisé sur l'id de l'entreprise
+  // celle qui permet de récupérer les idées d'une entreprise est la même que celle qui permet de récupérer les idées d'un user excepté que le where est focalisé sur l'id de l'entreprise
   getAllIdeasByCompany(companyId, userId) {
     return this.database.query(
       ` SELECT

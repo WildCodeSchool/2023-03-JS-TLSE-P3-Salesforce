@@ -4,10 +4,10 @@ const createLike = (req, res) => {
   models.like
     .postLike(req.params.idea_id, req.params.user_id)
     .then(([result]) => {
-      if (result.affectedRows !== 0) {
-        res.location(`/likes/${result.insertId}`).sendStatus(201);
-      } else {
+      if (result.affectedRows === 0) {
         res.sendStatus(404);
+      } else {
+        res.sendStatus(201);
       }
     })
     .catch((err) => {
