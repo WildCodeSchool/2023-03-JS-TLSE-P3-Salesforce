@@ -29,27 +29,31 @@ pool.getConnection().catch(() => {
 
 const models = {};
 
-const ItemManager = require("./ItemManager");
-
-models.item = new ItemManager();
-models.item.setDatabase(pool);
-
 // WORKSPACE
 const WorkspaceManager = require("./WorkspaceManager");
 
 models.workspace = new WorkspaceManager();
 models.workspace.setDatabase(pool);
 
+// USER
+const UserManager = require("./UserManager");
+
+models.user = new UserManager();
+models.user.setDatabase(pool);
+
+// IDEA
 const IdeaManager = require("./IdeaManager");
 
 models.idea = new IdeaManager();
 models.idea.setDatabase(pool);
 
+// LIKE
 const LikeManager = require("./LikeManager");
 
 models.like = new LikeManager();
 models.like.setDatabase(pool);
 
+// COMMENT
 const CommentManager = require("./CommentManager");
 
 models.comment = new CommentManager();

@@ -2,8 +2,9 @@
 const models = require("../models");
 
 const getTeamWorkspaces = (req, res) => {
+  const { team_id, user_id } = req.params;
   models.workspace
-    .findWorkspaceByTeamId(req.params.team_id)
+    .findWorkspacesByTeamId(team_id, user_id, req.isSalesForceAdmin)
     .then(([rows]) => {
       res.status(200).send(rows);
     })
@@ -55,7 +56,12 @@ const createWorkspace = (req, res) => {
   models.workspace
     .insertWorkspace(req.body, req.params.company_id)
     .then(([rows]) => {
-      models.workspace.insertUserInWorkspace(rows.insertId, req.body.userId);
+      models.workspace
+        .insertUserInWorkspace(rows.insertId, req.body.userId)
+        .catch((err) => {
+          console.error(err);
+          res.sendStatus(500);
+        });
       res.status(201).send(rows);
     })
     .catch((err) => {
