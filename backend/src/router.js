@@ -6,6 +6,9 @@ const workspaceControllers = require("./controllers/workspaceControllers");
 const itemControllers = require("./controllers/itemControllers");
 const userControllers = require("./controllers/UserControllers");
 const teamControllers = require("./controllers/TeamControllers");
+const ideaControllers = require("./controllers/ideaControllers");
+const likeControllers = require("./controllers/likeControllers");
+const commentControllers = require("./controllers/commentControllers");
 
 router.get("/", (req, res) => {
   res.send("Bienvenue à toi sur le serveur d'Ideasforces");
