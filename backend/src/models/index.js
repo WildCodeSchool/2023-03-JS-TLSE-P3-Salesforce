@@ -34,6 +34,7 @@ const ItemManager = require("./ItemManager");
 models.item = new ItemManager();
 models.item.setDatabase(pool);
 
+<<<<<<< HEAD
 const ColorManager = require("./ColorManager");
 
 models.color = new ColorManager();
@@ -48,6 +49,31 @@ const CompanyManager = require("./CompanyManager");
 
 models.company = new CompanyManager();
 models.company.setDatabase(pool);
+=======
+// WORKSPACE
+const WorkspaceManager = require("./WorkspaceManager");
+
+models.workspace = new WorkspaceManager();
+models.workspace.setDatabase(pool);
+
+const IdeaManager = require("./IdeaManager");
+
+models.idea = new IdeaManager();
+models.idea.setDatabase(pool);
+
+const LikeManager = require("./LikeManager");
+
+models.like = new LikeManager();
+models.like.setDatabase(pool);
+
+const CommentManager = require("./CommentManager");
+
+models.comment = new CommentManager();
+models.comment.setDatabase(pool);
+
+// bonus: use a proxy to personalize error message,
+// when asking for a non existing model
+>>>>>>> 23f055df895a7b0379daf3f92c95ba7f5b701916
 
 const handler = {
   get(obj, prop) {

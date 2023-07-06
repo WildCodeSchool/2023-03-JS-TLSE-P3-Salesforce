@@ -21,9 +21,12 @@ export default function Home() {
         </button>
         <HorizontalTabs type="tabs">
           <li className="active">Idées</li>
-          <li>Groupes</li>
+          <li>Équipes</li>
         </HorizontalTabs>
       </PageHeader>
+      <div className="page-actions">
+        <SearchBar />
+      </div>
       <div className="idea-cards-list">
         <IdeaCard />
         <IdeaCard />

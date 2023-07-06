@@ -1,0 +1,70 @@
+@use "../../styles/typography" as *;
+@use "../../styles/shadows" as *;
+
+.search-component {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  .search-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0;
+    gap: 0.5rem;
+    position: relative;
+    min-width: min-content;
+    height: auto;
+    border: 1px solid var(--grey-200);
+    border-radius: 0.4rem;
+    background-color: var(--white);
+    @include shadow("xs");
+    .search-input {
+      @include text("md");
+      border: none;
+      margin: 0.5rem;
+      min-width: 18rem;
+      width: 100%;
+      outline: none;
+      &::placeholder {
+        color: var(--grey-500);
+      }
+    }
+    .fi-rs-search {
+      background-color: var(--white);
+    }
+    .search-search {
+      border: none;
+      border-radius: 8px;
+      color: var(--grey-500);
+      background-color: var(--white);
+      margin: 0.3rem;
+      padding: 0.3em;
+      &:hover {
+        transform: scale(1.1);
+        background-color: var(--primary-100);
+      }
+    }
+  }
+  .search-result {
+    background-color: var(--white);
+    width: max-content;
+    max-height: 12rem;
+    overflow-y: auto;
+    scrollbar-color: var(--primary-600);
+  }
+  .line-result {
+    @include text("md");
+    padding: 0.2rem;
+    &:hover {
+      cursor: pointer;
+      background-color: var(--primary-100);
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .search-component {
+    width: min-content;
+  }
+}
