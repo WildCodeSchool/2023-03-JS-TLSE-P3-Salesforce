@@ -11,37 +11,59 @@ router.get("/", (req, res) => {
 });
 // routes utilisateur
 
+// récupérer les users d'une société
 router.get(`/companies/:company_id/users`, userControllers.getUsers);
+
+// récupérer un user d'une société
 router.get(`/companies/:company_id/users/:user_id`, userControllers.getUser);
-router.post(`/companies/:company_id/users`, userControllers.createUser);
+
+// ajouter un utilisateur à une entreprise
+router.post(
+  `/companies/:company_id/users/:user_id`,
+  userControllers.createUser
+);
+
+// mettre à jour un profil utilisateur
 router.put(
   `/companies/:company_id/users/:user_id`,
   userControllers.updateProfileUser
 );
+
+// effacer un profil utilisateur
 router.delete(
   `/companies/:company_id/users/:user_id`,
   userControllers.eraseUser
 );
 
 // routes Team
+
+// afficher les équipes d'une entreprise
 router.get(`/companies/:company_id/teams`, teamControllers.getTeams);
+
+// afficher une équipe
 router.get(`/companies/:company_id/teams/:team_id`, teamControllers.getTeam);
-router.get(
-  `/companies/:company_id/teams/:team_id/users`,
-  teamControllers.getUsersTeam
-);
-router.get(
-  `/companies/:company_id/users/:user_id/teams`,
-  teamControllers.getTeamsUser
-);
+
+// afficher les membres d'une équipe
+router.get(`/teams/:team_id/users`, teamControllers.getUsersTeam);
+// afficher les équipes d'un utilisateur
+router.get(`/users/:user_id/teams`, teamControllers.getTeamsUser);
+// créer une équipe
 router.post(`/companies/:company_id/teams`, teamControllers.createTeam);
-router.post(
-  `/companies/:company_id/teams/:team_id/users`,
-  teamControllers.addUserTeam
-);
+
+// ajouter un utilisateur dans une équipe, route non fonctionnel ***********
+
+router.post(`/teams/:team_id/users`, teamControllers.addUserTeam);
+
+// modifier le profil d'une équipe
 router.put(`/teams/:team_id`, teamControllers.updateProfileTeam);
-router.delete(`/teams/:team_id`, teamControllers.eraseTeam);
-router.delete(`teams/:team_id/users/:user_id`, teamControllers.eraseUserTeam);
+
+// supprimer une équipe
+router.delete(
+  `/companies/:company_id/teams/:team_id`,
+  teamControllers.eraseTeam
+);
+// supprimer un membre d'une équipe
+router.delete(`/teams/:team_id/users/:user_id`, teamControllers.eraseUserTeam);
 
 router.get("/items", itemControllers.browse);
 router.get("/items/:id", itemControllers.read);

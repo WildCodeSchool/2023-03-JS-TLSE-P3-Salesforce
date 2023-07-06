@@ -38,78 +38,47 @@ const getUser = (req, res) => {
 // ajouter un utilisateur à une entreprise
 
 const createUser = (req, res) => {
-  const { company_id } = req.params;
-  const { firstname, lastname, email, picture_url } = req.body;
+  const { user_id, company_id } = req.params;
   models.user
-    .postUser(firstname, lastname, email, picture_url)
-    .then(([result]) => {
-      if (result.insertId) {
-        res
-          .location(`/companies/${company_id}/users/${result.insertId}`)
-          .sendStatus(201);
+    .postUser(user_id, company_id)
+    .then(([rows]) => {
+      if (rows) {
+        res.sendStatus(201);
       } else {
         res.sendStatus(404);
       }
     })
-    .catch((error) => {
-      console.error(error);
+    .catch((err) => {
+      console.error(err);
       res.sendStatus(500);
     });
 };
 
 // mettre à jour un profil utilisateur
 const updateProfileUser = (req, res) => {
-  const { id } = req.params;
-  const {
-    firstname,
-    lastname,
-    email,
-    password,
-    phone_number,
-    picture_url,
-    is_salesforce_admin,
-    creation_date,
-    color_id,
-    has_accepted_invitation,
-  } = req.body;
-
   models.user
-    .updateUser(
-      firstname,
-      lastname,
-      email,
-      password,
-      phone_number,
-      picture_url,
-      is_salesforce_admin,
-      creation_date,
-      color_id,
-      has_accepted_invitation,
-      id
-    )
-    .then(([result]) => {
-      if (result.affectedRows) {
-        res.sendStatus(204);
-      } else {
-        res.sendStatus(404);
-      }
+    .updateUser(req.params.user_id, req.body)
+    .then(([rows]) => {
+      res.status(204).send(rows);
     })
     .catch((err) => {
-      console.error(err.message);
+      console.error(err);
       res.sendStatus(500);
     });
 };
 
 // effacer un utilisateur
 const eraseUser = (req, res) => {
-  const { id } = req.params;
-  models.user.deleteUser(id).then(([result]) => {
-    if (result.affectedRows) {
-      res.sendStatus(204);
-    } else {
-      res.sendStatus(404);
-    }
-  });
+  const { user_id, company_id } = req.params;
+  models.user
+    .deleteUser(user_id, company_id)
+    .then(([rows]) => {
+      res.status(204).send(rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
 };
 
 module.exports = {

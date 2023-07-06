@@ -30,39 +30,40 @@ class TeamManager extends AbstractManager {
   }
 
   // récuperer l'ensemble des membres d'une équipe
-  getUsersByTeamId(team_id) {
+  getUsersByTeamId(teamId) {
     return this.database.query(
       `SELECT u.id, u.firstname, u.lastname, u.picture_url, u.email, thu.joining_date
        FROM user u
        JOIN team_has_user thu ON u.id = thu.user_id
        WHERE thu.team_id = ?`,
-      [team_id]
+      [teamId]
     );
   }
 
   // récupérer toutes les teams d'un membre
-  getTeamsByUserId(user_id) {
+  getTeamsByUserId(userId) {
     return this.database.query(
-      `SELECT ${this.table}.name,${this.table}.is_private, ${this.table}.picture_url, ${this.table}.description, ${this.table}.objective,${this.table}.status,thu.joining_date
+      `SELECT ${this.table}.id, ${this.table}.name,${this.table}.is_private, ${this.table}.picture_url, ${this.table}.description, ${this.table}.objective,${this.table}.status,thu.joining_date
        FROM ${this.table} 
        JOIN team_has_user thu ON ${this.table}.id = thu.team_id
        WHERE thu.user_id = ?`,
-      [user_id]
+      [userId]
     );
   }
 
   // créer une équipe
 
-  postTeam(
-    name,
-    is_private,
-    picture_url,
-    description,
-    objective,
-    status,
-    user_id,
-    company_id
-  ) {
+  postTeam(team, companyId) {
+    const {
+      name,
+      is_private,
+      picture_url,
+      description,
+      objective,
+      status,
+      userId,
+    } = team;
+
     return this.database.query(
       `INSERT INTO ${this.table} (name, is_private, picture_url, description, objective, status, user_id, company_id)
          VALUES (?,?, ?, ?, ?, ?, ?, ?);`,
@@ -73,47 +74,43 @@ class TeamManager extends AbstractManager {
         description,
         objective,
         status,
-        user_id,
-        company_id,
+        userId,
+        companyId,
       ]
     );
   }
 
   // ajouter des membres à une equipe
-  addUserByTeam(user_id, team_id) {
+  addUserByTeam(userId, teamId) {
     return this.database.query(
       `INSERT INTO team_has_user (user_id,team_id)
         VALUES (?, ?)`,
-      [user_id, team_id]
+      [userId, teamId]
     );
   }
 
   // modifier une equipe
-  updateTeam(
-    name,
-    is_private,
-    picture_url,
-    description,
-    objective,
-    status,
-    id
-  ) {
+  updateTeam(teamId, team) {
+    const keys = Object.keys(team);
+    const values = Object.values(team);
+    const valueQuery = keys.map((key) => `${key} = ?`).join(", ");
+
     return this.database.query(
-      `UPDATE ${this.table} SET name = ?, is_private = ?,picture_url = ?, description = ?,objective = ?, status = ? WHERE id = ?`,
-      [name, is_private, picture_url, description, objective, status, id]
+      `UPDATE ${this.table} SET ${valueQuery} WHERE id = ?;`,
+      [...values, teamId]
     );
   }
-  // supprimer une equipe
+  // supprimer une equipe , route = ok
 
   deleteTeam(id) {
     return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
   }
 
   // supprimer des membres d'une equipe
-  deleteUserFromTeam(user_id, team_id) {
+  deleteUserFromTeam(userId, teamId) {
     return this.database.query(
-      `DELETE FROM team_has_user WHERE user_id = ? AND team_id=?`,
-      [user_id, team_id]
+      `DELETE FROM team_has_user WHERE user_id = ? AND team_id = ?`,
+      [userId, teamId]
     );
   }
 }

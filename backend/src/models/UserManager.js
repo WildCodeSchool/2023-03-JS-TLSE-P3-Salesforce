@@ -10,7 +10,7 @@ class UserManager extends AbstractManager {
   // récupérer tous les utilisateurs
   getAllUsers(company_id) {
     return this.database.query(
-      `SELECT ${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=?`,
+      `SELECT ${this.table}.id,${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=?`,
       [company_id]
     );
   }
@@ -18,57 +18,46 @@ class UserManager extends AbstractManager {
   // récupérer un utilisateur
   getOneUser(company_id, user_id) {
     return this.database.query(
-      `SELECT ${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=? AND ${this.table}.id =?`,
+      `SELECT ${this.table}.id, ${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=? AND ${this.table}.id =?`,
       [company_id, user_id]
     );
   }
 
   // ajouter un utilisateur à une entreprise
-
-  postUser(firstname, lastname, email, picture_url) {
+  postUser(userId, companyId) {
     return this.database.query(
-      `INSERT INTO ${this.table} (firstname, lastname,email,picture_url)
-        VALUES (?,?,?,'',?)`,
-      [firstname, lastname, email, picture_url]
+      `INSERT INTO user_has_company (user_id, company_id) VALUES (?,?);`,
+      [userId, companyId]
     );
   }
 
-  // modifier un utilisateur
-  updateUser(
-    firstname,
-    lastname,
-    email,
-    password,
-    phone_number,
-    picture_url,
-    is_salesforce_admin,
-    creation_date,
-    color_id,
-    has_accepted_invitation,
-    id
-  ) {
-    return this.database.query(
-      `UPDATE ${this.table} SET firstname=?, lastname=?, email=?, password=?, phone_number=?, picture_url=?,is_salesforce_admin=?, creation_date=?, color_id=?,has_accepted_invitation=? WHERE id = ? `,
+  // postUser(firstname, lastname, email, picture_url) {
+  //   return this.database.query(
+  //     `INSERT INTO ${this.table} (firstname, lastname,email,picture_url)
+  //       VALUES (?,?,?,?)`,
+  //     [firstname, lastname, email, picture_url]
+  //   );
+  // }
 
-      [
-        firstname,
-        lastname,
-        email,
-        password,
-        phone_number,
-        picture_url,
-        is_salesforce_admin,
-        creation_date,
-        color_id,
-        has_accepted_invitation,
-        id,
-      ]
+  // modifier un utilisateur
+
+  updateUser(userId, user) {
+    const keys = Object.keys(user);
+    const values = Object.values(user);
+    const valueQuery = keys.map((key) => `${key} = ?`).join(", ");
+
+    return this.database.query(
+      `UPDATE ${this.table} SET ${valueQuery} WHERE id = ?;`,
+      [...values, userId]
     );
   }
 
   // supprimer un utilisateur
-  deleteUser(id) {
-    return this.database.query(`DELETE FROM ${this.table} WHERE id = ?`, [id]);
+  deleteUser(userId, companyId) {
+    return this.database.query(
+      `DELETE FROM user_has_company WHERE user_id = ? AND company_id= ?`,
+      [userId, companyId]
+    );
   }
 }
 module.exports = UserManager;

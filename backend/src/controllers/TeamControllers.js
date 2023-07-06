@@ -42,25 +42,21 @@ const getTeam = (req, res) => {
 // afficher l'ensemble des membres d'une équipe
 
 const getUsersTeam = (req, res) => {
-  const { team_id } = req.query;
+  const { team_id } = req.params;
   models.team
     .getUsersByTeamId(team_id)
-    .then(([result]) => {
-      if (result.length) {
-        res.status(200).json(result);
-      } else {
-        res.sendStatus(404);
-      }
+    .then(([rows]) => {
+      res.status(200).send(rows);
     })
     .catch((err) => {
-      console.error(err.message);
+      console.error(err);
       res.sendStatus(500);
     });
 };
 
-// récuperer les équipes d'un utilisateur
+// afficher les équipes d'un utilisateur
 const getTeamsUser = (req, res) => {
-  const { user_id } = req.query;
+  const { user_id } = req.params;
   models.team
     .getTeamsByUserId(user_id)
     .then(([result]) => {
@@ -78,33 +74,17 @@ const getTeamsUser = (req, res) => {
 
 // créer une équipe
 const createTeam = (req, res) => {
-  const { company_id } = req.params;
-  const {
-    name,
-    is_private,
-    picture_url,
-    description,
-    objective,
-    status,
-    user_id,
-  } = req.body;
+  const { body, params } = req;
+  const { company_id } = params;
 
   models.team
-    .postTeam(
-      name,
-      is_private,
-      picture_url,
-      description,
-      objective,
-      status,
-      user_id,
-      company_id
-    )
+    .postTeam(body, company_id)
     .then(([result]) => {
       if (result.affectedRows) {
         res
           .location(`/companies/${company_id}/teams/${result.insertId}`)
           .sendStatus(201);
+        models.team.addUserByTeam(body.userId, result.insertId);
       } else {
         res.sendStatus(404);
       }
@@ -117,16 +97,15 @@ const createTeam = (req, res) => {
 
 // ajouter un membre à une equipe
 const addUserTeam = (req, res) => {
-  const { user_id, team_id, company_id } = req.body;
+  const { team_id } = req.params;
+  const { userId } = req.body;
 
   models.team
-    .addUserByTeam(user_id, team_id, company_id)
+    .addUserByTeam(userId, team_id)
     .then(([result]) => {
-      if (result.insertId) {
+      if (result) {
         res
-          .location(
-            `/companies/${company_id}/teams/${team_id}/users/${result.insertId}`
-          )
+          .location(`/teams/${team_id}/users/${result.insertId}`)
           .sendStatus(201);
       } else {
         res.sendStatus(404);
@@ -140,29 +119,20 @@ const addUserTeam = (req, res) => {
 
 // modifier une equipe
 const updateProfileTeam = (req, res) => {
-  const { team_id } = req.params;
-  const { name, is_private, picture_url, description, objective, status } =
-    req.body;
+  const { body, params } = req;
+  const { team_id } = params;
 
   models.team
-    .updateTeam(
-      name,
-      is_private,
-      picture_url,
-      description,
-      objective,
-      status,
-      team_id
-    )
-    .then(([result]) => {
-      if (result.affectedRows === 0) {
-        res.sendStatus(404);
+    .updateTeam(team_id, body)
+    .then(([rows]) => {
+      if (rows.affectedRows) {
+        res.status(204).send(rows);
       } else {
-        res.sendStatus(204);
+        res.sendStatus(404);
       }
     })
     .catch((err) => {
-      console.error(err.message);
+      console.error(err);
       res.sendStatus(500);
     });
 };
@@ -192,15 +162,15 @@ const eraseUserTeam = (req, res) => {
   const { user_id, team_id } = req.params;
   models.team
     .deleteUserFromTeam(user_id, team_id)
-    .then(([result]) => {
-      if (result.affectedRows) {
+    .then(([rows]) => {
+      if (rows.affectedRows) {
         res.sendStatus(204);
       } else {
         res.sendStatus(404);
       }
     })
     .catch((err) => {
-      console.error(err.message);
+      console.error(err);
       res.sendStatus(500);
     });
 };
