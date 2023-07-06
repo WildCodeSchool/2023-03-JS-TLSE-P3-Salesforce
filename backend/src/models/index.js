@@ -41,6 +41,21 @@ const UserManager = require("./UserManager");
 models.user = new UserManager();
 models.user.setDatabase(pool);
 
+const IdeaManager = require("./IdeaManager");
+
+models.idea = new IdeaManager();
+models.idea.setDatabase(pool);
+
+const LikeManager = require("./LikeManager");
+
+models.like = new LikeManager();
+models.like.setDatabase(pool);
+
+const CommentManager = require("./CommentManager");
+
+models.comment = new CommentManager();
+models.comment.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 
