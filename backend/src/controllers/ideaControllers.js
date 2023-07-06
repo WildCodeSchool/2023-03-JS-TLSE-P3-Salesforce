@@ -38,7 +38,7 @@ const getAllIdeasByUser = (req, res) => {
 const getAllIdeasByCompany = (req, res) => {
   const { companyId, userId } = req.params;
   models.idea
-    .getAllIdeasByCompany(companyId, userId)
+    .findAllIdeasByCompany(companyId, userId)
     .then(([results]) => {
       if (results.length) {
         res.status(200).json(results);
@@ -52,10 +52,29 @@ const getAllIdeasByCompany = (req, res) => {
     });
 };
 
-const updateIdeaById = (req, res) => {
-  const { company_id, user_id, idea_id } = req.params;
+const getAllIdeasByIdeasGroup = (req, res) => {
   models.idea
-    .update(req.body, company_id, user_id, idea_id)
+    .findAllIdeasByIdeasGroup(req.params.ideas_group_id)
+    .then(([results]) => {
+      if (results.length) {
+        res.status(200).json(results);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+const updateIdeaById = (req, res) => {
+  models.idea
+    .update(
+      req.body,
+      req.params.company_id,
+      req.params.user_id,
+      req.params.idea_id
+    )
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -88,6 +107,7 @@ const deleteIdea = (req, res) => {
 module.exports = {
   getAllIdeasByUser,
   getAllIdeasByCompany,
+  getAllIdeasByIdeasGroup,
   updateIdeaById,
   createIdea,
   deleteIdea,

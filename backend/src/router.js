@@ -109,6 +109,11 @@ router.get(
   verifyToken,
   ideaControllers.getAllIdeasByCompany
 );
+router.get(
+  "/ideasgroup/:ideas_group_id/ideas",
+  verifyToken,
+  ideaControllers.getAllIdeasByIdeasGroup
+);
 
 // Create an idea
 router.post(
@@ -194,4 +199,27 @@ router.delete(
   commentControllers.deleteComment
 );
 
+// IDEAS_GROUP
+const ideasgroupControllers = require("./controllers/ideasgroupControllers");
+
+// Create un new group of ideas in a workspace
+router.post(
+  "/workspaces/:workspace_id/ideasgroup",
+  ideasgroupControllers.createIdeasGroup
+);
+// Get all groups of ideas in a workspace
+router.get(
+  "/workspaces/:workspace_id/ideasgroup",
+  ideasgroupControllers.getAllIdeasGroupByWorkspace
+);
+// Update a group of ideas
+router.put(
+  "/ideasgroup/:ideas_group_id",
+  ideasgroupControllers.updateIdeasGroup
+);
+// Delete a group of ideas
+router.delete(
+  "/ideasgroup/:ideas_group_id",
+  ideasgroupControllers.deleteIdeasGroup
+);
 module.exports = router;
