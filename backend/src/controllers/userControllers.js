@@ -28,8 +28,12 @@ const addUser = (req, res) => {
       res.send(rows);
     })
     .catch((err) => {
-      console.error(err);
-      res.sendStatus(500);
+      if (err.code === "ER_DUP_ENTRY") {
+        res.sendStatus(409);
+      } else {
+        console.error(err);
+        res.sendStatus(500);
+      }
     });
 };
 
