@@ -27,7 +27,7 @@ const getTeam = (req, res) => {
   models.team
     .getOneTeam(team_id, company_id)
     .then(([result]) => {
-      if (result.length > 0) {
+      if (result.length) {
         res.status(200).json(result);
       } else {
         res.sendStatus(404);
@@ -46,7 +46,11 @@ const getAllUsersFromTeam = (req, res) => {
   models.team
     .getUsersByTeamId(team_id)
     .then(([rows]) => {
-      res.status(200).send(rows);
+      if (rows.length) {
+        res.status(200).send(rows);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       console.error(err);

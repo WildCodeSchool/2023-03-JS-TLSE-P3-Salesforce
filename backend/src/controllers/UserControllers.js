@@ -3,8 +3,9 @@ const models = require("../models");
 
 // récupérer l'ensemble des utilisateurs
 const getUsers = (req, res) => {
+  const { company_id } = req.params;
   models.user
-    .getAllUsers(req.params.company_id)
+    .getAllUsers(company_id)
     .then(([result]) => {
       if (result.length) {
         res.status(200).json(result);
@@ -20,8 +21,9 @@ const getUsers = (req, res) => {
 
 // récupérer un utilisateur
 const getUser = (req, res) => {
+  const { user_id, company_id } = req.params;
   models.user
-    .getOneUser(req.params.company_id, req.params.user_id)
+    .getOneUser(company_id, user_id)
     .then(([result]) => {
       if (result.length) {
         res.status(200).json(result);
@@ -56,10 +58,15 @@ const insertUser = (req, res) => {
 
 // mettre à jour un profil utilisateur
 const updateUserProfile = (req, res) => {
+  const { user_id } = req.params;
   models.user
-    .modifyUserProfile(req.params.user_id, req.body)
+    .modifyUserProfile(user_id, req.body)
     .then(([rows]) => {
-      res.status(204).send(rows);
+      if (rows) {
+        res.status(204).send(rows);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       console.error(err);
@@ -73,7 +80,11 @@ const deleteUser = (req, res) => {
   models.user
     .deleteUserProfile(user_id, company_id)
     .then(([rows]) => {
-      res.status(204).send(rows);
+      if (rows) {
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       console.error(err);
