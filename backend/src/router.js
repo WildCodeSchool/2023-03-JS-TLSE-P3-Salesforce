@@ -77,7 +77,6 @@ router.get(
   "/ideasgroup/:ideas_group_id/ideas",
   ideaControllers.getAllIdeasByIdeasGroup
 );
-
 // Create an idea
 router.post(
   "/company/:company_id/users/:user_id/ideas",
