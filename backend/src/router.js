@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const workspaceControllers = require("./controllers/workspaceControllers");
-const itemControllers = require("./controllers/itemControllers");
+const itemControllers = require("./controllers/ItemControllers");
 const ideaControllers = require("./controllers/ideaControllers");
 const likeControllers = require("./controllers/likeControllers");
 const commentControllers = require("./controllers/commentControllers");

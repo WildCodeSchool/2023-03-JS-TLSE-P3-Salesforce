@@ -24,9 +24,7 @@ export default function Home() {
           <li>Équipes</li>
         </HorizontalTabs>
       </PageHeader>
-      <div className="page-actions">
-        <SearchBar />
-      </div>
+      <div className="page-actions" />
       <div className="idea-cards-list">
         <IdeaCard />
         <IdeaCard />
