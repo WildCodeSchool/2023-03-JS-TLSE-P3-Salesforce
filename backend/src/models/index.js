@@ -55,6 +55,11 @@ const CommentManager = require("./CommentManager");
 models.comment = new CommentManager();
 models.comment.setDatabase(pool);
 
+const IdeasGroupManager = require("./IdeasGroupManager");
+
+models.ideasgroup = new IdeasGroupManager();
+models.ideasgroup.setDatabase(pool);
+
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
 

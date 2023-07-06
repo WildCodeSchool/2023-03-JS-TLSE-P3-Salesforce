@@ -7,6 +7,7 @@ const itemControllers = require("./controllers/itemControllers");
 const ideaControllers = require("./controllers/ideaControllers");
 const likeControllers = require("./controllers/likeControllers");
 const commentControllers = require("./controllers/commentControllers");
+const ideasgroupControllers = require("./controllers/ideasgroupControllers");
 
 router.get("/items", itemControllers.browse);
 router.get("/items/:id", itemControllers.read);
@@ -71,6 +72,11 @@ router.delete(
 router.get("/users/:user_id/ideas", ideaControllers.getAllIdeasByUser);
 // Get all ideas for a company
 router.get("/company/:company_id/ideas", ideaControllers.getAllIdeasByCompany);
+// Get all ideas for an ideas_group
+router.get(
+  "/ideasgroup/:ideas_group_id/ideas",
+  ideaControllers.getAllIdeasByIdeasGroup
+);
 
 // Create an idea
 router.post(
@@ -112,4 +118,25 @@ router.post(
 // Delete a comment
 router.delete("/comments/:comment_id", commentControllers.deleteComment);
 
+// IDEAS_GROUP
+// Create un new group of ideas in a workspace
+router.post(
+  "/workspaces/:workspace_id/ideasgroup",
+  ideasgroupControllers.createIdeasGroup
+);
+// Get all groups of ideas in a workspace
+router.get(
+  "/workspaces/:workspace_id/ideasgroup",
+  ideasgroupControllers.getAllIdeasGroupByWorkspace
+);
+// Update a group of ideas
+router.put(
+  "/ideasgroup/:ideas_group_id",
+  ideasgroupControllers.updateIdeasGroup
+);
+// Delete a group of ideas
+router.delete(
+  "/ideasgroup/:ideas_group_id",
+  ideasgroupControllers.deleteIdeasGroup
+);
 module.exports = router;

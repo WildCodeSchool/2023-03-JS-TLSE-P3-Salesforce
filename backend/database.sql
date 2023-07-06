@@ -100,7 +100,7 @@ DROP TABLE IF EXISTS `ideas_group`;
 
 CREATE TABLE IF NOT EXISTS `ideas_group` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
+  `name_group` VARCHAR(255) NULL,
   `workspace_id` INT NOT NULL,
   `x_coordinate` INT NULL,
   `y_coordinate` INT NULL,
@@ -203,7 +203,9 @@ CREATE TABLE IF NOT EXISTS `team_has_user` (
   `team_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `joining_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `is_favorite_team` TINYINT NOT NULL DEFAULT 0
+  `is_favorite_team` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+
 ) ENGINE = InnoDB;
 
 -- CREATING CATEGORY HAS IDEA TABLE
@@ -291,7 +293,7 @@ ADD
 ADD
   CONSTRAINT `fk_idea_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE,
 ADD
-  CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`),
+  CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`) ON DELETE NO ACTION,
 ADD
   CONSTRAINT `fk_idea_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
 ADD
@@ -648,7 +650,7 @@ VALUES
 --  IDEAS GROUP 
 INSERT INTO
   `ideas_group` (
-    `name`,
+    `name_group`,
     `workspace_id`,
     `x_coordinate`,
     `y_coordinate`
