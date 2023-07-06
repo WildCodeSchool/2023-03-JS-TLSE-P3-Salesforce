@@ -24,24 +24,14 @@ class UserManager extends AbstractManager {
   }
 
   // ajouter un utilisateur à une entreprise
-  postUser(userId, companyId) {
+  addUser(userId, companyId) {
     return this.database.query(
       `INSERT INTO user_has_company (user_id, company_id) VALUES (?,?);`,
       [userId, companyId]
     );
   }
 
-  // postUser(firstname, lastname, email, picture_url) {
-  //   return this.database.query(
-  //     `INSERT INTO ${this.table} (firstname, lastname,email,picture_url)
-  //       VALUES (?,?,?,?)`,
-  //     [firstname, lastname, email, picture_url]
-  //   );
-  // }
-
-  // modifier un utilisateur
-
-  updateUser(userId, user) {
+  modifyUserProfile(userId, user) {
     const keys = Object.keys(user);
     const values = Object.values(user);
     const valueQuery = keys.map((key) => `${key} = ?`).join(", ");
@@ -53,7 +43,7 @@ class UserManager extends AbstractManager {
   }
 
   // supprimer un utilisateur
-  deleteUser(userId, companyId) {
+  deleteUserProfile(userId, companyId) {
     return this.database.query(
       `DELETE FROM user_has_company WHERE user_id = ? AND company_id= ?`,
       [userId, companyId]

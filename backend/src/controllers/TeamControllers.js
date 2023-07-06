@@ -41,7 +41,7 @@ const getTeam = (req, res) => {
 
 // afficher l'ensemble des membres d'une équipe
 
-const getUsersTeam = (req, res) => {
+const getAllUsersFromTeam = (req, res) => {
   const { team_id } = req.params;
   models.team
     .getUsersByTeamId(team_id)
@@ -55,7 +55,7 @@ const getUsersTeam = (req, res) => {
 };
 
 // afficher les équipes d'un utilisateur
-const getTeamsUser = (req, res) => {
+const getAllTeamsFromUser = (req, res) => {
   const { user_id } = req.params;
   models.team
     .getTeamsByUserId(user_id)
@@ -73,12 +73,12 @@ const getTeamsUser = (req, res) => {
 };
 
 // créer une équipe
-const createTeam = (req, res) => {
+const addTeamOnCompany = (req, res) => {
   const { body, params } = req;
   const { company_id } = params;
 
   models.team
-    .postTeam(body, company_id)
+    .addTeam(body, company_id)
     .then(([result]) => {
       if (result.affectedRows) {
         res
@@ -96,7 +96,7 @@ const createTeam = (req, res) => {
 };
 
 // ajouter un membre à une equipe
-const addUserTeam = (req, res) => {
+const addUserOnTeam = (req, res) => {
   const { team_id } = req.params;
   const { userId } = req.body;
 
@@ -118,12 +118,12 @@ const addUserTeam = (req, res) => {
 };
 
 // modifier une equipe
-const updateProfileTeam = (req, res) => {
+const updateTeamProfile = (req, res) => {
   const { body, params } = req;
   const { team_id } = params;
 
   models.team
-    .updateTeam(team_id, body)
+    .modifyTeamProfile(team_id, body)
     .then(([rows]) => {
       if (rows.affectedRows) {
         res.status(204).send(rows);
@@ -139,7 +139,7 @@ const updateProfileTeam = (req, res) => {
 
 // supprimer une équipe
 
-const eraseTeam = (req, res) => {
+const deleteTeamFromCompany = (req, res) => {
   const { team_id } = req.params;
   models.team
     .deleteTeam(team_id)
@@ -158,10 +158,10 @@ const eraseTeam = (req, res) => {
 
 // supprimer un membre d'une équipe
 
-const eraseUserTeam = (req, res) => {
+const deleteUserFromTeam = (req, res) => {
   const { user_id, team_id } = req.params;
   models.team
-    .deleteUserFromTeam(user_id, team_id)
+    .deleteUser(user_id, team_id)
     .then(([rows]) => {
       if (rows.affectedRows) {
         res.sendStatus(204);
@@ -178,11 +178,11 @@ const eraseUserTeam = (req, res) => {
 module.exports = {
   getTeams,
   getTeam,
-  getUsersTeam,
-  getTeamsUser,
-  createTeam,
-  addUserTeam,
-  updateProfileTeam,
-  eraseTeam,
-  eraseUserTeam,
+  getAllUsersFromTeam,
+  getAllTeamsFromUser,
+  addTeamOnCompany,
+  addUserOnTeam,
+  updateTeamProfile,
+  deleteTeamFromCompany,
+  deleteUserFromTeam,
 };

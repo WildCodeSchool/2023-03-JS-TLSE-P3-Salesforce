@@ -4,8 +4,8 @@ const router = express.Router();
 
 const workspaceControllers = require("./controllers/workspaceControllers");
 const itemControllers = require("./controllers/itemControllers");
-const userControllers = require("./controllers/UserControllers");
-const teamControllers = require("./controllers/TeamControllers");
+const userControllers = require("./controllers/userControllers");
+const teamControllers = require("./controllers/teamControllers");
 const ideaControllers = require("./controllers/ideaControllers");
 const likeControllers = require("./controllers/likeControllers");
 const commentControllers = require("./controllers/commentControllers");
@@ -24,19 +24,19 @@ router.get(`/companies/:company_id/users/:user_id`, userControllers.getUser);
 // ajouter un utilisateur à une entreprise
 router.post(
   `/companies/:company_id/users/:user_id`,
-  userControllers.createUser
+  userControllers.insertUser
 );
 
 // mettre à jour un profil utilisateur
 router.put(
   `/companies/:company_id/users/:user_id`,
-  userControllers.updateProfileUser
+  userControllers.updateUserProfile
 );
 
 // effacer un profil utilisateur
 router.delete(
   `/companies/:company_id/users/:user_id`,
-  userControllers.eraseUser
+  userControllers.deleteUser
 );
 
 // routes Team
@@ -48,28 +48,31 @@ router.get(`/companies/:company_id/teams`, teamControllers.getTeams);
 router.get(`/companies/:company_id/teams/:team_id`, teamControllers.getTeam);
 
 // afficher les membres d'une équipe
-router.get(`/teams/:team_id/users`, teamControllers.getUsersTeam);
+router.get(`/teams/:team_id/users`, teamControllers.getAllUsersFromTeam);
 
 // afficher les équipes d'un utilisateur
-router.get(`/users/:user_id/teams`, teamControllers.getTeamsUser);
+router.get(`/users/:user_id/teams`, teamControllers.getAllTeamsFromUser);
 
 // créer une équipe
-router.post(`/companies/:company_id/teams`, teamControllers.createTeam);
+router.post(`/companies/:company_id/teams`, teamControllers.addTeamOnCompany);
 
-// ajouter un utilisateur dans une équipe, route non fonctionnel ***********
+// ajouter un utilisateur dans une équipe
 
-router.post(`/teams/:team_id/users`, teamControllers.addUserTeam);
+router.post(`/teams/:team_id/users`, teamControllers.addUserOnTeam);
 
 // modifier le profil d'une équipe
-router.put(`/teams/:team_id`, teamControllers.updateProfileTeam);
+router.put(`/teams/:team_id`, teamControllers.updateTeamProfile);
 
 // supprimer une équipe
 router.delete(
   `/companies/:company_id/teams/:team_id`,
-  teamControllers.eraseTeam
+  teamControllers.deleteTeamFromCompany
 );
 // supprimer un membre d'une équipe
-router.delete(`/teams/:team_id/users/:user_id`, teamControllers.eraseUserTeam);
+router.delete(
+  `/teams/:team_id/users/:user_id`,
+  teamControllers.deleteUserFromTeam
+);
 
 router.get("/items", itemControllers.browse);
 router.get("/items/:id", itemControllers.read);

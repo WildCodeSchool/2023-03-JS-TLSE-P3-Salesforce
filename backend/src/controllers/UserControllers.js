@@ -37,10 +37,10 @@ const getUser = (req, res) => {
 
 // ajouter un utilisateur à une entreprise
 
-const createUser = (req, res) => {
+const insertUser = (req, res) => {
   const { user_id, company_id } = req.params;
   models.user
-    .postUser(user_id, company_id)
+    .addUser(user_id, company_id)
     .then(([rows]) => {
       if (rows) {
         res.sendStatus(201);
@@ -55,9 +55,9 @@ const createUser = (req, res) => {
 };
 
 // mettre à jour un profil utilisateur
-const updateProfileUser = (req, res) => {
+const updateUserProfile = (req, res) => {
   models.user
-    .updateUser(req.params.user_id, req.body)
+    .modifyUserProfile(req.params.user_id, req.body)
     .then(([rows]) => {
       res.status(204).send(rows);
     })
@@ -68,10 +68,10 @@ const updateProfileUser = (req, res) => {
 };
 
 // effacer un utilisateur
-const eraseUser = (req, res) => {
+const deleteUser = (req, res) => {
   const { user_id, company_id } = req.params;
   models.user
-    .deleteUser(user_id, company_id)
+    .deleteUserProfile(user_id, company_id)
     .then(([rows]) => {
       res.status(204).send(rows);
     })
@@ -84,7 +84,7 @@ const eraseUser = (req, res) => {
 module.exports = {
   getUsers,
   getUser,
-  createUser,
-  updateProfileUser,
-  eraseUser,
+  insertUser,
+  updateUserProfile,
+  deleteUser,
 };

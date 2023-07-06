@@ -53,7 +53,7 @@ class TeamManager extends AbstractManager {
 
   // créer une équipe
 
-  postTeam(team, companyId) {
+  addTeam(team, companyId) {
     const {
       name,
       is_private,
@@ -90,7 +90,7 @@ class TeamManager extends AbstractManager {
   }
 
   // modifier une equipe
-  updateTeam(teamId, team) {
+  modifyTeamProfile(teamId, team) {
     const keys = Object.keys(team);
     const values = Object.values(team);
     const valueQuery = keys.map((key) => `${key} = ?`).join(", ");
@@ -107,7 +107,7 @@ class TeamManager extends AbstractManager {
   }
 
   // supprimer des membres d'une equipe
-  deleteUserFromTeam(userId, teamId) {
+  deleteUser(userId, teamId) {
     return this.database.query(
       `DELETE FROM team_has_user WHERE user_id = ? AND team_id = ?`,
       [userId, teamId]
