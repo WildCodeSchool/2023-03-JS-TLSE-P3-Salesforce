@@ -34,6 +34,20 @@ const ItemManager = require("./ItemManager");
 models.item = new ItemManager();
 models.item.setDatabase(pool);
 
+// USER
+
+const UserManager = require("./UserManager");
+
+models.user = new UserManager();
+models.user.setDatabase(pool);
+
+// TEAM
+
+const TeamManager = require("./TeamManager");
+
+models.team = new TeamManager();
+models.team.setDatabase(pool);
+
 // WORKSPACE
 const WorkspaceManager = require("./WorkspaceManager");
 
