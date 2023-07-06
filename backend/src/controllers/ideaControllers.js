@@ -1,34 +1,8 @@
 const models = require("../models");
 
 const createIdea = (req, res) => {
-  const {
-    title,
-    description,
-    creationDate,
-    parentId,
-    userId,
-    companyId,
-    teamId,
-    workspaceId,
-    status,
-    isInBoard,
-    fileId,
-  } = req.body;
-
   models.idea
-    .insert({
-      title,
-      description,
-      creationDate,
-      parentId,
-      userId,
-      companyId,
-      teamId,
-      workspaceId,
-      status,
-      isInBoard,
-      fileId,
-    })
+    .insert(req.body, req.params.company_id, req.params.user_id)
     .then(([result]) => {
       res.location(`/ideas/${result.insertId}`).sendStatus(201); // on reste sur res.location avec le path dédié ? (sinon on reprend le code de update?)
     })
@@ -40,7 +14,7 @@ const createIdea = (req, res) => {
 
 const getAllIdeasByUser = (req, res) => {
   models.idea
-    .findAllIdeasByUser(req.params.id)
+    .findAllIdeasByUser(req.params.user_id)
     .then(([results]) => {
       if (results.length) {
         res.status(200).json(results);
@@ -55,8 +29,9 @@ const getAllIdeasByUser = (req, res) => {
 };
 
 const getAllIdeasByCompany = (req, res) => {
+  const { companyId, userId } = req.params;
   models.idea
-    .getAllIdeasByCompany(req.params.id)
+    .getAllIdeasByCompany(companyId, userId)
     .then(([results]) => {
       if (results.length) {
         res.status(200).json(results);
@@ -87,32 +62,13 @@ const read = (req, res) => {
 };
 
 const updateIdeaById = (req, res) => {
-  const {
-    title,
-    description,
-    status,
-    isInBoard,
-    xCoordinate,
-    yCoordinate,
-    ideaGroupId,
-    colorId,
-    fileId,
-  } = req.body;
-  const { id } = req.params;
-
   models.idea
-    .update({
-      id,
-      title,
-      description,
-      status,
-      isInBoard,
-      xCoordinate,
-      yCoordinate,
-      ideaGroupId,
-      colorId,
-      fileId,
-    })
+    .update(
+      req.body,
+      req.params.company_id,
+      req.params.user_id,
+      req.params.idea_id
+    )
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -128,7 +84,7 @@ const updateIdeaById = (req, res) => {
 
 const deleteIdea = (req, res) => {
   models.idea
-    .delete(req.params.id)
+    .delete(req.params.idea_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);

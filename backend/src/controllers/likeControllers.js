@@ -1,12 +1,11 @@
 const models = require("../models");
 
 const createLike = (req, res) => {
-  const like = req.body;
   models.like
-    .postLike(like)
+    .postLike(req.params.idea_id, req.params.user_id)
     .then(([result]) => {
-      if (result.length) {
-        res.location(`/likes/${result.insertId}`).sendStatus(201); // on reste sur res.location avec le path dédié ?
+      if (result.affectedRows !== 0) {
+        res.location(`/likes/${result.insertId}`).sendStatus(201);
       } else {
         res.sendStatus(404);
       }
@@ -51,7 +50,7 @@ const getAllLikesByIdea = (req, res) => {
 
 const deleteLike = (req, res) => {
   models.like
-    .delete(req.params.id)
+    .delete(req.params.liked_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);

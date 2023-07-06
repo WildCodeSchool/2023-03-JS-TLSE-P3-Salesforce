@@ -5,39 +5,15 @@ class IdeaManager extends AbstractManager {
     super({ table: "idea" });
   }
 
-  insert(idea) {
-    const {
-      title,
-      description,
-      creationDate,
-      parentId,
-      userId,
-      companyId,
-      teamId,
-      workspaceId,
-      status,
-      isInBoard,
-      fileId,
-    } = idea;
+  insert(idea, companyId, userId) {
+    const { title, description, fileId } = idea;
     return this.database.query(
-      `insert into ${this.table} (title, description, creation_date, parent_id, user_id, company_id, team_id, workspace_id, status, is_in_board, file_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
-      [
-        title,
-        description,
-        creationDate,
-        parentId,
-        userId,
-        companyId,
-        teamId,
-        workspaceId,
-        status,
-        isInBoard,
-        fileId,
-      ]
+      `insert into ${this.table} (title, description, file_id, company_id, user_id) values ( ?, ?, ?, ?, ?);`,
+      [title, description, fileId, companyId, userId]
     );
   }
 
-  findAllIdeasByUser(userId, companyId) {
+  findAllIdeasByUser(userId) {
     return this.database.query(
       `SELECT
         ${this.table}.id,
@@ -45,106 +21,90 @@ class IdeaManager extends AbstractManager {
         ${this.table}.description, 
         ${this.table}.status, 
         ${this.table}.creation_date,
-        u.firstname AS creator_firstname,
-        u.lastname AS creator_lastname,
-        u.email AS creator_email,
-        u.picture_url AS creator_picture_url,
+        user.firstname AS creator_firstname,
+        user.lastname AS creator_lastname,
+        user.email AS creator_email,
+        user.picture_url AS creator_picture_url,
         comp.name AS company_name,
         COUNT(liked.id) AS likes_count,
-        COUNT(c.id) AS comments_count,
-        GROUP_CONCAT(DISTINCT cat.name, “|”, col.name) AS categories,
+        comments.comments_count AS comments_count,
+        GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
         CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
       FROM ${this.table}
-      INNER JOIN user AS u ON u.id = ${this.table}.user_id
+      INNER JOIN user ON user.id = ${this.table}.user_id
       LEFT JOIN company AS comp ON comp.id = ${this.table}.company_id
+      LEFT JOIN (
+        SELECT idea_id, COUNT(*) AS comments_count
+        FROM comment
+        GROUP BY idea_id
+      ) comments ON comments.idea_id = idea.id
       LEFT JOIN liked ON liked.idea_id = ${this.table}.id
-      LEFT JOIN comment ON comment.idea_id = ${this.table}.id
       LEFT JOIN comment AS c ON c.idea_id = ${this.table}.id
       LEFT JOIN user AS cu ON cu.id = c.user_id
       LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
       LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
       LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = ?
-      WHERE u.id = ? AND comp.id = ?
-      GROUP BY ${this.table}.id, comp.name,
+      LEFT JOIN color col ON col.id = cat.color_id
+      WHERE user.id = ?
+      GROUP BY ${this.table}.id, comp.name
       ORDER BY
-      ${this.table}.id DESC;`,
-      [userId, companyId]
+      ${this.table}.creation_date DESC;`,
+      [userId, userId]
     );
   }
 
   // celle qui permet de récupérer les idées d'une entreprise est la même que celle qui permet de récupérer les idées d'un user execpté que le where est focalisé sur l'id de l'entreprise
-  getAllIdeasByCompany(companyId) {
+  getAllIdeasByCompany(companyId, userId) {
     return this.database.query(
-      `SELECT
-        ${this.table}.id,
-        ${this.table}.title, 
-        ${this.table}.description, 
-        ${this.table}.status, 
-        ${this.table}.creation_date,
-        u.firstname AS creator_firstname,
-        u.lastname AS creator_lastname,
-        u.email AS creator_email,
-        u.picture_url AS creator_picture_url,
-        comp.name AS company_name,
-        COUNT(liked.id) AS likes_count,
-        COUNT(c.id) AS comments_count,
-        GROUP_CONCAT(DISTINCT cat.name, “|”, col.name) AS categories,
-        CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
-      FROM ${this.table}
-      INNER JOIN user AS u ON u.id = ${this.table}.user_id
-      LEFT JOIN company AS comp ON comp.id = ${this.table}.company_id
-      LEFT JOIN liked ON liked.idea_id = ${this.table}.id
-      LEFT JOIN comment ON comment.idea_id = ${this.table}.id
-      LEFT JOIN comment AS c ON c.idea_id = ${this.table}.id
-      LEFT JOIN user AS cu ON cu.id = c.user_id
-      LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
-      LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
-      LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = ?
-      WHERE comp.id = ?
-      GROUP BY ${this.table}.id, comp.name,
-      ORDER BY
-      ${this.table}.id DESC;`,
-      [companyId]
+      ` SELECT
+               ${this.table}.id,
+               ${this.table}.title,
+               ${this.table}.description,
+               ${this.table}.status,
+               ${this.table}.creation_date,
+               u.firstname AS creator_firstname,
+               u.lastname AS creator_lastname,
+               u.email AS creator_email,
+               u.picture_url AS creator_picture_url,
+               comp.name AS company_name,
+               COUNT(liked.id) AS likes_count,
+               comments.comments_count AS comments_count,
+               GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
+               CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
+             FROM ${this.table}
+             INNER JOIN company AS comp ON comp.id = ${this.table}.company_id
+             LEFT JOIN user AS u ON u.id = ${this.table}.user_id
+             LEFT JOIN (
+               SELECT idea_id, COUNT(*) AS comments_count
+               FROM comment
+               GROUP BY idea_id
+             ) comments ON comments.idea_id = ${this.table}.id
+             LEFT JOIN liked ON liked.idea_id = ${this.table}.id
+             LEFT JOIN comment AS c ON c.idea_id = ${this.table}.id
+             LEFT JOIN user AS cu ON cu.id = c.user_id
+             LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
+             LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
+             LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = 1
+             LEFT JOIN color col ON col.id = cat.color_id
+             WHERE comp.id = 2
+             GROUP BY ${this.table}.id, comp.name
+             ORDER BY
+             ${this.table}.id DESC;`,
+      [companyId, userId]
     );
   }
 
-  update(idea) {
-    const {
-      id,
-      title,
-      description,
-      status,
-      isInBoard,
-      xCoordinate,
-      yCoordinate,
-      ideaGroupId,
-      colorId,
-      fileId,
-    } = idea;
+  update(idea, companyId, userId, ideaId) {
+    const { title, description, fileId } = idea;
     return this.database.query(
       `UPDATE ${this.table} SET 
-        title = ? 
-        description = ? 
-        status = ? 
-        is_in_board = ? 
-        x_coordinate = ? 
-        y_coordinate = ? 
-        idea_group_id = ? 
-        color_id = ? 
-        file_id = ? 
-      WHERE id = ?`,
-      [
-        id,
-        title,
-        description,
-        status,
-        isInBoard,
-        xCoordinate,
-        yCoordinate,
-        ideaGroupId,
-        colorId,
-        fileId,
-      ]
+        title = ?, 
+        description = ?, 
+        file_id = ?,
+        company_id = ?,
+        user_id = ?
+      WHERE ${this.table}.id = ?`,
+      [title, description, fileId, companyId, userId, ideaId]
     );
   }
 }

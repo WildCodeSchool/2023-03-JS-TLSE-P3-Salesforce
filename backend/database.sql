@@ -119,10 +119,10 @@ CREATE TABLE IF NOT EXISTS `idea` (
   `status` VARCHAR(45) NOT NULL DEFAULT 'published',
   `x_coordinate` INT NULL,
   `y_coordinate` INT NULL,
-  `color_id` INT NOT NULL,
-  `company_id` INT NOT NULL,
+  `color_id` INT NOT NULL DEFAULT 1,
+  `company_id` INT NOT NULL ,
   `user_id` INT NOT NULL,
-  `workspace_id` INT NOT NULL,
+  `workspace_id` INT NULL,
   `ideas_group_id` INT NULL,
   `team_id` INT NULL,
   `file_id` INT NULL,
@@ -199,6 +199,7 @@ CREATE TABLE IF NOT EXISTS `idea_has_tag` (
 DROP TABLE IF EXISTS `team_has_user`;
 
 CREATE TABLE IF NOT EXISTS `team_has_user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
   `team_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `joining_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -294,7 +295,7 @@ ADD
 ADD
   CONSTRAINT `fk_idea_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
 ADD
-  CONSTRAINT `fk_idea_file` FOREIGN KEY (`file_id`) REFERENCES `file` (`id`);
+  CONSTRAINT `fk_idea_file` FOREIGN KEY (`file_id`) REFERENCES `file` (`id`) ON DELETE CASCADE;
 
 -- FILE
 ALTER TABLE

@@ -1,19 +1,13 @@
 const models = require("../models");
 
 const createComment = (req, res) => {
-  const { content } = req.body;
   models.comment
-    .postComment(
-      content,
-      req.params.company_id,
-      req.params.idea_id,
-      req.params.user_id
-    )
+    .postComment(req.body, req.params.idea_id, req.params.user_id)
     .then(([result]) => {
-      if (result.length) {
-        res.location(`/comments/${result.insertId}`).sendStatus(201); // on reste sur res.location avec le path dédié ?
-      } else {
+      if (result.affectedRows === 0) {
         res.sendStatus(404);
+      } else {
+        res.sendStatus(201);
       }
     })
     .catch((err) => {
@@ -23,9 +17,8 @@ const createComment = (req, res) => {
 };
 
 const getAllCommentsByIdea = (req, res) => {
-  const { ideaId } = req.params;
   models.comment
-    .findAllCommentsByIdea(ideaId)
+    .findAllCommentsByIdea(req.params.idea_id)
     .then(([result]) => {
       if (result.length) {
         res.status(200).json(result);
@@ -39,9 +32,8 @@ const getAllCommentsByIdea = (req, res) => {
     });
 };
 const getAllCommentsByUser = (req, res) => {
-  const { userId } = req.params;
   models.comment
-    .findAllCommentsByIdea(userId)
+    .findAllCommentsByUser(req.params.user_id)
     .then(([result]) => {
       if (result.length) {
         res.status(200).json(result);
@@ -73,7 +65,7 @@ const getAllCountComment = (req, res) => {
 
 const deleteComment = (req, res) => {
   models.comment
-    .delete(req.params.id)
+    .delete(req.params.comment_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
