@@ -158,10 +158,7 @@ export default function NavBar() {
           <div className="main-part-nav-bar-menu-burger">
             <div className="top">
               <div className="logo">
-                <img
-                  src="/src/public/assets/logo/Logo-default.png"
-                  alt="logo default company"
-                />
+                <img src={CompanyLogo} alt="Company's logo" />
               </div>
               <div className="content">
                 <div className="link">

@@ -1,0 +1,79 @@
+@use "./typography" as *;
+@use "./shadows" as *;
+
+.input-switch {
+  label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+    cursor: pointer;
+    @include text("sm");
+    color: var(--grey-700);
+    font-weight: 500;
+  }
+  input[type="checkbox"] {
+    display: none;
+  }
+  input[type="checkbox"]:checked + .toggle-switch {
+    background-color: var(--blue-600);
+    border-radius: 12px;
+    position: relative;
+    &::before {
+      background-color: var(--white);
+    }
+    &:hover {
+      background-color: var(--blue-700);
+    }
+  }
+
+  .toggle-switch {
+    background-color: var(--grey-100);
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.25s ease-out;
+    &::before {
+      transition: transform 0.25s ease-out;
+      content: "";
+      transform: translateX(0);
+      top: 2px;
+      left: 2px;
+      background-color: var(--white);
+      @include shadow("md");
+      position: absolute;
+    }
+    &:hover {
+      background-color: var(--grey-200);
+    }
+  }
+  &--sm {
+    input[type="checkbox"]:checked + .toggle-switch::before {
+      transform: translateX(16px);
+    }
+    .toggle-switch {
+      width: 36px;
+      height: 20px;
+      &::before {
+        width: 16px;
+        height: 16px;
+        border-radius: 8px;
+      }
+    }
+  }
+  &--md {
+    input[type="checkbox"]:checked + .toggle-switch::before {
+      transform: translateX(20px);
+    }
+    .toggle-switch {
+      width: 44px;
+      height: 24px;
+      &::before {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+      }
+    }
+  }
+}
