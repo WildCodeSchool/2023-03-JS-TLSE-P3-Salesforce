@@ -3,16 +3,37 @@ const express = require("express");
 const router = express.Router();
 
 const workspaceControllers = require("./controllers/workspaceControllers");
-const itemControllers = require("./controllers/ItemControllers");
+const itemControllers = require("./controllers/itemControllers");
 const ideaControllers = require("./controllers/ideaControllers");
 const likeControllers = require("./controllers/likeControllers");
 const commentControllers = require("./controllers/commentControllers");
+const categoryControllers = require("./controllers/categoryControllers");
+const colorControllers = require("./controllers/colorControllers");
+const companyControllers = require("./controllers/companyControllers");
 
 router.get("/items", itemControllers.browse);
 router.get("/items/:id", itemControllers.read);
 router.put("/items/:id", itemControllers.edit);
 router.post("/items", itemControllers.add);
 router.delete("/items/:id", itemControllers.destroy);
+
+router.get("/categories", categoryControllers.browse);
+router.get("/categories/:id", categoryControllers.read);
+router.put("/categories/:id", categoryControllers.edit);
+router.post("/categories", categoryControllers.add);
+router.delete("/categories/:id", categoryControllers.destroy);
+
+router.get("/colors", colorControllers.browse);
+router.get("/colors/:id", colorControllers.read);
+router.put("/colors/:id", colorControllers.edit);
+router.post("/colors", colorControllers.add);
+router.delete("/colors/:id", colorControllers.destroy);
+
+router.get("/companies", companyControllers.browse);
+router.get("/companies/:id", companyControllers.read);
+router.put("/companies/:id", companyControllers.edit);
+router.post("/companies", companyControllers.add);
+router.delete("/companies/:id", companyControllers.destroy);
 
 // WORKSPACE
 // Get all workspaces for a team

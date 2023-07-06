@@ -34,6 +34,21 @@ const ItemManager = require("./ItemManager");
 models.item = new ItemManager();
 models.item.setDatabase(pool);
 
+const CategoryManager = require("./CategoryManager");
+
+models.category = new CategoryManager();
+models.category.setDatabase(pool);
+
+const ColorManager = require("./ColorManager");
+
+models.color = new ColorManager();
+models.color.setDatabase(pool);
+
+const CompanyManager = require("./CompanyManager");
+
+models.company = new CompanyManager();
+models.company.setDatabase(pool);
+
 // WORKSPACE
 const WorkspaceManager = require("./WorkspaceManager");
 
