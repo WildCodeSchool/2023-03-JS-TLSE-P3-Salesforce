@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 const models = require("../models");
 
 const createLike = (req, res) => {
+  const { user_id, idea_id } = req.params;
   models.like
-    .postLike(req.params.idea_id, req.params.user_id)
+    .postLike(idea_id, user_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);

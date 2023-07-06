@@ -1,8 +1,11 @@
+/* eslint-disable camelcase */
 const models = require("../models");
 
 const createIdea = (req, res) => {
+  const { company_id, user_id } = req.params;
+
   models.idea
-    .insert(req.body, req.params.company_id, req.params.user_id)
+    .insert(req.body, company_id, user_id)
     .then(([results]) => {
       if (results.length) {
         res.sendStatus(201);
@@ -50,13 +53,9 @@ const getAllIdeasByCompany = (req, res) => {
 };
 
 const updateIdeaById = (req, res) => {
+  const { company_id, user_id, idea_id } = req.params;
   models.idea
-    .update(
-      req.body,
-      req.params.company_id,
-      req.params.user_id,
-      req.params.idea_id
-    )
+    .update(req.body, company_id, user_id, idea_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);

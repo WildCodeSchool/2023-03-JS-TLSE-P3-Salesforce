@@ -96,6 +96,7 @@ router.get("/ideas/:idea_id/likes", likeControllers.getAllLikesByIdea);
 router.post("/ideas/:idea_id/likes/users/:user_id", likeControllers.createLike);
 // Delete a like to an idea
 router.delete("/likes/:liked_id", likeControllers.deleteLike);
+
 // COMMENTS
 // Get all comments from an idea
 router.get("/ideas/:idea_id/comments", commentControllers.getAllCommentsByIdea);

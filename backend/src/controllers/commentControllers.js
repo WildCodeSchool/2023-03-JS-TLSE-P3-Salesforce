@@ -1,8 +1,10 @@
+/* eslint-disable camelcase */
 const models = require("../models");
 
 const createComment = (req, res) => {
+  const { user_id, idea_id } = req.params;
   models.comment
-    .postComment(req.body, req.params.idea_id, req.params.user_id)
+    .postComment(req.body, idea_id, user_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
