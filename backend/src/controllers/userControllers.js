@@ -1,10 +1,12 @@
+/* eslint-disable camelcase */
 const models = require("../models");
 
 const authenticationCheck = (req, res, next) => {
-  const { mail } = req.body;
+  const { email } = req.body;
+  const { company_id } = req.params;
 
   models.user
-    .getUserByMail(mail)
+    .getUserByMail(email, company_id)
     .then(([users]) => {
       if (users[0] != null) {
         [req.user] = users;

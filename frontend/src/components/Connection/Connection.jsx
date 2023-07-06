@@ -1,12 +1,61 @@
-// import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 
-// import axios from "axios";
+import axios from "axios";
+
+import AuthContext from "../../contexts/AuthContext";
+import CompanyContext from "../../contexts/CompanyContext";
 
 import "./Connection.scss";
 import SalesforceLogoSombre from "../../public/assets/logo/logo_SalesForce_Theme_Sombre.svg";
 import SalesforceLogoClair from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
 
 export default function Connection() {
+  const { setUser, setUserInfos } = useContext(AuthContext);
+
+  const { companyInfos } = useContext(CompanyContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [hasConnectionFailed, setHasConnectionFailed] = useState(false);
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const dataFromForm = Object.fromEntries(formData.entries());
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/companies/${
+          companyInfos.id
+        }/user/login`,
+        dataFromForm
+      )
+      .then((response) => {
+        if (response.data.token) {
+          setUser(response.data.token);
+          setUserInfos(
+            response.data.user,
+            response.data.role,
+            response.data.companies
+          );
+        } else {
+          setHasConnectionFailed(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error.message);
+        setHasConnectionFailed(true);
+      });
+  };
+
+  // handler for change in input mail
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+  };
+
+  // handler for change in password input
+  const handlePasswordChange = (event) => setPassword(event.target.value);
+
   return (
     <div id="sign-in">
       <div className="page">
@@ -23,7 +72,7 @@ export default function Connection() {
               Connectez-vous et explorez un monde d'idées et de collaboration.
             </p>
           </header>
-          <form className="sign-in">
+          <form className="sign-in" onSubmit={handleFormSubmit}>
             <div className="input-line">
               <div className="input-field">
                 <label htmlFor="email">Adresse email</label>
@@ -31,8 +80,11 @@ export default function Connection() {
                   <i className="fi fi-rr-envelope" />
                   <input
                     type="email"
+                    name="email"
                     placeholder="Votre adresse email"
                     id="email"
+                    value={email}
+                    onChange={handleEmailChange}
                   />
                 </div>
               </div>
@@ -44,8 +96,11 @@ export default function Connection() {
                   <i className="fi fi-rr-lock" />
                   <input
                     type="password"
+                    name="password"
                     placeholder="•••••••••••"
                     id="password"
+                    value={password}
+                    onChange={handlePasswordChange}
                   />
                 </div>
               </div>
@@ -54,6 +109,11 @@ export default function Connection() {
               Se connecter
             </button>
           </form>
+          {hasConnectionFailed && (
+            <div className="messages">
+              Impossible de se connecter avec ces identifiants.
+            </div>
+          )}
         </div>
         <a
           className="salesforce-logo"

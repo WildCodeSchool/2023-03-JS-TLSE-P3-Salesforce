@@ -6,10 +6,29 @@ class UserManager extends AbstractManager {
     super({ table: "user" });
   }
 
-  getUserByMail(mail) {
-    return this.database.query(`SELECT * FROM ${this.table} WHERE mail = ?`, [
-      mail,
-    ]);
+  getUserByMail(email, companyId) {
+    return this.database.query(
+      `SELECT
+      ${this.table}.*,
+      (
+        SELECT
+          GROUP_CONCAT(DISTINCT uhc.company_id)
+        FROM
+          user_has_company AS uhc
+        WHERE
+          ${this.table}.id = uhc.user_id
+      ) AS companies
+    FROM
+      user
+      LEFT JOIN user_has_company AS uhc ON ${this.table}.id = uhc.user_id
+    WHERE
+      ${this.table}.email = ?
+      AND (
+        uhc.company_id = ?
+        OR ${this.table}.is_salesforce_admin = 1
+      ); `,
+      [email, companyId]
+    );
   }
 
   insert(user) {

@@ -1,6 +1,10 @@
-import { useContext } from "react";
+/* eslint-disable camelcase */
+import { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 import AuthContext from "../../contexts/AuthContext";
+import CompanyContext from "../../contexts/CompanyContext";
+
 import "../../components/IdeaCard/IdeaCard.scss";
 import "./Home.scss";
 import PageHeader from "../../components/PageHeader/PageHeader";
@@ -11,14 +15,36 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import Connection from "../../components/Connection/Connection";
 
 export default function Home() {
-  const firstname = "Pierre";
-  const { userToken } = useContext(AuthContext);
+  const { userToken, userInfos } = useContext(AuthContext);
+  const { setCompanyInfos } = useContext(CompanyContext);
+  const { company_id } = useParams();
 
-  return userToken ? (
+  useEffect(() => {
+    setCompanyInfos((prevCompanyInfos) => ({
+      ...prevCompanyInfos,
+      id: company_id,
+    }));
+  }, [company_id]);
+
+  let userCompaniesArray = [];
+  if (Object.keys(userInfos).length) {
+    if (userInfos.companies) {
+      userCompaniesArray = userInfos.companies.split(",");
+    }
+  }
+
+  return userToken &&
+    Object.keys(userInfos).length &&
+    (userCompaniesArray.includes(company_id) ||
+      userInfos.is_salesforce_admin) ? (
     <main>
       <NavBar />
       <PageHeader
-        title={firstname ? `Bienvenue, ${firstname}` : "Bienvenue"}
+        title={
+          userInfos.firstname
+            ? `Bienvenue, ${userInfos.firstname}`
+            : "Bienvenue"
+        }
         subtitle="Découvrez les dernières idées de votre entreprise"
       >
         <button className="button-primary-solid" type="button">

@@ -1020,3 +1020,16 @@ VALUES
   (2, 2, 0),
   (3, 3, 1),
   (1, 4, 0);
+
+SELECT
+  user.id,
+  user.firstname,
+  user.lastname,
+  user.email,
+  user.is_salesforce_admin
+FROM
+  user
+  LEFT JOIN user_has_company AS uhc ON user.id = uhc.user_id
+WHERE
+  user.email = "sophielefevre@example.com" AND
+ (uhc.company_id = 3 OR user.is_salesforce_admin = 1) ;

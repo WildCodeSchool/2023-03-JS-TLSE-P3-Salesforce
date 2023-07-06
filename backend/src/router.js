@@ -8,7 +8,7 @@ const {
   verifyToken,
   // verifyCompanyAdminRole,
   // verifySalesForceAdminRole,
-  verifyCompanyAdminOrSalesForceAdminRole,
+  // verifyCompanyAdminOrSalesForceAdminRole,
   // checkId,
 } = require("./services/auth");
 
@@ -17,9 +17,7 @@ const {
 const user = require("./controllers/userControllers");
 
 router.post(
-  "/user/login",
-  verifyToken,
-  verifyCompanyAdminOrSalesForceAdminRole,
+  "/companies/:company_id/user/login",
   user.authenticationCheck,
   verifyPassword
 );

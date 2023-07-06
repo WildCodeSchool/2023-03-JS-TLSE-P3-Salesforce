@@ -8,7 +8,7 @@ export default AuthContext;
 
 export function AuthProvider({ children }) {
   const [userToken, setUserToken] = useState(Cookies.get("userToken") || null);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfos, setUserInfos] = useState({});
   const [togglePhones, setTogglePhones] = useState(false);
   const setUser = (token) => {
     if (token) {
@@ -26,12 +26,12 @@ export function AuthProvider({ children }) {
     () => ({
       userToken,
       setUser,
-      userInfo,
-      setUserInfo,
+      userInfos,
+      setUserInfos,
       togglePhones,
       setTogglePhones,
     }),
-    [userToken, userInfo, togglePhones]
+    [userToken, userInfos, togglePhones]
   );
 
   return (

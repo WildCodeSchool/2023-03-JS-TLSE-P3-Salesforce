@@ -28,16 +28,26 @@ const hashPassword = (req, res, next) => {
 
 const verifyPassword = (req, res) => {
   argon2
-    .verify(req.user.hashed_password, req.body.password)
+    .verify(req.user.password, req.body.password)
     .then((isVerified) => {
       if (isVerified) {
-        const payload = { sub: req.user.id };
+        const payload = {
+          sub: req.user.id,
+        };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
           expiresIn: "8h",
         });
-        delete req.user.hashed_password;
-        res.status(200).send({ token, user: req.user });
+        delete req.user.password;
+        res.status(200).send({
+          token,
+          user: req.user,
+          role: {
+            isAdmin: req.user.is_salesforce_admin,
+            isCompanyAdmin: req.user.is_company_admin,
+          },
+          companies: req.user.companies,
+        });
       } else {
         res.sendStatus(401);
       }
