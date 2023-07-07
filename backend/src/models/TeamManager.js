@@ -1,6 +1,3 @@
-/* eslint-disable no-restricted-globals */
-/* eslint-disable no-undef */
-/* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
 class TeamManager extends AbstractManager {
@@ -9,23 +6,23 @@ class TeamManager extends AbstractManager {
   }
 
   // récupérer toutes les équipes
-  getAllTeams(company_id) {
+  getAllTeams(companyId) {
     return this.database.query(
       `SELECT ${this.table}.id,${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status FROM ${this.table}
       JOIN company ON company.id=${this.table}.company_id 
       WHERE ${this.table}.company_id=? `,
-      [company_id]
+      [companyId]
     );
   }
 
   // récupérer une équipe
-  getOneTeam(team_id, company_id) {
+  getOneTeam(teamId, companyId) {
     return this.database.query(
       `SELECT ${this.table}.name,${this.table}.is_private,${this.table}.picture_url,${this.table}.description,${this.table}.objective,${this.table}.status
      FROM ${this.table}
      JOIN company ON company.id=${this.table}.company_id 
       where ${this.table}.id = ? AND company.id= ?`,
-      [team_id, company_id]
+      [teamId, companyId]
     );
   }
 
@@ -56,8 +53,8 @@ class TeamManager extends AbstractManager {
   addTeam(team, companyId) {
     const {
       name,
-      is_private,
-      picture_url,
+      iSprivate,
+      pictureUrl,
       description,
       objective,
       status,
@@ -69,8 +66,8 @@ class TeamManager extends AbstractManager {
          VALUES (?,?, ?, ?, ?, ?, ?, ?);`,
       [
         name,
-        is_private,
-        picture_url,
+        iSprivate,
+        pictureUrl,
         description,
         objective,
         status,
