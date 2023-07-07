@@ -29,10 +29,12 @@ pool.getConnection().catch(() => {
 
 const models = {};
 
-const ItemManager = require("./ItemManager");
+// TEAM
 
-models.item = new ItemManager();
-models.item.setDatabase(pool);
+const TeamManager = require("./TeamManager");
+
+models.team = new TeamManager();
+models.team.setDatabase(pool);
 
 const CategoryManager = require("./CategoryManager");
 
@@ -55,20 +57,34 @@ const WorkspaceManager = require("./WorkspaceManager");
 models.workspace = new WorkspaceManager();
 models.workspace.setDatabase(pool);
 
+// USER
+const UserManager = require("./UserManager");
+
+models.user = new UserManager();
+models.user.setDatabase(pool);
+
+// IDEA
 const IdeaManager = require("./IdeaManager");
 
 models.idea = new IdeaManager();
 models.idea.setDatabase(pool);
 
+// LIKE
 const LikeManager = require("./LikeManager");
 
 models.like = new LikeManager();
 models.like.setDatabase(pool);
 
+// COMMENT
 const CommentManager = require("./CommentManager");
 
 models.comment = new CommentManager();
 models.comment.setDatabase(pool);
+
+const IdeasGroupManager = require("./IdeasGroupManager");
+
+models.ideasgroup = new IdeasGroupManager();
+models.ideasgroup.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model
