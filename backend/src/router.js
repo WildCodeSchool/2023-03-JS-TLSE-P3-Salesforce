@@ -93,12 +93,6 @@ const categoryControllers = require("./controllers/categoryControllers");
 const colorControllers = require("./controllers/colorControllers");
 const companyControllers = require("./controllers/companyControllers");
 
-// router.get("/items", itemControllers.browse);
-// router.get("/items/:id", itemControllers.read);
-// router.put("/items/:id", itemControllers.edit);
-// router.post("/items", itemControllers.add);
-// router.delete("/items/:id", itemControllers.destroy);
-
 router.get("/categories", categoryControllers.browse);
 router.get("/categories/:id", categoryControllers.read);
 router.put("/categories/:id", categoryControllers.edit);
