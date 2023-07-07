@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+// import axios from "axios";
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -18,6 +19,8 @@ export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
   const { setCompanyInfos } = useContext(CompanyContext);
   const { company_id } = useParams();
+  // const [dataIdea, setDataIdea] = useState({});
+  // const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -32,6 +35,17 @@ export default function Home() {
       userCompaniesArray = userInfos.companies.split(",");
     }
   }
+
+  // useEffect(() => {
+  //   axios
+  //     .get(`${import.meta.env.VITE_BACKEND_URL}/company/1/ideas`, {
+  //       headers: { Authorization: `Bearer ${userToken}` },
+  //     })
+  //     .then((response) => {
+  //       setDataIdea(response.data);
+  //       setIsLoading(false);
+  //     });
+  // }, []);
 
   return userToken &&
     Object.keys(userInfos).length &&
@@ -60,15 +74,6 @@ export default function Home() {
         <SearchBar />
       </div>
       <div className="idea-cards-list">
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
-        <IdeaCard />
         <IdeaCard />
         <IdeaCard />
       </div>

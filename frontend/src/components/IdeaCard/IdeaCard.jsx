@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { useState } from "react";
 import LikeButton from "../LikeButton/LikeButton";
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
@@ -13,11 +14,13 @@ function IdeaCard() {
   const [isHovered, setIsHovered] = useState(false);
   const [showSubmenu, setShowSubmenu] = useState(false);
 
+  // il faudra remplacer "1" par une valeur dynamique "company_id"
+
   return (
     <div className="idea-card">
       <div className="header-card">
         {/* ajout du titre en entete  */}
-        <h2 className="title-idea">Titre de l'idée</h2>
+        <h2 className="title-idea">XXXXX</h2>
         <SubmenuIdeaButton
           showSubmenu={showSubmenu}
           setShowSubmenu={setShowSubmenu}
@@ -33,12 +36,7 @@ function IdeaCard() {
             <Badge color="blue">Comptabilité</Badge>
           </div>
 
-          <p className="idea-description">
-            Description de l'idée... <br />
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil
-            ipsum corporis debitis et enim reiciendis velit quidem aperiam illo
-            minima.
-          </p>
+          <p className="idea-description">XXXXX</p>
         </div>
         <div className="footer-idea">
           <CommentButton
