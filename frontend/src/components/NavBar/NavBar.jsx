@@ -319,8 +319,10 @@ export default function NavBar({ activeLink }) {
                   />
                 </div>
                 <div className="content">
-                  <p className="name">Jean-Jacques GOLDMAN</p>
-                  <p className="email">jeanjacquesgoldman@monentreprise.com</p>
+                  <p className="name">
+                    {userInfos.firstname} {userInfos.lastname.toUpperCase()}
+                  </p>
+                  <p className="email">{userInfos.email}</p>
                 </div>
               </div>
               <a
