@@ -10,18 +10,80 @@ const {
 
 /* ---- USERS ROUTES ---- */
 
-const user = require("./controllers/userControllers");
+const userControllers = require("./controllers/userControllers");
 
 router.post(
   "/companies/:company_id/user/login",
-  user.authenticationCheck,
+  userControllers.authenticationCheck,
   verifyPassword
 );
 
-router.get("/users", verifyToken, user.browse);
-router.get("/users/:user_id", verifyToken, user.read);
+router.post(
+  "/companies/:company_id/users",
+  hashPassword,
+  userControllers.addUser
+);
 
-router.post("/companies/:company_id/users", hashPassword, user.addUser);
+// récupérer les users d'une entreprise
+router.get("/companies/:company_id/users", userControllers.getUsers);
+
+// récupérer un user d'une société
+router.get("/companies/:company_id/users/:user_id", userControllers.getUser);
+
+// ajouter un utilisateur à une entreprise
+router.post(
+  "/companies/:company_id/users/:user_id",
+  userControllers.insertUser
+);
+
+// mettre à jour un profil utilisateur
+router.put(
+  "/companies/:company_id/users/:user_id",
+  userControllers.updateUserProfile
+);
+
+// effacer un profil utilisateur
+router.delete(
+  "/companies/:company_id/users/:user_id",
+  userControllers.deleteUser
+);
+
+/* ---- TEAMS ROUTES ---- */
+
+const teamControllers = require("./controllers/teamControllers");
+
+// afficher les équipes d'une entreprise
+router.get("/companies/:company_id/teams", teamControllers.getTeams);
+
+// afficher une équipe
+router.get("/companies/:company_id/teams/:team_id", teamControllers.getTeam);
+
+// afficher les membres d'une équipe
+router.get("/teams/:team_id/users", teamControllers.getAllUsersFromTeam);
+
+// afficher les équipes d'un utilisateur
+router.get("/users/:user_id/teams", teamControllers.getAllTeamsFromUser);
+
+// créer une équipe
+router.post("/companies/:company_id/teams", teamControllers.addTeamOnCompany);
+
+// ajouter un utilisateur dans une équipe
+
+router.post("/teams/:team_id/users", teamControllers.addUserOnTeam);
+
+// modifier le profil d'une équipe
+router.put("/teams/:team_id", teamControllers.updateTeamProfile);
+
+// supprimer une équipe
+router.delete(
+  "/companies/:company_id/teams/:team_id",
+  teamControllers.deleteTeamFromCompany
+);
+// supprimer un membre d'une équipe
+router.delete(
+  "/teams/:team_id/users/:user_id",
+  teamControllers.deleteUserFromTeam
+);
 
 /* ---- WORKSPACES ROUTES ---- */
 
