@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import { useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 
 import "./Home.scss";
 
@@ -20,8 +19,8 @@ export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
   const { setCompanyInfos } = useContext(CompanyContext);
   const { company_id } = useParams();
-  // const [dataIdea, setDataIdea] = useState({});
-  // const [isLoading, setIsLoading] = useState(true);
+  const [dataIdea, setDataIdea] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -37,16 +36,16 @@ export default function Home() {
     }
   }
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${import.meta.env.VITE_BACKEND_URL}/company/1/ideas`, {
-  //       headers: { Authorization: `Bearer ${userToken}` },
-  //     })
-  //     .then((response) => {
-  //       setDataIdea(response.data);
-  //       setIsLoading(false);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/companies/1/ideas`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+      })
+      .then((response) => {
+        setDataIdea(response.data);
+        setIsLoading(false);
+      });
+  }, []);
 
   return userToken &&
     Object.keys(userInfos).length &&
@@ -75,8 +74,8 @@ export default function Home() {
         <SearchBar />
       </div>
       <div className="idea-cards-list">
-        <IdeaCard />
-        <IdeaCard />
+        {!isLoading &&
+          dataIdea.map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
       </div>
     </main>
   ) : (
