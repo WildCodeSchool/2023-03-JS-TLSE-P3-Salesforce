@@ -92,9 +92,13 @@ router.delete(
 const categoryControllers = require("./controllers/categoryControllers");
 
 router.get("/categories", categoryControllers.browseCategory);
+
 router.get("/categories/:id", categoryControllers.readCategory);
+
 router.put("/categories/:id", categoryControllers.editCategory);
+
 router.post("/categories", categoryControllers.addCategory);
+
 router.delete("/categories/:id", categoryControllers.destroyCategory);
 
 const colorControllers = require("./controllers/colorControllers");
