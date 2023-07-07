@@ -3,6 +3,11 @@ const express = require("express");
 
 const router = express.Router();
 
+const workspaceControllers = require("./controllers/workspaceControllers");
+const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");
+const categoryControllers = require("./controllers/categoryControllers");
+const colorControllers = require("./controllers/colorControllers");
+const companyControllers = require("./controllers/companyControllers");
 const {
   hashPassword,
   verifyPassword,
@@ -86,13 +91,7 @@ router.delete(
   teamControllers.deleteUserFromTeam
 );
 
-/* ---- WORKSPACES ROUTES ---- */
-
-const workspaceControllers = require("./controllers/workspaceControllers");
-const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");
-const categoryControllers = require("./controllers/categoryControllers");
-const colorControllers = require("./controllers/colorControllers");
-const companyControllers = require("./controllers/companyControllers");
+// WORKSPACES ROUTES
 
 router.get("/categories", categoryControllers.browse);
 router.get("/categories/:id", categoryControllers.read);
