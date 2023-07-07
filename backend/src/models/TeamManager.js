@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 const AbstractManager = require("./AbstractManager");
 
 class TeamManager extends AbstractManager {
@@ -53,8 +55,8 @@ class TeamManager extends AbstractManager {
   addTeam(team, companyId) {
     const {
       name,
-      iSprivate,
-      pictureUrl,
+      is_private,
+      picture_url,
       description,
       objective,
       status,
@@ -66,8 +68,8 @@ class TeamManager extends AbstractManager {
          VALUES (?,?, ?, ?, ?, ?, ?, ?);`,
       [
         name,
-        iSprivate,
-        pictureUrl,
+        is_private,
+        picture_url,
         description,
         objective,
         status,
