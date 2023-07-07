@@ -1,3 +1,4 @@
+//* eslint import/no-unresolved */
 const express = require("express");
 
 const router = express.Router();
