@@ -25,7 +25,11 @@ const addUser = (req, res) => {
   models.user
     .insert(req.body)
     .then(([rows]) => {
-      res.send(rows);
+      if (rows.affectedRows) {
+        res.status(201).send(rows);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       if (err.code === "ER_DUP_ENTRY") {
@@ -36,6 +40,7 @@ const addUser = (req, res) => {
       }
     });
 };
+
 // récupérer l'ensemble des utilisateurs
 const getUsers = (req, res) => {
   const { company_id } = req.params;
