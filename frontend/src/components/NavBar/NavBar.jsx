@@ -148,9 +148,9 @@ export default function NavBar({ activeLink }) {
                   setUser();
                 }}
               >
-                <i className="fi fi-rr-power" />
+                <i className="fi fi-rr-sign-out-alt" />
                 <div className="tooltip">
-                  <span>Se deconnecter</span>
+                  <span>Se déconnecter</span>
                 </div>
               </button>
             </div>
@@ -337,8 +337,13 @@ export default function NavBar({ activeLink }) {
                     {userInfos.firstname} {userInfos.lastname.toUpperCase()}
                   </p>
                   <p className="email">{userInfos.email}</p>
+                  <p className="log-out">
+                    <i className="fi fi-rr-sign-out-alt" />
+                    Se déconnecter
+                  </p>
                 </div>
               </div>
+
               <a
                 className="salesforce-logo"
                 href="https://www.salesforce.com/"
