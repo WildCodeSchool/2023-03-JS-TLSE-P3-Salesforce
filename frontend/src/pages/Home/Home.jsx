@@ -2,11 +2,11 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
+import "./Home.scss";
+
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
 
-import "../../components/IdeaCard/IdeaCard.scss";
-import "./Home.scss";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
@@ -38,7 +38,7 @@ export default function Home() {
     (userCompaniesArray.includes(company_id) ||
       userInfos.is_salesforce_admin) ? (
     <main>
-      <NavBar />
+      <NavBar activeLink="home" />
       <PageHeader
         title={
           userInfos.firstname
