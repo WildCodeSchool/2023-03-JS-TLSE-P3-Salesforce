@@ -8,25 +8,6 @@ import "./NewUserModal.scss";
 export default function NewUserModal({ setIsNewUserModalOpen }) {
   const AuthValue = useContext(AuthContext);
   const { userToken, userInfos } = AuthValue;
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   axios
-  //     .post(`${import.meta.env.VITE_BACKEND_URL}/phone`, formObject, {
-  //       headers: {
-  //         Authorization: `Bearer ${userToken}`,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       if (response.status === 201) {
-  //         setIsNewUserModalOpen(false);
-  //         setTogglePhones(!togglePhones);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error.message);
-  //     });
-  // };
 
   return (
     <div className="modal new-user-modal">
