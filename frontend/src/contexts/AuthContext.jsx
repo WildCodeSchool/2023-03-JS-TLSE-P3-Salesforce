@@ -2,7 +2,6 @@ import { createContext, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
 
-// const decodedToken = jwt.decode(userToken);
 const AuthContext = createContext();
 
 export default AuthContext;
