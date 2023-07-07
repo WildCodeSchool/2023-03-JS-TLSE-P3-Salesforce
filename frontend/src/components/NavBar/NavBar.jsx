@@ -12,7 +12,7 @@ import CompanyContext from "../../contexts/CompanyContext";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { userInfos } = useContext(AuthContext);
+  const { setUser, userInfos } = useContext(AuthContext);
   const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
@@ -126,6 +126,19 @@ export default function NavBar({ activeLink }) {
                 <i className="fi fi-rr-interrogation" />
                 <div className="tooltip">
                   <span>Mentions légales</span>
+                </div>
+              </button>
+            </div>
+            <div className="icon-nav-bar">
+              <button
+                type="button"
+                onClick={() => {
+                  setUser();
+                }}
+              >
+                <i className="fi fi-rr-power" />
+                <div className="tooltip">
+                  <span>Se deconnecter</span>
                 </div>
               </button>
             </div>
@@ -281,6 +294,7 @@ export default function NavBar({ activeLink }) {
               <div className="link">
                 <div className="text">
                   <i className="fi fi-rr-interrogation" />
+
                   <p>Mentions légales</p>
                 </div>
               </div>
