@@ -1,0 +1,93 @@
+@use "./shadows" as *;
+@use "./colors" as *;
+
+$icons: (
+  "sm": (
+    height: 32px,
+    width: 32px,
+    i-font-size: 13.33px,
+    circle-outline-border-width: 2px,
+    modern-border-radius: 6px,
+  ),
+  "md": (
+    height: 40px,
+    width: 40px,
+    i-font-size: 16.67px,
+    circle-outline-border-width: 4px,
+    modern-border-radius: 8px,
+  ),
+  "lg": (
+    height: 48px,
+    width: 48px,
+    i-font-size: 20px,
+    circle-outline-border-width: 6px,
+    modern-border-radius: 10px,
+  ),
+  "xl": (
+    height: 56px,
+    width: 56px,
+    i-font-size: 23.33px,
+    circle-outline-border-width: 8px,
+    modern-border-radius: 12px,
+  ),
+);
+
+@mixin icon($size, $color: "primary", $style: "solid", $shape: "circle") {
+  @if ($size != "sm" and $size != "md" and $size != "lg" and $size != "xl") {
+    @error "Invalid icon size: #{$size}";
+  }
+
+  @if ($style != "solid" and $style != "outline" and $style != "soft") {
+    @error "Invalid icon style: #{$style}";
+  }
+
+  @if ($shape != "circle" and $shape != "square") {
+    @error "Invalid icon shape: #{$shape}";
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  $icons-size: map-get($icons, $size);
+  height: map-get($icons-size, height);
+  width: map-get($icons-size, width);
+  i::before {
+    font-size: map-get($icons-size, i-font-size);
+  }
+
+  @if ($shape == "circle") {
+    border-radius: 200px;
+  }
+
+  @if ($style == "outline") {
+    border: map-get($icons-size, circle-outline-border-width)
+      solid
+      var(--#{$color}-50);
+
+    background-color: var(--#{$color}-100);
+
+    i {
+      color: var(--#{$color}-600);
+    }
+  }
+  @if ($style == "solid") {
+    background-color: var(--#{$color}-100);
+
+    i {
+      color: var(--#{$color}-600);
+    }
+  }
+
+  @if ($shape == "square") {
+    border-radius: map-get($icons-size, modern-border-radius);
+  }
+
+  @if ($style == "soft") {
+    @include shadow("xs");
+    background-color: var(--white);
+    border: 1px solid var(--grey-200);
+    color: var(--grey-700);
+  }
+}

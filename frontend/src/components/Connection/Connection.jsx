@@ -1,11 +1,13 @@
 import { useState, useContext } from "react";
+import "./Connection.scss";
 
 import axios from "axios";
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
 
-import "./Connection.scss";
+import Alert from "../Alert/Alert";
+
 import SalesforceLogoSombre from "../../public/assets/logo/logo_SalesForce_Theme_Sombre.svg";
 import SalesforceLogoClair from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
 
@@ -51,10 +53,14 @@ export default function Connection() {
   // handler for change in input mail
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
+    setHasConnectionFailed(false);
   };
 
   // handler for change in password input
-  const handlePasswordChange = (event) => setPassword(event.target.value);
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+    setHasConnectionFailed(false);
+  };
 
   return (
     <div id="sign-in">
@@ -110,9 +116,12 @@ export default function Connection() {
             </button>
           </form>
           {hasConnectionFailed && (
-            <div className="messages">
-              Impossible de se connecter avec ces identifiants.
-            </div>
+            <Alert
+              type="error"
+              text="Les identifiants saisis semblent incorrects.
+                  Veuillez réessayer."
+              icon="diamond-exclamation"
+            />
           )}
         </div>
         <a

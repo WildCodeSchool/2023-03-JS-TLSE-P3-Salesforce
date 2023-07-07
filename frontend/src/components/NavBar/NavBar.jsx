@@ -1,10 +1,19 @@
 import "./NavBar.scss";
-import React, { useState } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import propTypes from "prop-types";
+
 import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
 import CompanyLogo from "../../public/assets/logo/Logo-default.png";
 import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
 
-export default function NavBar() {
+import AuthContext from "../../contexts/AuthContext";
+import CompanyContext from "../../contexts/CompanyContext";
+
+export default function NavBar({ activeLink }) {
+  const navigate = useNavigate();
+  const { userInfos } = useContext(AuthContext);
+  const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
   const [isSubNavBarTeamOpen, setIsSubNavBarTeamOpen] = useState(false);
@@ -60,8 +69,11 @@ export default function NavBar() {
               {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
               <button
                 type="button"
-                className="active"
-                onClick={() => closeSubNavBar()}
+                className={activeLink === "home" ? "active" : ""}
+                onClick={() => {
+                  closeSubNavBar();
+                  navigate(`/${companyInfos.id}/`);
+                }}
               >
                 <i className="fi fi-rr-home" />
                 <div className="tooltip">
@@ -76,6 +88,7 @@ export default function NavBar() {
               </button>
               <button
                 type="button"
+                className={activeLink === "workspace" ? "active" : ""}
                 // au click, on fait apparaitre le sous-menu
                 onClick={() => openNavBarWorkspace()}
               >
@@ -90,12 +103,21 @@ export default function NavBar() {
                   <span>Mes idées</span>
                 </div>
               </button>
-              <button type="button" onClick={() => closeSubNavBar()}>
-                <i className="fi fi-rr-settings-sliders" />
-                <div className="tooltip">
-                  <span>Paramètres entreprise</span>
-                </div>
-              </button>
+              {userInfos.is_salesforce_admin || userInfos.is_company_admin ? (
+                <button
+                  type="button"
+                  className={activeLink === "settings" ? "active" : ""}
+                  onClick={() => {
+                    closeSubNavBar();
+                    navigate(`/${companyInfos.id}/settings`);
+                  }}
+                >
+                  <i className="fi fi-rr-settings-sliders" />
+                  <div className="tooltip">
+                    <span>Paramètres entreprise</span>
+                  </div>
+                </button>
+              ) : null}
             </div>
           </div>
           <div className="second-part-buttons-nav-bar">
@@ -306,3 +328,11 @@ export default function NavBar() {
     </div>
   );
 }
+
+NavBar.propTypes = {
+  activeLink: propTypes.string,
+};
+
+NavBar.defaultProps = {
+  activeLink: "home",
+};
