@@ -54,8 +54,8 @@
       .icon {
         @include icon(
           "lg",
-          $color: "primary",
-          $style: "soft",
+          $color: "grey",
+          $style: "border",
           $shape: "square"
         );
       }
