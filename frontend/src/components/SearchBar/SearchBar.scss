@@ -1,70 +1,44 @@
 @use "../../styles/typography" as *;
 @use "../../styles/shadows" as *;
-
-.search-component {
-  width: 100%;
-
+.search-container {
   display: flex;
   flex-direction: column;
-  .search-bar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0;
-    gap: 0.5rem;
-    position: relative;
-    min-width: min-content;
-    height: auto;
-    border: 1px solid var(--grey-200);
-    border-radius: 0.4rem;
-    background-color: var(--white);
-    @include shadow("xs");
-    .search-input {
-      @include text("md");
-      border: none;
-      margin: 0.5rem;
-      min-width: 18rem;
-      width: 100%;
-      outline: none;
-      &::placeholder {
-        color: var(--grey-500);
-      }
-    }
-    .fi-rs-search {
-      background-color: var(--white);
-    }
-    .search-search {
-      border: none;
-      border-radius: 8px;
-      color: var(--grey-500);
-      background-color: var(--white);
-      margin: 0.3rem;
-      padding: 0.3em;
-      &:hover {
-        transform: scale(1.1);
-        background-color: var(--primary-100);
-      }
-    }
-  }
-  .search-result {
-    background-color: var(--white);
-    width: max-content;
-    max-height: 12rem;
-    overflow-y: auto;
-    scrollbar-color: var(--primary-600);
-  }
-  .line-result {
-    @include text("md");
-    padding: 0.2rem;
-    &:hover {
-      cursor: pointer;
-      background-color: var(--primary-100);
-    }
-  }
 }
-
-@media screen and (min-width: 768px) {
-  .search-component {
-    width: min-content;
-  }
+.search-bar {
+  display: flex;
+}
+.search-bar input {
+  font-size: 1rem;
+  border-radius: 0.2rem;
+  padding: 0.2rem;
+  outline: none;
+}
+.list {
+  display: initial;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  max-height: 35vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  overflow: scroll;
+}
+.list-none {
+  display: none;
+}
+.search-button {
+  background-color: var(--white);
+  border-radius: 0.2rem;
+}
+.search-button:hover {
+  cursor: pointer;
+}
+.search-result {
+  padding: 0.3rem;
+  border-radius: 0.2rem;
+}
+.search-result:hover {
+  background-color: var(--grey-100);
+  cursor: pointer;
 }
