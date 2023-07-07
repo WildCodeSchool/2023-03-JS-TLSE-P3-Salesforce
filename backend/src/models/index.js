@@ -29,6 +29,13 @@ pool.getConnection().catch(() => {
 
 const models = {};
 
+// TEAM
+
+const TeamManager = require("./TeamManager");
+
+models.team = new TeamManager();
+models.team.setDatabase(pool);
+
 // WORKSPACE
 const WorkspaceManager = require("./WorkspaceManager");
 
