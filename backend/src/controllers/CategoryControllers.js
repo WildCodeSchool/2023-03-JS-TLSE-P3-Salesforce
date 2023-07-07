@@ -1,6 +1,6 @@
 const models = require("../models");
 
-const browse = (req, res) => {
+const browseCategory = (req, res) => {
   models.category
     .findAll()
     .then(([rows]) => {
@@ -12,7 +12,7 @@ const browse = (req, res) => {
     });
 };
 
-const read = (req, res) => {
+const readCategory = (req, res) => {
   const { id } = req.params;
   models.category
     .find(id)
@@ -29,7 +29,7 @@ const read = (req, res) => {
     });
 };
 
-const edit = (req, res) => {
+const editCategory = (req, res) => {
   // eslint-disable-next-line camelcase
   const { name, color_id, company_id } = req.body;
   const { id } = req.params;
@@ -48,7 +48,7 @@ const edit = (req, res) => {
     });
 };
 
-const add = (req, res) => {
+const addCategory = (req, res) => {
   // eslint-disable-next-line camelcase
   const { name, color_id, company_id } = req.body;
   models.category
@@ -62,7 +62,7 @@ const add = (req, res) => {
     });
 };
 
-const destroy = (req, res) => {
+const destroyCategory = (req, res) => {
   const { id } = req.params;
   models.category
     .delete(id)
@@ -80,9 +80,9 @@ const destroy = (req, res) => {
 };
 
 module.exports = {
-  browse,
-  read,
-  edit,
-  add,
-  destroy,
+  browseCategory,
+  readCategory,
+  editCategory,
+  addCategory,
+  destroyCategory,
 };

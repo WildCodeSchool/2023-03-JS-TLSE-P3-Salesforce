@@ -1,6 +1,6 @@
 const models = require("../models");
 
-const browse = (req, res) => {
+const browseColor = (req, res) => {
   models.color
     .findAll()
     .then(([rows]) => {
@@ -12,7 +12,7 @@ const browse = (req, res) => {
     });
 };
 
-const read = (req, res) => {
+const readColor = (req, res) => {
   const { id } = req.params;
   models.color
     .find(id)
@@ -29,7 +29,7 @@ const read = (req, res) => {
     });
 };
 
-const edit = (req, res) => {
+const editColor = (req, res) => {
   const { name } = req.body;
   const { id } = req.params;
   models.color
@@ -47,7 +47,7 @@ const edit = (req, res) => {
     });
 };
 
-const add = (req, res) => {
+const addColor = (req, res) => {
   const { name } = req.body;
   models.color
     .insert(name)
@@ -60,7 +60,7 @@ const add = (req, res) => {
     });
 };
 
-const destroy = (req, res) => {
+const destroyColor = (req, res) => {
   const { id } = req.params;
   models.color
     .delete(id)
@@ -78,9 +78,9 @@ const destroy = (req, res) => {
 };
 
 module.exports = {
-  browse,
-  read,
-  edit,
-  add,
-  destroy,
+  browseColor,
+  readColor,
+  editColor,
+  addColor,
+  destroyColor,
 };

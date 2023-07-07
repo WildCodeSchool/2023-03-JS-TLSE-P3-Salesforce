@@ -1,6 +1,6 @@
 const models = require("../models");
 
-const browse = (req, res) => {
+const browseCompany = (req, res) => {
   models.company
     .findAll()
     .then(([rows]) => {
@@ -12,7 +12,7 @@ const browse = (req, res) => {
     });
 };
 
-const read = (req, res) => {
+const readCompany = (req, res) => {
   const { id } = req.params;
   models.company
     .find(id)
@@ -29,7 +29,7 @@ const read = (req, res) => {
     });
 };
 
-const edit = (req, res) => {
+const editCompany = (req, res) => {
   // eslint-disable-next-line camelcase
   const company = req.body;
   const { id } = req.params;
@@ -48,7 +48,7 @@ const edit = (req, res) => {
     });
 };
 
-const add = (req, res) => {
+const addCompany = (req, res) => {
   const company = req.body;
   models.company
     .insert(company)
@@ -61,7 +61,7 @@ const add = (req, res) => {
     });
 };
 
-const destroy = (req, res) => {
+const destroyCompany = (req, res) => {
   const { id } = req.params;
   models.company
     .delete(id)
@@ -79,9 +79,9 @@ const destroy = (req, res) => {
 };
 
 module.exports = {
-  browse,
-  read,
-  edit,
-  add,
-  destroy,
+  browseCompany,
+  readCompany,
+  editCompany,
+  addCompany,
+  destroyCompany,
 };
