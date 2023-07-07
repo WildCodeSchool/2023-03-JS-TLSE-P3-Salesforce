@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
+// import { useState } from "react";
 // import axios from "axios";
 
 import "./Home.scss";
