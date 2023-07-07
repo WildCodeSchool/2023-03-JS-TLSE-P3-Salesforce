@@ -1,13 +1,10 @@
-// eslint import/no-unresolved
 const express = require("express");
 
 const router = express.Router();
 
 const workspaceControllers = require("./controllers/workspaceControllers");
 const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");
-const categoryControllers = require("./controllers/categoryControllers");
-const colorControllers = require("./controllers/colorControllers");
-const companyControllers = require("./controllers/companyControllers");
+
 const {
   hashPassword,
   verifyPassword,
@@ -92,6 +89,7 @@ router.delete(
 );
 
 // WORKSPACES ROUTES
+const categoryControllers = require("./controllers/categoryControllers");
 
 router.get("/categories", categoryControllers.browse);
 router.get("/categories/:id", categoryControllers.read);
@@ -99,11 +97,15 @@ router.put("/categories/:id", categoryControllers.edit);
 router.post("/categories", categoryControllers.add);
 router.delete("/categories/:id", categoryControllers.destroy);
 
+const colorControllers = require("./controllers/colorControllers");
+
 router.get("/colors", colorControllers.browse);
 router.get("/colors/:id", colorControllers.read);
 router.put("/colors/:id", colorControllers.edit);
 router.post("/colors", colorControllers.add);
 router.delete("/colors/:id", colorControllers.destroy);
+
+const companyControllers = require("./controllers/companyControllers");
 
 router.get("/companies", companyControllers.browse);
 router.get("/companies/:id", companyControllers.read);
