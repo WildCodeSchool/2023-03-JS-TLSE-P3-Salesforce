@@ -25,6 +25,7 @@ export default function Connection() {
     const form = event.target;
     const formData = new FormData(form);
     const dataFromForm = Object.fromEntries(formData.entries());
+
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/companies/${
