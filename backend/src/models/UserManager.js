@@ -17,7 +17,8 @@ class UserManager extends AbstractManager {
           user_has_company AS uhc
         WHERE
           ${this.table}.id = uhc.user_id
-      ) AS companies
+      ) AS companies,
+      uhc.is_company_admin
     FROM
       user
       LEFT JOIN user_has_company AS uhc ON ${this.table}.id = uhc.user_id

@@ -54,7 +54,7 @@ class IdeaManager extends AbstractManager {
   }
 
   // celle qui permet de récupérer les idées d'une entreprise est la même que celle qui permet de récupérer les idées d'un user excepté que le where est focalisé sur l'id de l'entreprise
-  getAllIdeasByCompany(companyId, userId) {
+  findAllIdeasByCompany(companyId, userId) {
     return this.database.query(
       ` SELECT
                ${this.table}.id,
@@ -91,6 +91,47 @@ class IdeaManager extends AbstractManager {
              ORDER BY
              ${this.table}.id DESC;`,
       [companyId, userId]
+    );
+  }
+
+  findAllIdeasByIdeasGroup(ideasgroupId) {
+    return this.database.query(
+      ` SELECT
+               ${this.table}.id,
+               ${this.table}.title,
+               ${this.table}.description,
+               ${this.table}.status,
+               ${this.table}.creation_date,
+               u.firstname AS creator_firstname,
+               u.lastname AS creator_lastname,
+               u.email AS creator_email,
+               u.picture_url AS creator_picture_url,
+               comp.name AS company_name,
+               COUNT(liked.id) AS likes_count,
+               comments.comments_count AS comments_count,
+               GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
+               CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
+             FROM ${this.table}
+             INNER JOIN ideas_group ON ideas_group.id = ${this.table}.ideas_group_id
+             LEFT JOIN company AS comp ON comp.id = ${this.table}.company_id
+             LEFT JOIN user AS u ON u.id = ${this.table}.user_id
+             LEFT JOIN (
+               SELECT idea_id, COUNT(*) AS comments_count
+               FROM comment
+               GROUP BY idea_id
+             ) comments ON comments.idea_id = ${this.table}.id
+             LEFT JOIN liked ON liked.idea_id = ${this.table}.id
+             LEFT JOIN comment AS c ON c.idea_id = ${this.table}.id
+             LEFT JOIN user AS cu ON cu.id = c.user_id
+             LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
+             LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
+             LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = 1
+             LEFT JOIN color col ON col.id = cat.color_id
+             WHERE ideas_group_id = ?
+             GROUP BY ${this.table}.id, comp.name
+             ORDER BY
+             ${this.table}.id DESC;`,
+      [ideasgroupId]
     );
   }
 

@@ -19,6 +19,10 @@
   flex-direction: column;
   gap: 6px;
   flex: 10;
+  .input-help {
+    color: var(--grey-500);
+    @include text("sm");
+  }
   .input {
     padding-inline: 16px;
     display: flex;

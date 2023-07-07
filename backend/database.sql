@@ -100,7 +100,7 @@ DROP TABLE IF EXISTS `ideas_group`;
 
 CREATE TABLE IF NOT EXISTS `ideas_group` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NULL,
+  `name_group` VARCHAR(255) NULL,
   `workspace_id` INT NOT NULL,
   `x_coordinate` INT NULL,
   `y_coordinate` INT NULL,
@@ -292,7 +292,7 @@ ADD
 ADD
   CONSTRAINT `fk_idea_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE,
 ADD
-  CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`),
+  CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`) ON DELETE SET NULL,
 ADD
   CONSTRAINT `fk_idea_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
 ADD
@@ -435,7 +435,7 @@ VALUES
     'Feix',
     'charlie.feix@gmail.com',
     '$argon2id$v=19$m=65536,t=5,p=1$f/fZo3zl1ksKvFkAlef5bg$JJADFRcFiEi/GG1pNgPx44ci4hXEUzp6XXmcdX+EU/M',
-    1,
+    0,
     1
   ),
   (
@@ -792,7 +792,7 @@ VALUES
 --  IDEAS GROUP 
 INSERT INTO
   `ideas_group` (
-    `name`,
+    `name_group`,
     `workspace_id`,
     `x_coordinate`,
     `y_coordinate`
@@ -1019,7 +1019,7 @@ VALUES
   (1, 1, 'Biography 1', 'Function 1', 1),
   (2, 2, 'Biography 2', 'Function 2', 0),
   (3, 1, 'Biography 3', 'Function 3', 1),
-  (4, 4, 'Biography 4', 'Function 4', 0),
+  (4, 1, 'Biography 4', 'Function 4', 0),
   (5, 4, 'Biography 5', 'Function 5', 0);
 
 --  WORKSPACE HAS USER 
