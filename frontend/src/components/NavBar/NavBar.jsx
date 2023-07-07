@@ -50,7 +50,13 @@ export default function NavBar({ activeLink }) {
   return (
     <div className="global-nav-bar">
       <nav>
-        <div className="logo-company-nav-bar">
+        <div
+          className="logo-company-nav-bar"
+          onClick={() => {
+            navigate(`/${companyInfos.id}/`);
+          }}
+          aria-hidden="true"
+        >
           <img src={CompanyLogo} alt="Company's logo" />
         </div>
         <div className="burger-nav-bar">
@@ -62,7 +68,13 @@ export default function NavBar({ activeLink }) {
         </div>
         <div className="main-nav-bar">
           <div className="first-part-buttons-nav-bar">
-            <div className="logo-company-nav-bar">
+            <div
+              className="logo-company-nav-bar"
+              onClick={() => {
+                navigate(`/${companyInfos.id}/`);
+              }}
+              aria-hidden="true"
+            >
               <img src={CompanyLogo} alt="Company's logo" />
             </div>
             <div className="icon-nav-bar">
@@ -288,6 +300,21 @@ export default function NavBar({ activeLink }) {
                     <p>Idées</p>
                   </div>
                 </div>
+                {userInfos.is_salesforce_admin || userInfos.is_company_admin ? (
+                  <div
+                    className="link"
+                    onClick={() => {
+                      closeSubNavBar();
+                      navigate(`/${companyInfos.id}/settings`);
+                    }}
+                    aria-hidden="true"
+                  >
+                    <div className="text">
+                      <i className="fi fi-rr-settings-sliders" />
+                      <p>Paramètres entreprise</p>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className="bottom">
@@ -306,8 +333,10 @@ export default function NavBar({ activeLink }) {
                   />
                 </div>
                 <div className="content">
-                  <p className="name">Jean-Jacques GOLDMAN</p>
-                  <p className="email">jeanjacquesgoldman@monentreprise.com</p>
+                  <p className="name">
+                    {userInfos.firstname} {userInfos.lastname.toUpperCase()}
+                  </p>
+                  <p className="email">{userInfos.email}</p>
                 </div>
               </div>
               <a
