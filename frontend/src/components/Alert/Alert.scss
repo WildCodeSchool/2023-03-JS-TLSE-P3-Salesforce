@@ -1,0 +1,124 @@
+@use "../../styles/shadows" as *;
+@use "../../styles/typography" as *;
+@use "../../styles/button" as *;
+
+.alert {
+  display: flex;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  gap: 1rem;
+  align-items: flex-start;
+
+  .icon {
+    padding: 0.62rem;
+    border-radius: 0.5rem;
+    background-color: var(--white);
+    @include shadow("xs");
+    i {
+      font-size: 1.25rem;
+    }
+  }
+  .alert-content {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    b {
+      @include text("sm", $weight: 600);
+    }
+    .title {
+      @include text("sm", $weight: 600);
+      text-wrap: balance;
+    }
+    .text {
+      @include text("sm");
+      text-wrap: balance;
+    }
+  }
+
+  .close {
+    background-color: transparent;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    padding: 0;
+    i {
+      font-size: 1.25rem;
+    }
+  }
+
+  &-error {
+    border: 1px solid var(--error-200);
+
+    .icon {
+      border: 1px solid var(--error-200);
+      i {
+        color: var(--error-600);
+      }
+    }
+    .alert-content {
+      color: var(--error-700);
+    }
+    .close {
+      i {
+        color: var(--error-500);
+      }
+    }
+  }
+  &-info {
+    border: 1px solid var(--blue-200);
+    .icon {
+      border: 1px solid var(--blue-200);
+      i {
+        color: var(--blue-600);
+      }
+    }
+    .alert-content {
+      color: var(--blue-700);
+    }
+    .close {
+      i {
+        color: var(--blue-500);
+      }
+    }
+  }
+  &-success {
+    border: 1px solid var(--success-200);
+
+    .icon {
+      border: 1px solid var(--success-200);
+      i {
+        color: var(--success-600);
+      }
+    }
+    .alert-content {
+      color: var(--success-700);
+    }
+    .close {
+      i {
+        color: var(--success-500);
+      }
+    }
+  }
+  &-warning {
+    border: 1px solid var(--warning-200);
+    .icon {
+      border: 1px solid var(--warning-200);
+      i {
+        color: var(--warning-600);
+      }
+    }
+    .alert-content {
+      color: var(--warning-700);
+    }
+    .close {
+      i {
+        color: var(--warning-500);
+      }
+    }
+  }
+}
