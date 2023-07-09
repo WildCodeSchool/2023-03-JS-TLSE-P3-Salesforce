@@ -340,15 +340,15 @@ body {
               }
             }
 
+            &.active {
+              background-color: var(--primary-500);
+            }
             &:hover {
               background-color: var(--primary-700);
 
               .tooltip {
                 display: flex;
               }
-            }
-            &.active {
-              background-color: var(--primary-500);
             }
 
             .tooltip {
@@ -370,6 +370,43 @@ body {
             }
           }
         }
+        .second-part-buttons-nav-bar{
+
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .avatar {
+            position: relative;
+            display: flex;
+            // align-items: center;
+            justify-content: center;
+            &:hover {
+              .tooltip {
+                display: flex;
+              }
+            }
+  
+            .tooltip {
+              position: absolute;
+              left: calc(48px + 1rem);
+              top: 0;
+              height: 100%;
+              display: none;
+              width: fit-content;
+              align-items: center;
+              span {
+                background-color: rgba(30, 41, 59, 0.8);
+                @include text("sm");
+                white-space: nowrap;
+                padding: 0.25rem 0.5rem;
+                color: var(--white);
+                border-radius: 8px;
+              }
+            }
+          }
+        }
+
         .salesforce-logo-nav-bar {
           max-width: 64px;
           display: flex;

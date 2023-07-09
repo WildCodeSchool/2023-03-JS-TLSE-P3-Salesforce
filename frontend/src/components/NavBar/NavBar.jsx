@@ -9,10 +9,12 @@ import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
+import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
   const { userInfos } = useContext(AuthContext);
+  const initials = userInfos.firstname[0] + userInfos.lastname[0];
   const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
@@ -140,6 +142,16 @@ export default function NavBar({ activeLink }) {
                   <span>Mentions légales</span>
                 </div>
               </button>
+            </div>
+            <div className="avatar">
+              <Avatar
+                type="navbar"
+                initials={initials}
+                // pictureUrl="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80"
+              />
+              <div className="tooltip">
+                <span>Mon profil</span>
+              </div>
             </div>
 
             <a
