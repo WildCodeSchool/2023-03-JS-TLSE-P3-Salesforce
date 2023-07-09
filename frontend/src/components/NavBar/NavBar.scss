@@ -213,6 +213,18 @@ body {
               overflow: hidden;
               text-overflow: ellipsis;
             }
+            .log-out{
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+              @include text("sm", $weight: 500);
+              margin-top: 0.5rem;
+              cursor: pointer;
+              i::before{
+                
+                @include text("sm");
+              }
+            }
           }
         }
         .salesforce-logo {

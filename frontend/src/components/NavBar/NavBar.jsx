@@ -13,7 +13,7 @@ import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { userInfos } = useContext(AuthContext);
+  const { setUser, userInfos } = useContext(AuthContext);
   const initials = userInfos.firstname[0] + userInfos.lastname[0];
   const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
@@ -140,6 +140,19 @@ export default function NavBar({ activeLink }) {
                 <i className="fi fi-rr-interrogation" />
                 <div className="tooltip">
                   <span>Mentions légales</span>
+                </div>
+              </button>
+            </div>
+            <div className="icon-nav-bar">
+              <button
+                type="button"
+                onClick={() => {
+                  setUser();
+                }}
+              >
+                <i className="fi fi-rr-sign-out-alt" />
+                <div className="tooltip">
+                  <span>Se déconnecter</span>
                 </div>
               </button>
             </div>
@@ -320,6 +333,7 @@ export default function NavBar({ activeLink }) {
               <div className="link">
                 <div className="text">
                   <i className="fi fi-rr-interrogation" />
+
                   <p>Mentions légales</p>
                 </div>
               </div>
@@ -335,8 +349,13 @@ export default function NavBar({ activeLink }) {
                     {userInfos.firstname} {userInfos.lastname.toUpperCase()}
                   </p>
                   <p className="email">{userInfos.email}</p>
+                  <p className="log-out">
+                    <i className="fi fi-rr-sign-out-alt" />
+                    Se déconnecter
+                  </p>
                 </div>
               </div>
+
               <a
                 className="salesforce-logo"
                 href="https://www.salesforce.com/"

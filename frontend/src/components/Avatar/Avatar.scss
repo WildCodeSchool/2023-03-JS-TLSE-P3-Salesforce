@@ -14,7 +14,7 @@
     @include text("xl", $weight: 500);
     color: var(--primary-100);
     overflow: hidden;
-    border: 1px solid var(--primary-500);
+    
     img {
       height: 100%;
       width: 100%;
