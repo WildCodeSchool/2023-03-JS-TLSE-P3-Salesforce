@@ -161,8 +161,6 @@ export default function NavBar({ activeLink }) {
               <Avatar
                 type="navbar"
                 initials={initials}
-                // pictureUrl="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80"
-              />
               <div className="tooltip">
                 <span>Mon profil</span>
               </div>
