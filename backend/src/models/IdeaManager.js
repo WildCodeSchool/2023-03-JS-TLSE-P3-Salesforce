@@ -84,17 +84,17 @@ class IdeaManager extends AbstractManager {
              LEFT JOIN user AS cu ON cu.id = c.user_id
              LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
              LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
-             LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = 1
+             LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = ?
              LEFT JOIN color col ON col.id = cat.color_id
-             WHERE comp.id = 2
+             WHERE comp.id = ?
              GROUP BY ${this.table}.id, comp.name
              ORDER BY
              ${this.table}.id DESC;`,
-      [companyId, userId]
+      [userId, companyId]
     );
   }
 
-  findAllIdeasByIdeasGroup(ideasgroupId) {
+  findAllIdeasByIdeasGroup(ideasgroupId, userId) {
     return this.database.query(
       ` SELECT
                ${this.table}.id,
@@ -125,13 +125,13 @@ class IdeaManager extends AbstractManager {
              LEFT JOIN user AS cu ON cu.id = c.user_id
              LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
              LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
-             LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = 1
+             LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = ?
              LEFT JOIN color col ON col.id = cat.color_id
              WHERE ideas_group_id = ?
              GROUP BY ${this.table}.id, comp.name
              ORDER BY
              ${this.table}.id DESC;`,
-      [ideasgroupId]
+      [userId, ideasgroupId]
     );
   }
 
