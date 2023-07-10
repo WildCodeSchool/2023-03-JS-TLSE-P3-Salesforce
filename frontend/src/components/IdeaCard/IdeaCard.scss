@@ -4,7 +4,7 @@
 .idea-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: stretch;
   border: 1px solid var(--grey-200);
   @include shadow("xs");
   cursor: pointer;
@@ -26,7 +26,7 @@
 
     .title-idea {
       width: 100%;
-      @include text("md", $weight: 600);
+      @include text("md", $weight: 500);
       color: var(--grey-900);
     }
     .idea-menu-icon {
@@ -41,7 +41,7 @@
     align-items: flex-start;
     padding: 20px;
     gap: 8px;
-    width: 100%;
+    height: 100%;
 
     .badges-idea {
       display: flex;
@@ -57,7 +57,7 @@
       max-height: auto;
       max-width: 100%;
       color: var(--grey-600);
-      @include text("sm", $weight: 400);
+      @include text("sm");
     }
   }
   .footer-idea {

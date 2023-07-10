@@ -40,6 +40,7 @@ DROP TABLE IF EXISTS `company`;
 CREATE TABLE IF NOT EXISTS `company` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
   `baseline` VARCHAR(255) NULL,
   `siret` VARCHAR(255) NULL,
   `type` VARCHAR(255) NULL,
@@ -119,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `idea` (
   `status` VARCHAR(45) NOT NULL DEFAULT 'published',
   `x_coordinate` INT NULL,
   `y_coordinate` INT NULL,
-  `color_id` INT NOT NULL DEFAULT 1,
+  `color_id` INT NULL,
   `company_id` INT NOT NULL,
   `user_id` INT NOT NULL,
   `workspace_id` INT NULL,
@@ -404,6 +405,7 @@ INSERT INTO
     `lastname`,
     `email`,
     `password`,
+    `picture_url`,
     `is_salesforce_admin`,
     `has_accepted_invitation`
   )
@@ -413,6 +415,7 @@ VALUES
     'Palacio-Vidal',
     'cedric.palacio@gmail.com',
     '$argon2id$v=19$m=65536,t=5,p=1$4PxtA5qNt2r39SyKbo2kaQ$24kugoP+Kh+xzTTFDJdYxYR/hDfAT3By+wIQtepQy8U',
+    'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/cedric_wxfm8y.jpg',
     1,
     1
   ),
@@ -421,6 +424,7 @@ VALUES
     'Bide',
     'almasyser@wanadoo.fr',
     '$argon2id$v=19$m=65536,t=5,p=1$vUAPptBxVfStgTgdirr6rA$bN4GbdqV3kkqICI7aiXkaDmqGA6qcYqZNcU3X2xp41c',
+    null,
     1,
     1
   ),
@@ -428,6 +432,7 @@ VALUES
     'Mehdi',
     'Berbedj',
     'berbedj.mehdi@gmail.com',
+    'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/mehdi_zv4kmk.png',
     '$argon2id$v=19$m=65536,t=5,p=1$9A07wUIwU6tL6coQY+5/bA$EC+cvyLGFo9PHmAmeG46mH5nlOtII/x7Y5OsYLWSk+g',
     1,
     1
@@ -437,6 +442,7 @@ VALUES
     'Feix',
     'charlie.feix@gmail.com',
     '$argon2id$v=19$m=65536,t=5,p=1$f/fZo3zl1ksKvFkAlef5bg$JJADFRcFiEi/GG1pNgPx44ci4hXEUzp6XXmcdX+EU/M',
+    'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/charlie_vppxgf.jpg',
     0,
     1
   ),
@@ -445,6 +451,7 @@ VALUES
     'Dubois',
     'francoisdubois@example.com',
     'hello',
+    null,
     0,
     1
   ),
@@ -453,6 +460,7 @@ VALUES
     'Moreau',
     'emiliemoreau@example.com',
     'hello',
+    null,
     0,
     1
   ),
@@ -461,6 +469,7 @@ VALUES
     'Leroy',
     'nicolasleroy@example.com',
     'hello',
+    null,
     0,
     0
   ),
@@ -469,6 +478,7 @@ VALUES
     'Garcia',
     'charlottegarcia@example.com',
     'hello',
+    'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80',
     0,
     1
   ),
@@ -477,6 +487,7 @@ VALUES
     'Fournier',
     'thomasfournier@example.com',
     'hello',
+    'https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80',
     0,
     1
   ),
@@ -485,6 +496,7 @@ VALUES
     'Robin',
     'julierobin@example.com',
     'hello',
+    null,
     0,
     1
   ),
@@ -493,6 +505,7 @@ VALUES
     'Petit',
     'antoinepetit@example.com',
     'hello',
+    null,
     0,
     0
   ),
@@ -501,121 +514,17 @@ VALUES
     'Rousseau',
     'camillerousseau@example.com',
     'hello',
+    null,
     0,
     1
-  );
-
-INSERT INTO
-  `user` (
-    `firstname`,
-    `lastname`,
-    `email`,
-    `password`,
-    `phone_number`,
-    `picture_url`,
-    `is_salesforce_admin`,
-    `creation_date`,
-    `color_id`,
-    `has_accepted_invitation`
-  )
-VALUES
-  (
-    'Guillaume',
-    'Cabernac',
-    'guigui12truite@me.com',
-    'admin123',
-    '0478950000',
-    'https://unsplash.com/fr/photos/une-figurine-de-chat-assise-sur-une-chaise-Sv527La47lY',
-    0,
-    '2023-06-21 15:37:12',
-    1,
-    1
-  ),
-  (
-    'Alice',
-    'Johnson',
-    'alice.johnson@example.com',
-    'qwerty',
-    '+987654321',
-    'https://example.com/profile.jpg',
-    1,
-    '2023-06-21 14:45:00',
-    NULL,
-    1
-  ),
-  (
-    'Bob',
-    'Brown',
-    'bob.brown@example.com',
-    'pass123',
-    '+555555555',
-    NULL,
-    0,
-    '2023-06-21 15:15:00',
-    NULL,
-    0
-  ),
-  (
-    'Jane',
-    'Smith',
-    'jane.smith@example.com',
-    'abc123',
-    NULL,
-    NULL,
-    0,
-    '2023-06-21 13:30:00',
-    2,
-    0
   );
 
 -- COMPANIES
 INSERT INTO
   `company` (
     `name`,
-    `siret`,
-    `type`,
-    `sector`,
-    `creation_date`,
-    `color_id`
-  )
-VALUES
-  (
-    'Acme Corporation',
-    '12345678900010',
-    'SA',
-    'Technologie',
-    '2023-05-21 11:00:00',
-    6
-  ),
-  (
-    'Globex Industries',
-    '98765432100020',
-    'SARL',
-    'Manufacturing',
-    '2022-12-21 17:30:00',
-    6
-  ),
-  (
-    'Innovate Solutions',
-    '56789012300030',
-    'SAS',
-    'Services',
-    '2023-05-21 11:00:00',
-    10
-  ),
-  (
-    'EcoTech Ventures',
-    '45678901200040',
-    'SCOP',
-    'Environnement',
-    '2023-05-21 11:00:00',
-    1
-  );
-
-INSERT INTO
-  `company` (
-    `name`,
     `baseline`,
+    `slug`,
     `siret`,
     `type`,
     `sector`,
@@ -625,8 +534,53 @@ INSERT INTO
   )
 VALUES
   (
+    'Acme Corporation',
+    null,
+    'acme-corporation',
+    '12345678900010',
+    'SA',
+    'Technologie',
+    null,
+    '2023-05-21 11:00:00',
+    6
+  ),
+  (
+    'Globex Industries',
+    null,
+    'globex-industries',
+    '98765432100020',
+    'SARL',
+    'Manufacturing',
+    null,
+    '2022-12-21 17:30:00',
+    6
+  ),
+  (
+    'CookBuddy',
+    null,
+    'cookbuddy',
+    '56789012300030',
+    'SAS',
+    'Cooking',
+    "https://res.cloudinary.com/dmmifezda/image/upload/v1689016811/logo-cookbuddy_zxupn6.svg",
+    '2023-05-21 11:00:00',
+    12
+  ),
+  (
+    'EcoTech Ventures',
+    null,
+    'ecotech-ventures',
+    '45678901200040',
+    'SCOP',
+    'Environnement',
+    null,
+    '2023-05-21 11:00:00',
+    1
+  ),
+  (
     'ABC Corporation',
     'Building a better future',
+    'abc-corporation',
     '123456789',
     'Public',
     'Technology',
@@ -637,6 +591,7 @@ VALUES
   (
     'XYZ Corporation',
     'Innovating for a better tomorrow',
+    'xyz-corporation',
     '987654321',
     'Private',
     'Engineering',
@@ -647,6 +602,7 @@ VALUES
   (
     '123 Industries',
     'Quality products for every need',
+    '123-industries',
     '9876543210',
     'Private',
     'Manufacturing',
@@ -892,6 +848,176 @@ VALUES
     NULL,
     NULL,
     1
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Fonctionnalité de recherche avancée',
+    'Permettre aux utilisateurs de trouver des recettes spécifiques en utilisant des filtres tels que les ingrédients, le temps de préparation, les régimes alimentaires, etc.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Section recettes populaires',
+    'Mettre en évidence les recettes populaires et les tendances actuelles pour inspirer les utilisateurs.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Planification des repas et listes d\'achats',
+    'Permettre aux utilisateurs de planifier leurs repas pour la semaine et générer automatiquement des listes d\'achats basées sur les recettes sélectionnées.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Partage de recettes',
+    'Permettre aux utilisateurs de partager leurs propres recettes avec la communauté de l\'application.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Conversion des mesures et des unités',
+    'Offrir aux utilisateurs la possibilité de convertir facilement les mesures et les unités d\'ingrédients pour s\'adapter à leurs besoins.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Catégorie recettes végétariennes et véganes',
+    'Mettre en évidence les recettes végétariennes et véganes pour répondre aux besoins des utilisateurs ayant des régimes alimentaires spécifiques.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Système de notation et de commentaires',
+    'Permettre aux utilisateurs de noter et de commenter les recettes, afin de partager leurs avis et leurs astuces.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Suggestions de recettes personnalisées',
+    'Utiliser des algorithmes de recommandation pour suggérer des recettes en fonction des préférences et des habitudes de l\'utilisateur.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Section astuces et conseils culinaires',
+    'Fournir aux utilisateurs des astuces et des conseils culinaires pour les aider à améliorer leurs compétences en cuisine.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
+  ),
+  (
+    NULL,
+    '2023-07-10 00:00:00',
+    'Intégrer une fonctionnalité de planification de repas pour des régimes spécifiques',
+    'Permettre aux utilisateurs de planifier des repas adaptés à des régimes spécifiques tels que le régime cétogène, sans gluten, etc.',
+    'published',
+    NULL,
+    NULL,
+    NULL,
+    3,
+    1,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0
   );
 
 --  FILE 
@@ -981,7 +1107,12 @@ VALUES
   ('Category 3', 3, 3),
   ('Category 4', 4, 4),
   ('Category 5', 5, 5),
-  ('Category 6', 6, 6);
+  ('Category 6', 6, 6),
+  ('Recherche', 8, 3),
+  ('Populaire', 15, 3),
+  ('Planification des repas', 3, 3),
+  ('Partage de recettes', 9, 3),
+  ('Astuces culinaires', 5, 3);
 
 --  TAG 
 --  TAG HAS IDEA 
@@ -1006,7 +1137,18 @@ VALUES
   (1, 1),
   (2, 2),
   (3, 1),
-  (2, 4);
+  (2, 4),
+  (7, 5),
+  (7, 12),
+  (8, 8),
+  (8, 10),
+  (8, 6),
+  (9, 7),
+  (9, 14),
+  (10, 8),
+  (8, 9),
+  (10, 11),
+  (11, 13);
 
 --  USER HAS COMPANY 
 INSERT INTO

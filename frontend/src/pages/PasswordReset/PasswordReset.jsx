@@ -7,7 +7,7 @@ import {
   useSearchParams,
   useNavigate,
 } from "react-router-dom";
-import "./Invitation.scss";
+import "./PasswordReset.scss";
 
 import axios from "axios";
 

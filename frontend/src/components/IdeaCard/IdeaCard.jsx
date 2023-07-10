@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
 import propTypes from "prop-types";
@@ -32,40 +33,37 @@ export default function IdeaCard({ idea }) {
           setShowSubmenu={setShowSubmenu}
         />
       </div>
-      <div>
-        {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}
-        <div className="content-idea">
+
+      {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}
+      <div className="content-idea">
+        {idea.categories && (
           <div className="badges-idea">
             {/* Afficher les composants de catégorie uniquement si une catégorie est sélectionnée */}
-            {idea.categories &&
-              splitIdeaCategories.map((categories) => {
-                const splitCategory = categories.split("|");
-                return (
-                  <Badge key={splitCategory[0]} color={splitCategory[1]}>
-                    {splitCategory[0]}
-                  </Badge>
-                );
-              })}
+            {splitIdeaCategories.map((categories) => {
+              const splitCategory = categories.split("|");
+              return (
+                <Badge key={splitCategory[0]} color={splitCategory[1]}>
+                  {splitCategory[0]}
+                </Badge>
+              );
+            })}
           </div>
+        )}
 
-          <p className="idea-description">{idea.description}</p>
-        </div>
-        <div className="footer-idea">
-          <CommentButton
-            commentCount={commentCount}
-            showCommentModal={showCommentModal}
-            setCommentCount={setCommentCount}
-            setShowCommentModal={setShowCommentModal}
-          />
-          <LikeButton
-            likeCount={likeCount}
-            likeActive={likeActive}
-            isHovered={isHovered}
-            setLikeCount={setLikeCount}
-            setLikeActive={setLikeActive}
-            setIsHovered={setIsHovered}
-          />
-        </div>
+        <p className="idea-description">{idea.description}</p>
+      </div>
+      <div className="footer-idea">
+        <CommentButton
+          commentCount={idea.comments_count === null ? 0 : idea.comments_count}
+        />
+        <LikeButton
+          likeCount={idea.likes_count}
+          likeActive={idea.is_liked_by_user}
+          isHovered={isHovered}
+          setLikeCount={setLikeCount}
+          setLikeActive={setLikeActive}
+          setIsHovered={setIsHovered}
+        />
       </div>
     </div>
   );
@@ -78,6 +76,7 @@ IdeaCard.propTypes = {
     comments_count: propTypes.number,
     likes_count: propTypes.number,
     categories: propTypes.string,
+    is_liked_by_user: propTypes.number,
   }),
 };
 
@@ -88,5 +87,6 @@ IdeaCard.defaultProps = {
     comments_count: 0,
     likes_count: 0,
     categories: "",
+    is_liked_by_user: 0,
   },
 };

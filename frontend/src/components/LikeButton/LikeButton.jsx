@@ -32,18 +32,16 @@ export default function LikeButton({
   }
 
   return (
-    <div>
-      <button
-        className="idea-like"
-        type="button"
-        onClick={handleLike}
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-      >
-        {likeCount}
-        <i className={likeIcon} />
-      </button>
-    </div>
+    <button
+      className="idea-like"
+      type="button"
+      onClick={handleLike}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
+    >
+      {likeCount}
+      <i className={likeIcon} />
+    </button>
   );
 }
 
