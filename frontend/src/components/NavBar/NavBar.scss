@@ -84,7 +84,6 @@ body {
       flex-direction: column;
       justify-content: space-between;
       width: 80vw;
-      // height: 100%;
       overflow-y: scroll;
       background-color: var(--primary-700);
       .link {
@@ -389,7 +388,6 @@ body {
           .avatar {
             position: relative;
             display: flex;
-            // align-items: center;
             justify-content: center;
             &:hover {
               .tooltip {

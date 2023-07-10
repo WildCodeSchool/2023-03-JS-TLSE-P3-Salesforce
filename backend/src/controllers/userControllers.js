@@ -2,8 +2,6 @@
 const models = require("../models");
 
 const authenticationCheck = (req, res, next) => {
-  // console.log(req.body);
-  // console.log(req.params);
   const { email } = req.body;
   const { company_id } = req.params;
 
