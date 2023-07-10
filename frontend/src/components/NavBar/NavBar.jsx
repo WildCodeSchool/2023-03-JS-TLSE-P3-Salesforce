@@ -160,7 +160,7 @@ export default function NavBar({ activeLink }) {
             <div className="avatar">
               <Avatar
                 type="navbar"
-                initials={initials}
+                initials={initials} />
               <div className="tooltip">
                 <span>Mon profil</span>
               </div>
