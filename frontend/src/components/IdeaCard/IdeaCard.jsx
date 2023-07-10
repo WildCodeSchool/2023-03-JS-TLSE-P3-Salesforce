@@ -16,14 +16,13 @@ export default function IdeaCard({ idea }) {
   const [isHovered, setIsHovered] = useState(false);
   const [showSubmenu, setShowSubmenu] = useState(false);
 
-  let nameCategory = "";
-  let colorCategory = "";
+  // let nameCategory = "";
+  // let colorCategory = "";
+  let splitIdeaCategories = [];
 
   if (idea.categories) {
-    const nameAndColorCategory = idea.categories;
-    const splitIdeaCategories = nameAndColorCategory.split("|");
-    nameCategory = splitIdeaCategories[0];
-    colorCategory = splitIdeaCategories[1];
+    const nameAndColorCategories = idea.categories;
+    splitIdeaCategories = nameAndColorCategories.split(",");
   }
 
   return (
@@ -41,9 +40,15 @@ export default function IdeaCard({ idea }) {
         <div className="content-idea">
           <div className="badges-idea">
             {/* Afficher les composants de catégorie uniquement si une catégorie est sélectionnée */}
-            <Badge color={colorCategory}>{nameCategory}</Badge>
-            <Badge color="green">Marketing</Badge>
-            <Badge color="blue">Comptabilité</Badge>
+            {idea.categories &&
+              splitIdeaCategories.map((categories) => {
+                const splitCategory = categories.split("|");
+                return (
+                  <Badge key={splitCategory[0]} color={splitCategory[1]}>
+                    {splitCategory[0]}
+                  </Badge>
+                );
+              })}
           </div>
 
           <p className="idea-description">{idea.description}</p>

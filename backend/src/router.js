@@ -105,10 +105,11 @@ router.get(
 
 // Get all ideas for a company
 router.get(
-  "/companies/:company_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByCompany
 );
+// Get all ideas for group idea
 router.get(
   "/ideasgroup/:ideas_group_id/ideas",
   verifyToken,

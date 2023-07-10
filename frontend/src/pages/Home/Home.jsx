@@ -35,17 +35,23 @@ export default function Home() {
       userCompaniesArray = userInfos.companies.split(",");
     }
   }
-
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/companies/1/ideas`, {
-        headers: { Authorization: `Bearer ${userToken}` },
-      })
-      .then((response) => {
-        setDataIdea(response.data);
-        setIsLoading(false);
-      });
-  }, []);
+    if ((company_id, userInfos.id)) {
+      axios
+        .get(
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${company_id}/users/${
+            userInfos.id
+          }/ideas/`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        )
+        .then((response) => {
+          setDataIdea(response.data);
+          setIsLoading(false);
+        });
+    }
+  }, [company_id, userInfos.id]);
 
   return userToken &&
     Object.keys(userInfos).length &&
