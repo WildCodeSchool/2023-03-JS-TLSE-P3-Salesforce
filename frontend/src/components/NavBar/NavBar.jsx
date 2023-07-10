@@ -14,6 +14,7 @@ import Avatar from "../Avatar/Avatar";
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
   const { setUser, userInfos } = useContext(AuthContext);
+
   const initials = userInfos.firstname[0] + userInfos.lastname[0];
   const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =

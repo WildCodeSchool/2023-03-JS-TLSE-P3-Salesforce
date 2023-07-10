@@ -33,6 +33,12 @@ const verifyPassword = (req, res) => {
       if (isVerified) {
         const payload = {
           sub: req.user.id,
+          user: req.user,
+          role: {
+            isAdmin: req.user.is_salesforce_admin,
+            isCompanyAdmin: req.user.is_company_admin,
+          },
+          companies: req.user.companies,
         };
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
@@ -83,7 +89,7 @@ const verifyCompanyAdminRole = (req, res, next) => {
   if (isCompanyAdmin) {
     next();
   } else {
-    res.sendStatus(403).send("Forbidden");
+    res.status(403).send("Forbidden");
   }
 };
 const verifySalesForceAdminRole = (req, res, next) => {
@@ -91,17 +97,18 @@ const verifySalesForceAdminRole = (req, res, next) => {
   if (isAdmin) {
     next();
   } else {
-    res.sendStatus(403).send("Forbidden");
+    res.status(403).send("Forbidden");
   }
 };
 
 const verifyCompanyAdminOrSalesForceAdminRole = (req, res, next) => {
-  const isCompanyAdmin = req.get("is_company_admin");
-  const isAdmin = req.get("is_admin");
+  const { isCompanyAdmin, isAdmin } = req.payload.role;
   if (isAdmin || isCompanyAdmin) {
     next();
   } else {
-    res.sendStatus(403).send("Forbidden");
+    res
+      .status(403)
+      .send("Forbidden you are not company admin or Salesforce admin");
   }
 };
 
@@ -115,6 +122,21 @@ const checkId = (req, res, next) => {
   }
 };
 
+const randomPasswordGenerator = (req, res, next) => {
+  function passwordGenerator(length = 20) {
+    const chars =
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-";
+    let generatedPassword = "";
+    for (let i = 0; i < length; i += 1) {
+      generatedPassword += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return generatedPassword;
+  }
+  req.body.password = passwordGenerator(20);
+  req.body.newTempPassword = req.body.password;
+  next();
+};
+
 module.exports = {
   hashPassword,
   verifyPassword,
@@ -123,4 +145,5 @@ module.exports = {
   verifySalesForceAdminRole,
   verifyCompanyAdminOrSalesForceAdminRole,
   checkId,
+  randomPasswordGenerator,
 };

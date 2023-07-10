@@ -2,6 +2,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
+import { sanitize } from "isomorphic-dompurify";
+
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
 
@@ -21,7 +23,7 @@ export default function CompanySettings() {
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
-      id: company_id,
+      id: sanitize(company_id),
     }));
   }, [company_id]);
 

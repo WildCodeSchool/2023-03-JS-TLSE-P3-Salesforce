@@ -6,7 +6,7 @@ class UserManager extends AbstractManager {
     super({ table: "user" });
   }
 
-  getUserByMail(email, companyId) {
+  getUserByMailAndCompany(email, companyId) {
     return this.database.query(
       `SELECT
       ${this.table}.*,
@@ -32,27 +32,11 @@ class UserManager extends AbstractManager {
     );
   }
 
-  insert(user) {
-    const {
-      firstname,
-      lastname,
-      email,
-      hashed_password,
-      phone_number,
-      picture_url,
-      is_salesforce_admin,
-    } = user;
+  createUser(user) {
+    const { email, hashed_password } = user;
     return this.database.query(
-      `insert into ${this.table} (firstname, lastname, email, password, phone_number, picture_url, is_salesforce_admin) values (?, ?, ?, ?, ?, ?, ?);`,
-      [
-        firstname,
-        lastname,
-        email,
-        hashed_password,
-        phone_number,
-        picture_url,
-        is_salesforce_admin,
-      ]
+      `insert into ${this.table} (email, password) values (?, ?);`,
+      [email, hashed_password]
     );
   }
 
@@ -75,7 +59,7 @@ class UserManager extends AbstractManager {
   // ajouter un utilisateur à une entreprise
   addUser(userId, companyId) {
     return this.database.query(
-      `INSERT INTO user_has_company (user_id, company_id) VALUES (?,?);`,
+      `INSERT INTO user_has_company (user_id, company_id) VALUES (?, ?);`,
       [userId, companyId]
     );
   }
@@ -96,6 +80,43 @@ class UserManager extends AbstractManager {
     return this.database.query(
       `DELETE FROM user_has_company WHERE user_id = ? AND company_id= ?`,
       [userId, companyId]
+    );
+  }
+
+  getUserInCompanyById(companyId, userId) {
+    return this.database.query(
+      `SELECT
+      ${this.table}.id,
+      ${this.table}.firstname,
+      ${this.table}.lastname,
+      ${this.table}.email,
+      ${this.table}.picture_url,
+      ${this.table}.has_accepted_invitation
+    FROM
+      ${this.table}
+      JOIN user_has_company AS uhc ON uhc.user_id = ${this.table}.id
+      AND uhc.company_id = ?
+    WHERE
+      ${this.table}.id = ? AND uhc.company_id = ?;`,
+      [companyId, userId, companyId]
+    );
+  }
+
+  getUserByMail(email) {
+    return this.database.query(
+      `SELECT ${this.table}.id, ${this.table}.firstname, ${this.table}.lastname, ${this.table}.email, ${this.table}.picture_url FROM ${this.table} WHERE ${this.table}.email = ?;`,
+      [email]
+    );
+  }
+
+  modifyUserCompanyProfile(companyId, userId, user) {
+    const keys = Object.keys(user);
+    const values = Object.values(user);
+    const valueQuery = keys.map((key) => `\`${key}\` = ?`).join(", ");
+
+    return this.database.query(
+      `UPDATE user_has_company SET ${valueQuery} WHERE user_id = ? AND company_id= ?;`,
+      [...values, userId, companyId]
     );
   }
 }

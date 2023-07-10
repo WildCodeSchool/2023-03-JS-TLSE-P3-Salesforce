@@ -2,17 +2,19 @@
 const models = require("../models");
 
 const authenticationCheck = (req, res, next) => {
+  // console.log(req.body);
+  // console.log(req.params);
   const { email } = req.body;
   const { company_id } = req.params;
 
   models.user
-    .getUserByMail(email, company_id)
+    .getUserByMailAndCompany(email, company_id)
     .then(([users]) => {
       if (users[0] != null) {
         [req.user] = users;
         next();
       } else {
-        res.sendStatus(401);
+        res.sendStatus(403);
       }
     })
     .catch((err) => {
@@ -21,9 +23,9 @@ const authenticationCheck = (req, res, next) => {
     });
 };
 
-const addUser = (req, res) => {
+const createNewUser = (req, res) => {
   models.user
-    .insert(req.body)
+    .createUser(req.body)
     .then(([rows]) => {
       if (rows.affectedRows) {
         res.status(201).send(rows);
@@ -80,7 +82,8 @@ const getUser = (req, res) => {
 // ajouter un utilisateur à une entreprise
 
 const insertUser = (req, res) => {
-  const { user_id, company_id } = req.params;
+  const { company_id } = req.params;
+  const { user_id } = req.body;
   models.user
     .addUser(user_id, company_id)
     .then(([rows]) => {
@@ -99,11 +102,17 @@ const insertUser = (req, res) => {
 // mettre à jour un profil utilisateur
 const updateUserProfile = (req, res) => {
   const { user_id } = req.params;
+
+  if (req.body.hashed_password) {
+    req.body.password = req.body.hashed_password;
+    delete req.body.hashed_password;
+  }
   models.user
     .modifyUserProfile(user_id, req.body)
     .then(([rows]) => {
+      delete req.body.password;
       if (rows) {
-        res.status(204).send(rows);
+        res.status(200).send(req.body);
       } else {
         res.sendStatus(404);
       }
@@ -132,6 +141,23 @@ const deleteUser = (req, res) => {
     });
 };
 
+const updateUserProfileInCompany = (req, res) => {
+  const { user_id, company_id } = req.params;
+  models.user
+    .modifyUserCompanyProfile(company_id, user_id, req.body)
+    .then(([rows]) => {
+      if (rows) {
+        res.status(204).send(rows);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 module.exports = {
   getUsers,
   getUser,
@@ -139,5 +165,6 @@ module.exports = {
   updateUserProfile,
   deleteUser,
   authenticationCheck,
-  addUser,
+  createNewUser,
+  updateUserProfileInCompany,
 };
