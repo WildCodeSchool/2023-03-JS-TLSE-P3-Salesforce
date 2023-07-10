@@ -189,10 +189,11 @@ router.get(
 
 // Get all ideas for a company
 router.get(
-  "/company/:company_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByCompany
 );
+// Get all ideas for group idea
 router.get(
   "/ideasgroup/:ideas_group_id/ideas",
   verifyToken,
@@ -201,21 +202,21 @@ router.get(
 
 // Create an idea
 router.post(
-  "/company/:company_id/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.createIdea
 );
 
 // Update an idea
 router.put(
-  "/company/:company_id/users/:user_id/ideas/:idea_id",
+  "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.updateIdeaById
 );
 
 // Delete an idea
 router.delete(
-  "/company/:company_id/users/:user_id/ideas/:idea_id",
+  "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.deleteIdea
 );
