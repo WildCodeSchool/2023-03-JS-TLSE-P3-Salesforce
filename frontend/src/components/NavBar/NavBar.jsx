@@ -158,9 +158,7 @@ export default function NavBar({ activeLink }) {
               </button>
             </div>
             <div className="avatar">
-              <Avatar
-                type="navbar"
-                initials={initials} />
+              <Avatar type="navbar" initials={initials} />
               <div className="tooltip">
                 <span>Mon profil</span>
               </div>
