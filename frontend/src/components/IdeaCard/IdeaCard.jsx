@@ -1,4 +1,3 @@
-/* eslint-disable prefer-destructuring */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
 import propTypes from "prop-types";
