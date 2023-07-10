@@ -4,7 +4,7 @@
 @use "../../styles/icon" as *;
 
 #sign-up {
-  margin: 1.5rem;
+  margin: 1rem;
   min-height: calc(100vh - 4rem);
   min-height: calc(100dvh - 4rem);
 
@@ -24,7 +24,7 @@
   }
 
   .page {
-    padding: 2rem;
+    padding: 2rem 1rem;
     background-color: var(--white);
     border-radius: 12px 12px 0 0;
 
@@ -195,6 +195,7 @@
     background-color: var(--white);
 
     .page {
+      padding: 2rem;
       flex-basis: calc((100% / 4) * 3 - (1rem / 2));
       border-radius: 0;
       .content {
