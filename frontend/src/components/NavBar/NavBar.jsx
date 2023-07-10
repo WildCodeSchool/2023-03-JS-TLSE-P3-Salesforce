@@ -12,7 +12,7 @@ import CompanyContext from "../../contexts/CompanyContext";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { userInfos } = useContext(AuthContext);
+  const { setUser, userInfos } = useContext(AuthContext);
   const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
@@ -50,7 +50,13 @@ export default function NavBar({ activeLink }) {
   return (
     <div className="global-nav-bar">
       <nav>
-        <div className="logo-company-nav-bar">
+        <div
+          className="logo-company-nav-bar"
+          onClick={() => {
+            navigate(`/${companyInfos.id}/`);
+          }}
+          aria-hidden="true"
+        >
           <img src={CompanyLogo} alt="Company's logo" />
         </div>
         <div className="burger-nav-bar">
@@ -62,7 +68,13 @@ export default function NavBar({ activeLink }) {
         </div>
         <div className="main-nav-bar">
           <div className="first-part-buttons-nav-bar">
-            <div className="logo-company-nav-bar">
+            <div
+              className="logo-company-nav-bar"
+              onClick={() => {
+                navigate(`/${companyInfos.id}/`);
+              }}
+              aria-hidden="true"
+            >
               <img src={CompanyLogo} alt="Company's logo" />
             </div>
             <div className="icon-nav-bar">
@@ -126,6 +138,19 @@ export default function NavBar({ activeLink }) {
                 <i className="fi fi-rr-interrogation" />
                 <div className="tooltip">
                   <span>Mentions légales</span>
+                </div>
+              </button>
+            </div>
+            <div className="icon-nav-bar">
+              <button
+                type="button"
+                onClick={() => {
+                  setUser();
+                }}
+              >
+                <i className="fi fi-rr-sign-out-alt" />
+                <div className="tooltip">
+                  <span>Se déconnecter</span>
                 </div>
               </button>
             </div>
@@ -275,12 +300,28 @@ export default function NavBar({ activeLink }) {
                     <p>Idées</p>
                   </div>
                 </div>
+                {userInfos.is_salesforce_admin || userInfos.is_company_admin ? (
+                  <div
+                    className="link"
+                    onClick={() => {
+                      closeSubNavBar();
+                      navigate(`/${companyInfos.id}/settings`);
+                    }}
+                    aria-hidden="true"
+                  >
+                    <div className="text">
+                      <i className="fi fi-rr-settings-sliders" />
+                      <p>Paramètres entreprise</p>
+                    </div>
+                  </div>
+                ) : null}
               </div>
             </div>
             <div className="bottom">
               <div className="link">
                 <div className="text">
                   <i className="fi fi-rr-interrogation" />
+
                   <p>Mentions légales</p>
                 </div>
               </div>
@@ -292,10 +333,17 @@ export default function NavBar({ activeLink }) {
                   />
                 </div>
                 <div className="content">
-                  <p className="name">Jean-Jacques GOLDMAN</p>
-                  <p className="email">jeanjacquesgoldman@monentreprise.com</p>
+                  <p className="name">
+                    {userInfos.firstname} {userInfos.lastname.toUpperCase()}
+                  </p>
+                  <p className="email">{userInfos.email}</p>
+                  <p className="log-out">
+                    <i className="fi fi-rr-sign-out-alt" />
+                    Se déconnecter
+                  </p>
                 </div>
               </div>
+
               <a
                 className="salesforce-logo"
                 href="https://www.salesforce.com/"

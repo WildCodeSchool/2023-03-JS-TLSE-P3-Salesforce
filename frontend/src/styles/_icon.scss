@@ -37,7 +37,7 @@ $icons: (
     @error "Invalid icon size: #{$size}";
   }
 
-  @if ($style != "solid" and $style != "outline" and $style != "soft") {
+  @if ($style != "solid" and $style != "outline" and $style != "border") {
     @error "Invalid icon style: #{$style}";
   }
 
@@ -84,10 +84,10 @@ $icons: (
     border-radius: map-get($icons-size, modern-border-radius);
   }
 
-  @if ($style == "soft") {
+  @if ($style == "border") {
     @include shadow("xs");
     background-color: var(--white);
-    border: 1px solid var(--grey-200);
-    color: var(--grey-700);
+    border: 1px solid var(--#{$color}-200);
+    color: var(--#{$color}-700);
   }
 }

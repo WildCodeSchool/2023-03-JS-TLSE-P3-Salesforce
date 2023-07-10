@@ -25,7 +25,11 @@ const addUser = (req, res) => {
   models.user
     .insert(req.body)
     .then(([rows]) => {
-      res.send(rows);
+      if (rows.affectedRows) {
+        res.status(201).send(rows);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       if (err.code === "ER_DUP_ENTRY") {
@@ -37,14 +41,53 @@ const addUser = (req, res) => {
     });
 };
 
-const read = (req, res) => {
+// récupérer l'ensemble des utilisateurs
+const getUsers = (req, res) => {
+  const { company_id } = req.params;
   models.user
-    .find(req.params.user_id)
-    .then(([rows]) => {
-      if (rows[0] == null) {
-        res.sendStatus(404);
+    .getAllUsers(company_id)
+    .then(([result]) => {
+      if (result.length) {
+        res.status(200).json(result);
       } else {
-        res.send(rows[0]);
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
+};
+
+// récupérer un utilisateur
+const getUser = (req, res) => {
+  const { user_id, company_id } = req.params;
+  models.user
+    .getOneUser(company_id, user_id)
+    .then(([result]) => {
+      if (result.length) {
+        res.status(200).json(result);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
+      res.sendStatus(500);
+    });
+};
+
+// ajouter un utilisateur à une entreprise
+
+const insertUser = (req, res) => {
+  const { user_id, company_id } = req.params;
+  models.user
+    .addUser(user_id, company_id)
+    .then(([rows]) => {
+      if (rows) {
+        res.sendStatus(201);
+      } else {
+        res.sendStatus(404);
       }
     })
     .catch((err) => {
@@ -53,11 +96,35 @@ const read = (req, res) => {
     });
 };
 
-const browse = (req, res) => {
+// mettre à jour un profil utilisateur
+const updateUserProfile = (req, res) => {
+  const { user_id } = req.params;
   models.user
-    .findAll()
+    .modifyUserProfile(user_id, req.body)
     .then(([rows]) => {
-      res.send(rows);
+      if (rows) {
+        res.status(204).send(rows);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+// effacer un utilisateur
+const deleteUser = (req, res) => {
+  const { user_id, company_id } = req.params;
+  models.user
+    .deleteUserProfile(user_id, company_id)
+    .then(([rows]) => {
+      if (rows) {
+        res.sendStatus(204);
+      } else {
+        res.sendStatus(404);
+      }
     })
     .catch((err) => {
       console.error(err);
@@ -66,8 +133,11 @@ const browse = (req, res) => {
 };
 
 module.exports = {
+  getUsers,
+  getUser,
+  insertUser,
+  updateUserProfile,
+  deleteUser,
   authenticationCheck,
-  read,
-  browse,
   addUser,
 };

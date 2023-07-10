@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -10,7 +10,6 @@ import "./CompanySettings.scss";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
-import Connection from "../../components/Connection/Connection";
 import NewUserModal from "../../components/NewUserModal/NewUserModal";
 
 export default function CompanySettings() {
@@ -25,6 +24,8 @@ export default function CompanySettings() {
       id: company_id,
     }));
   }, [company_id]);
+
+  const navigate = useNavigate();
 
   return userToken &&
     Object.keys(userInfos).length &&
@@ -63,6 +64,6 @@ export default function CompanySettings() {
       )}
     </main>
   ) : (
-    <Connection />
+    navigate(`/${company_id}`)
   );
 }
