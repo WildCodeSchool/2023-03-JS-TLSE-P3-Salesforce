@@ -72,7 +72,6 @@ $buttons: (
   $button-size: map-get($buttons, $size);
   @include text(map-get($button-size, text), $weight: 500);
 
-  height: map-get($button-size, height);
   gap: map-get($button-size, gap);
 
   i:before {
@@ -84,6 +83,7 @@ $buttons: (
 
   @if ($style == "solid" or $style == "outline") {
     padding: map-get($button-size, padding);
+    height: map-get($button-size, height);
 
     @include shadow("xs");
     border-radius: 8px;

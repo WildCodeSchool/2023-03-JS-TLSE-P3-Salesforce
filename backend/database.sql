@@ -21,8 +21,8 @@ DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE IF NOT EXISTS `user` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `firstname` VARCHAR(255) NOT NULL,
-  `lastname` VARCHAR(255) NOT NULL,
+  `firstname` VARCHAR(255) NULL,
+  `lastname` VARCHAR(255) NULL,
   `email` VARCHAR(255) NOT NULL UNIQUE,
   `password` VARCHAR(255) NOT NULL,
   `phone_number` VARCHAR(22) NULL,
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `user_has_company` (
   `user_id` INT NOT NULL,
   `company_id` INT NOT NULL,
   `biography` LONGTEXT NULL,
-  `function` VARCHAR(80) NOT NULL,
+  `function` VARCHAR(80) NULL,
   `is_company_admin` TINYINT NOT NULL DEFAULT 0
 ) ENGINE = InnoDB;
 
@@ -292,7 +292,9 @@ ADD
 ADD
   CONSTRAINT `fk_idea_workspace` FOREIGN KEY (`workspace_id`) REFERENCES `workspace` (`id`) ON DELETE CASCADE,
 ADD
-  CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_idea_ideas_group` FOREIGN KEY (`ideas_group_id`) REFERENCES `ideas_group` (`id`) ON DELETE
+SET
+  NULL,
 ADD
   CONSTRAINT `fk_idea_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
 ADD

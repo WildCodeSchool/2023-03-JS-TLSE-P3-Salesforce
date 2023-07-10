@@ -6,6 +6,8 @@ const {
   hashPassword,
   verifyPassword,
   verifyToken,
+  randomPasswordGenerator,
+  verifyCompanyAdminOrSalesForceAdminRole,
 } = require("./services/auth");
 
 /* ---- USERS ROUTES ---- */
@@ -16,12 +18,6 @@ router.post(
   "/companies/:company_id/user/login",
   userControllers.authenticationCheck,
   verifyPassword
-);
-
-router.post(
-  "/companies/:company_id/users",
-  hashPassword,
-  userControllers.addUser
 );
 
 // récupérer les users d'une entreprise
@@ -38,7 +34,9 @@ router.post(
 
 // mettre à jour un profil utilisateur
 router.put(
-  "/companies/:company_id/users/:user_id",
+  "/users/:user_id",
+  verifyToken,
+  hashPassword,
   userControllers.updateUserProfile
 );
 
@@ -46,6 +44,30 @@ router.put(
 router.delete(
   "/companies/:company_id/users/:user_id",
   userControllers.deleteUser
+);
+
+const invitationMiddlewares = require("./middlewares/invitationMiddlewares");
+
+// Invite a new user to a company
+router.post(
+  "/companies/:company_id/users",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  invitationMiddlewares.invitationVerifyUserExists,
+  invitationMiddlewares.invitationVerifyUserInCompany,
+  randomPasswordGenerator,
+  hashPassword,
+  invitationMiddlewares.sendInvitationMail,
+  invitationMiddlewares.invitationNewUser,
+  userControllers.insertUser
+);
+
+// Update user profile in company
+
+router.put(
+  "/companies/:company_id/users/:user_id",
+  verifyToken,
+  userControllers.updateUserProfileInCompany
 );
 
 /* ---- TEAMS ROUTES ---- */
@@ -285,4 +307,36 @@ router.delete(
   "/ideasgroup/:ideas_group_id",
   ideasgroupControllers.deleteIdeasGroup
 );
+
+/* ---- CATEGORIES ROUTES ---- */
+const categoryControllers = require("./controllers/categoryControllers");
+
+router.get("/categories", categoryControllers.browseCategory);
+
+router.get("/categories/:id", categoryControllers.readCategory);
+
+router.put("/categories/:id", categoryControllers.editCategory);
+
+router.post("/categories", categoryControllers.addCategory);
+
+router.delete("/categories/:id", categoryControllers.destroyCategory);
+
+/* ---- COLORS ROUTES ---- */
+const colorControllers = require("./controllers/colorControllers");
+
+router.get("/colors", colorControllers.browseColor);
+router.get("/colors/:id", colorControllers.readColor);
+router.put("/colors/:id", colorControllers.editColor);
+router.post("/colors", colorControllers.addColor);
+router.delete("/colors/:id", colorControllers.destroyColor);
+
+/* ---- COMPANIES ROUTES ---- */
+const companyControllers = require("./controllers/companyControllers");
+
+router.get("/companies", companyControllers.browseCompany);
+router.get("/companies/:id", companyControllers.readCompany);
+router.put("/companies/:id", companyControllers.editCompany);
+router.post("/companies", companyControllers.addCompany);
+router.delete("/companies/:id", companyControllers.destroyCompany);
+
 module.exports = router;
