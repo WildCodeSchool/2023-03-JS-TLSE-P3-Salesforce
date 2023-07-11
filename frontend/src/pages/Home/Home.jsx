@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { sanitize } from "isomorphic-dompurify";
 import axios from "axios";
 
 import "./Home.scss";
@@ -25,7 +26,7 @@ export default function Home() {
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
-      id: company_id,
+      id: sanitize(company_id),
     }));
   }, [company_id]);
 

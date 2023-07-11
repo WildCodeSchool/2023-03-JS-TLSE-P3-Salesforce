@@ -66,10 +66,29 @@ const CommentManager = require("./CommentManager");
 models.comment = new CommentManager();
 models.comment.setDatabase(pool);
 
+// IDEAS GROUP
 const IdeasGroupManager = require("./IdeasGroupManager");
 
 models.ideasgroup = new IdeasGroupManager();
 models.ideasgroup.setDatabase(pool);
+
+// CATEGORY
+const CategoryManager = require("./CategoryManager");
+
+models.category = new CategoryManager();
+models.category.setDatabase(pool);
+
+// COLOR
+const ColorManager = require("./ColorManager");
+
+models.color = new ColorManager();
+models.color.setDatabase(pool);
+
+// COMPANY
+const CompanyManager = require("./CompanyManager");
+
+models.company = new CompanyManager();
+models.company.setDatabase(pool);
 
 // bonus: use a proxy to personalize error message,
 // when asking for a non existing model

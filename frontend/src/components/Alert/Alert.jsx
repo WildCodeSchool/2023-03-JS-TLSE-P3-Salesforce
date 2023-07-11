@@ -20,7 +20,7 @@ export default function Alert({
         <div className="alert-content">
           <p className="title">{title}</p>
           <p className="text">{text}</p>
-          {children}
+          <div className="children">{children}</div>
         </div>
         {hasCloseButton && (
           <button

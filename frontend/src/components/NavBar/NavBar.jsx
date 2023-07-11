@@ -9,10 +9,13 @@ import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
+import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
   const { setUser, userInfos } = useContext(AuthContext);
+
+  const initials = userInfos.firstname[0] + userInfos.lastname[0];
   const { companyInfos } = useContext(CompanyContext);
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
@@ -153,6 +156,12 @@ export default function NavBar({ activeLink }) {
                   <span>Se déconnecter</span>
                 </div>
               </button>
+            </div>
+            <div className="avatar">
+              <Avatar type="navbar" initials={initials} />
+              <div className="tooltip">
+                <span>Mon profil</span>
+              </div>
             </div>
 
             <a

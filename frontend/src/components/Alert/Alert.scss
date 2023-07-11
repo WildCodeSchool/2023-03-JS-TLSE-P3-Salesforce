@@ -1,6 +1,7 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
 @use "../../styles/button" as *;
+@use "../../styles/icon" as *;
 
 .alert {
   display: flex;
@@ -31,7 +32,8 @@
       @include text("sm", $weight: 600);
       text-wrap: balance;
     }
-    .text {
+    .text,
+    .children {
       @include text("sm");
       text-wrap: balance;
     }
@@ -55,10 +57,7 @@
     border: 1px solid var(--error-200);
 
     .icon {
-      border: 1px solid var(--error-200);
-      i {
-        color: var(--error-600);
-      }
+      @include icon("md", $color: "error", $style: "border", $shape: "square");
     }
     .alert-content {
       color: var(--error-700);
@@ -72,10 +71,7 @@
   &-info {
     border: 1px solid var(--blue-200);
     .icon {
-      border: 1px solid var(--blue-200);
-      i {
-        color: var(--blue-600);
-      }
+      @include icon("md", $color: "blue", $style: "border", $shape: "square");
     }
     .alert-content {
       color: var(--blue-700);
@@ -90,10 +86,12 @@
     border: 1px solid var(--success-200);
 
     .icon {
-      border: 1px solid var(--success-200);
-      i {
-        color: var(--success-600);
-      }
+      @include icon(
+        "md",
+        $color: "success",
+        $style: "border",
+        $shape: "square"
+      );
     }
     .alert-content {
       color: var(--success-700);
@@ -107,10 +105,12 @@
   &-warning {
     border: 1px solid var(--warning-200);
     .icon {
-      border: 1px solid var(--warning-200);
-      i {
-        color: var(--warning-600);
-      }
+      @include icon(
+        "md",
+        $color: "warning",
+        $style: "border",
+        $shape: "square"
+      );
     }
     .alert-content {
       color: var(--warning-700);

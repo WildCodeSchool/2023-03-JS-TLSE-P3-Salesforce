@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import CompanySettings from "./pages/CompanySettings/CompanySettings";
+import Invitation from "./pages/Invitation/Invitation";
 import Workspace from "./pages/Workspace/Workspace";
 
 import { AuthProvider } from "./contexts/AuthContext";
@@ -32,6 +33,7 @@ function App() {
                 path="/:company_id/settings"
                 element={<CompanySettings />}
               />
+              <Route path="/:company_id/invitation" element={<Invitation />} />
             </Routes>
           </Router>
         </div>

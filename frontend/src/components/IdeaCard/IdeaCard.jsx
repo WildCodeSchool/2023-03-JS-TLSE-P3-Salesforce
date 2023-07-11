@@ -15,8 +15,6 @@ export default function IdeaCard({ idea }) {
   const [isHovered, setIsHovered] = useState(false);
   const [showSubmenu, setShowSubmenu] = useState(false);
 
-  // let nameCategory = "";
-  // let colorCategory = "";
   let splitIdeaCategories = [];
 
   if (idea.categories) {
