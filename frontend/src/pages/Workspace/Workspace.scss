@@ -1,0 +1,63 @@
+@use "../../styles/typography" as *;
+@use "../../styles/shadows" as *;
+
+.large-container-workspace {
+  display: flex;
+  align-items: center;
+  margin-top: 35px;
+  padding: 20px;
+  position: relative;
+  min-width: min-content;
+  height: 85vh;
+  border: 1px solid var(--grey-200);
+  border-radius: 0.4rem;
+  background-color: var(--white);
+  @include shadow("xs");
+  .global-ideas-workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    height: 85vh;
+    width: 300px;
+
+    padding: 20px 0px 20px 0px;
+    .create-and-search-ideas-workspace {
+      display: flex;
+      padding: 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      align-self: stretch;
+      border: 1px solid var(--grey-grey-200, #e2e8f0);
+      background: #fff;
+
+      button {
+        display: flex;
+        height: 40px;
+        width: 100%;
+        padding: 10px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        color: var(--white, #fff);
+
+        border-radius: 8px;
+        background: var(--primary-700);
+      }
+      .search-ideas-workspace {
+        display: flex;
+        width: 100%;
+      }
+    }
+    .ideas-workspace {
+      display: flex;
+      padding: 24px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1 0 0;
+      align-self: stretch;
+    }
+  }
+}

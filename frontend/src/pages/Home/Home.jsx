@@ -35,6 +35,7 @@ export default function Home() {
       userCompaniesArray = userInfos.companies.split(",");
     }
   }
+
   useEffect(() => {
     if ((company_id, userInfos.id)) {
       axios

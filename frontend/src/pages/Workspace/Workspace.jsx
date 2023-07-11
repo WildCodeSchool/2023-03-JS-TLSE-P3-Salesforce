@@ -1,16 +1,18 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./Workspace.scss";
+import AuthContext from "../../contexts/AuthContext";
+import CompanyContext from "../../contexts/CompanyContext";
 
 import PageHeader from "../../components/PageHeader/PageHeader";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
-
-import AuthContext from "../../contexts/AuthContext";
-import CompanyContext from "../../contexts/CompanyContext";
+import Connection from "../../components/Connection/Connection";
+import SearchBar from "../../components/SearchBar/SearchBar";
+import IdeaCard from "../../components/IdeaCard/IdeaCard";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -28,6 +30,13 @@ export default function Workspace() {
     }));
   }, [company_id]);
 
+  let userCompaniesArray = [];
+  if (Object.keys(userInfos).length) {
+    if (userInfos.companies) {
+      userCompaniesArray = userInfos.companies.split(",");
+    }
+  }
+
   // have all users for a workspace
   useEffect(() => {
     axios
@@ -44,32 +53,33 @@ export default function Workspace() {
       });
   }, [workspace_id]);
 
-  //   if (!isLoadingDataUsers) {
-  //     console.log(dataUsersByCompany);
-  //   }
-  // have all users for a tem
-  //   useEffect(() => {
-  //     axios
-  //       .get(`${import.meta.env.VITE_BACKEND_URL}/teams/${team_id}/users`, {
-  //         headers: { Authorization: `Bearer ${userToken}` },
-  //       })
-  //       .then((res) => {
-  //         setDataUsersByTeam(res.data);
-  //         setIsLoadingDataByTeam(false);
-  //         console.info(res.data);
-  //       });
-  //   }, [team_id]);
+  // have all users for a team
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/teams/${team_id}/users`, {
+        headers: { Authorization: `Bearer ${userToken}` },
+      })
+      .then((res) => {
+        setDataUsersByTeam(res.data);
+        setIsLoadingDataByTeam(false);
+        console.info(res.data);
+      });
+  }, [team_id]);
 
-  const navigate = useNavigate();
   // vérifier si le user fait parti du workspace d'une company
   // il faut récupérer les utilisateurs du workspace d'une entreprise + récupérer les utilisateurs d'une team d'une entreprise
   // ensuite il faut voir si l'id de l'utilisateur est compris dans l'une ou l'autre de ses données.
-  // && (userCompaniesArray.includes(company_id) ||
-  // userInfos.is_salesforce_admin
+
   return (
-    //   userToken && Object.keys(userInfos).length ? (
-    <div className="global-page-workspace">
-      <NavBar activeLink="worspace" />
+    // !isLoadingDataUsers &&
+    // !isLoadingDataByTeam &&
+    // userToken &&
+    // Object.keys(userInfos).length &&
+    // (dataUsersByCompany.includes(userInfos.id) ||
+    //   dataUsersByTeam.includes(userInfos.id)) &&
+    // userInfos.is_salesforce_admin ? (
+    <main>
+      <NavBar activeLink="workspace" />
       <PageHeader
         title="titre du workspace"
         subtitle="titre de l'équipe, date de création du workspace"
@@ -80,9 +90,37 @@ export default function Workspace() {
           <li className="button-primary-solid">Sauvegarder</li>
         </HorizontalTabs>
       </PageHeader>
-    </div>
+      <div className="large-container-workspace">
+        <div className="global-ideas-workspace">
+          <div className="create-and-search-ideas-workspace">
+            <button className="button-primary-solid" type="button">
+              <i className="fi fi-rr-plus" />
+              Ajouter une idée
+            </button>
+
+            <div className="search-ideas-workspace">
+              <SearchBar />
+              <button className="button-primary-solid" type="button">
+                <i className="fi fi-rr-plus" />
+                trier
+              </button>
+              <button className="button-primary-solid" type="button">
+                <i className="fi fi-rr-plus" />
+                filtrer
+              </button>
+              <div className="filter-and-selecting" />
+            </div>
+          </div>
+          <div className="ideas-workspace">
+            <IdeaCard />
+            <IdeaCard />
+          </div>
+        </div>
+        <div className="drag-and-drop-workspace" />
+      </div>
+    </main>
   );
-  //   ) : (
-  //     navigate(`/${company_id}`)
-  //   );
+  // : (
+  //   <Connection />
+  // );
 }
