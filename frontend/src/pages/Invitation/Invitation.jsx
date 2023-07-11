@@ -67,7 +67,7 @@ export default function Connection() {
         console.error(error);
         setHasConnectionFailed(true);
       });
-  }, [searchParams]);
+  }, [searchParams, companyInfos]);
 
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");

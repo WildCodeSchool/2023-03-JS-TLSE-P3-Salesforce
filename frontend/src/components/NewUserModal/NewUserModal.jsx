@@ -26,6 +26,7 @@ export default function NewUserModal({ setIsNewUserModalOpen }) {
     dataFromForm.company_name = companyInfos.name;
     dataFromForm.primary600 = primary600;
     dataFromForm.grey50 = grey50;
+    dataFromForm.company_slug = companyInfos.slug;
 
     axios
       .post(

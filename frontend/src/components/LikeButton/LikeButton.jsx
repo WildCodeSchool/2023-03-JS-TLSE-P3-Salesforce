@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import "./LikeButton.scss";
 
@@ -7,12 +7,13 @@ export default function LikeButton({
   setLikeActive,
   likeCount,
   setLikeCount,
-  isHovered,
-  setIsHovered,
 }) {
+  const [isHovered, setIsHovered] = useState(false);
   const handleLike = () => {
     if (likeActive) {
-      setLikeCount(likeCount - 1);
+      if (likeActive > 0) {
+        setLikeCount(likeCount - 1);
+      }
     } else {
       setLikeCount(likeCount + 1);
     }
@@ -46,10 +47,8 @@ export default function LikeButton({
 }
 
 LikeButton.propTypes = {
-  likeActive: PropTypes.bool.isRequired,
+  likeActive: PropTypes.number.isRequired,
   setLikeActive: PropTypes.func.isRequired,
   likeCount: PropTypes.number.isRequired,
   setLikeCount: PropTypes.func.isRequired,
-  isHovered: PropTypes.bool.isRequired,
-  setIsHovered: PropTypes.func.isRequired,
 };

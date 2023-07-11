@@ -18,7 +18,7 @@ export default function NavBar({ activeLink }) {
   const { companyInfos } = useContext(CompanyContext);
 
   let companyLogoUrl =
-    "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/favicon-salesforce_yffz3d.svg";
+    "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg";
   if (companyInfos.logo_url) {
     companyLogoUrl = companyInfos.logo_url;
   }

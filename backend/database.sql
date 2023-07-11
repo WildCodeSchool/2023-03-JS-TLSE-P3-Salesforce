@@ -432,8 +432,8 @@ VALUES
     'Mehdi',
     'Berbedj',
     'berbedj.mehdi@gmail.com',
+    '$argon2id$v=19$m=65536,t=5,p=1$sFLuxVkfaF1+XG630y1VzQ$mZLbG8GWw6O3Fx0qUipFIHrmuRVktm2Cy5178IRbjOI',
     'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/mehdi_zv4kmk.png',
-    '$argon2id$v=19$m=65536,t=5,p=1$9A07wUIwU6tL6coQY+5/bA$EC+cvyLGFo9PHmAmeG46mH5nlOtII/x7Y5OsYLWSk+g',
     1,
     1
   ),
@@ -441,8 +441,8 @@ VALUES
     'Charlie',
     'Feix',
     'charlie.feix@gmail.com',
-    '$argon2id$v=19$m=65536,t=5,p=1$f/fZo3zl1ksKvFkAlef5bg$JJADFRcFiEi/GG1pNgPx44ci4hXEUzp6XXmcdX+EU/M',
     'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/charlie_vppxgf.jpg',
+    '$argon2id$v=19$m=65536,t=5,p=1$f/fZo3zl1ksKvFkAlef5bg$JJADFRcFiEi/GG1pNgPx44ci4hXEUzp6XXmcdX+EU/M',
     0,
     1
   ),
@@ -562,7 +562,7 @@ VALUES
     '56789012300030',
     'SAS',
     'Cooking',
-    "https://res.cloudinary.com/dmmifezda/image/upload/v1689016811/logo-cookbuddy_zxupn6.svg",
+    "https://res.cloudinary.com/dmmifezda/image/upload/v1689016811/logos/logo-cookbuddy_zxupn6.svg",
     '2023-05-21 11:00:00',
     12
   ),

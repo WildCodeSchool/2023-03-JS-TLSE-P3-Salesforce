@@ -1,3 +1,4 @@
+import { sanitize } from "isomorphic-dompurify";
 import { useState, useContext } from "react";
 import "./Connection.scss";
 
@@ -16,7 +17,7 @@ export default function Connection() {
 
   const { companyInfos } = useContext(CompanyContext);
   let companyLogoUrl =
-    "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/favicon-salesforce_yffz3d.svg";
+    "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg";
   if (companyInfos.logo_url) {
     companyLogoUrl = companyInfos.logo_url;
   }
@@ -69,6 +70,8 @@ export default function Connection() {
             message: "Une erreur est survenue. Veuillez réessayer.",
             icon: "cross-circle",
           });
+        } else {
+          console.error(error);
         }
         setHasConnectionFailed(true);
       });
@@ -76,13 +79,13 @@ export default function Connection() {
 
   // handler for change in input mail
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    setEmail(sanitize(event.target.value));
     setHasConnectionFailed(false);
   };
 
   // handler for change in password input
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    setPassword(sanitize(event.target.value));
     setHasConnectionFailed(false);
   };
 

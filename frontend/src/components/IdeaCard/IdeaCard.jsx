@@ -10,11 +10,10 @@ import Badge from "../Badge/Badge";
 
 export default function IdeaCard({ idea }) {
   const [commentCount, setCommentCount] = useState(idea.comments_count);
-  const [showCommentModal, setShowCommentModal] = useState(false);
+
   const [likeCount, setLikeCount] = useState(idea.likes_count);
-  const [likeActive, setLikeActive] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const [showSubmenu, setShowSubmenu] = useState(false);
+  const [likeActive, setLikeActive] = useState(false);
 
   let splitIdeaCategories = [];
 
@@ -57,12 +56,10 @@ export default function IdeaCard({ idea }) {
           commentCount={idea.comments_count === null ? 0 : idea.comments_count}
         />
         <LikeButton
-          likeCount={idea.likes_count}
+          likeCount={likeCount}
           likeActive={idea.is_liked_by_user}
-          isHovered={isHovered}
           setLikeCount={setLikeCount}
           setLikeActive={setLikeActive}
-          setIsHovered={setIsHovered}
         />
       </div>
     </div>
