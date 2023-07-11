@@ -18,11 +18,15 @@ export function CompanyProvider({ children }) {
         )
         .then((response) => {
           setCompanyInfos(response.data);
+          document.title = `${response.data.name} | IdeasForce`;
 
           defineColorTheme(response.data.color_name);
+          const favicon = document.getElementById("favicon");
           if (response.data.logo_url) {
-            const favicon = document.getElementById("favicon");
             favicon.href = response.data.logo_url;
+          } else {
+            favicon.href =
+              "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg";
           }
         });
     }
