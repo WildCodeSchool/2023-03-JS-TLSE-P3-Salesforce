@@ -21,6 +21,13 @@ class CompanyManager extends AbstractManager {
       [name, baseline, siret, type, sector, logo_url, id]
     );
   }
+
+  getCompanyBySlug(slug) {
+    return this.database.query(
+      `SELECT ${this.table}.id, ${this.table}.name, ${this.table}.baseline, ${this.table}.slug, ${this.table}.logo_url, color.name AS color_name FROM ${this.table} RIGHT JOIN color on ${this.table}.color_id = color.id WHERE ${this.table}.slug = ?`,
+      [slug]
+    );
+  }
 }
 
 module.exports = CompanyManager;

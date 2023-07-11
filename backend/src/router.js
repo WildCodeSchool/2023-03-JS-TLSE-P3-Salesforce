@@ -189,7 +189,7 @@ router.get(
 
 // Get all ideas for a company
 router.get(
-  "/companies/:company_id/users/:user_id/ideas",
+  "/companies/:company_id/ideas/:user_id",
   verifyToken,
   ideaControllers.getAllIdeasByCompany
 );
@@ -334,7 +334,7 @@ router.delete("/colors/:id", colorControllers.destroyColor);
 const companyControllers = require("./controllers/companyControllers");
 
 router.get("/companies", companyControllers.browseCompany);
-router.get("/companies/:id", companyControllers.readCompany);
+router.get("/companies/:company_slug", companyControllers.getCompany);
 router.put("/companies/:id", companyControllers.editCompany);
 router.post("/companies", companyControllers.addCompany);
 router.delete("/companies/:id", companyControllers.destroyCompany);

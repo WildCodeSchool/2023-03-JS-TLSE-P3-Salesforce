@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const models = require("../models");
 
 const browseCompany = (req, res) => {
@@ -12,10 +13,10 @@ const browseCompany = (req, res) => {
     });
 };
 
-const readCompany = (req, res) => {
-  const { id } = req.params;
+const getCompany = (req, res) => {
+  const { company_slug } = req.params;
   models.company
-    .find(id)
+    .getCompanyBySlug(company_slug)
     .then(([rows]) => {
       if (rows[0] == null) {
         res.sendStatus(404);
@@ -79,7 +80,7 @@ const destroyCompany = (req, res) => {
 
 module.exports = {
   browseCompany,
-  readCompany,
+  getCompany,
   editCompany,
   addCompany,
   destroyCompany,

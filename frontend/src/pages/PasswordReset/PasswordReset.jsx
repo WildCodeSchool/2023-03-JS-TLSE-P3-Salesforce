@@ -7,7 +7,7 @@ import {
   useSearchParams,
   useNavigate,
 } from "react-router-dom";
-import "./Invitation.scss";
+import "./PasswordReset.scss";
 
 import axios from "axios";
 
@@ -67,7 +67,7 @@ export default function Connection() {
         console.error(error);
         setHasConnectionFailed(true);
       });
-  }, [searchParams, companyInfos]);
+  }, [searchParams]);
 
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
