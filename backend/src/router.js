@@ -62,6 +62,18 @@ router.post(
   userControllers.insertUser
 );
 
+const passwordResetMiddlewares = require("./middlewares/passwordResetMiddlewares");
+
+// Send password reset mail
+router.post(
+  "/password-reset",
+  passwordResetMiddlewares.passwordResetVerifyUserExists,
+  randomPasswordGenerator,
+  hashPassword,
+  passwordResetMiddlewares.passwordResetUpdateUserProfile,
+  passwordResetMiddlewares.sendResetPasswordMail
+);
+
 // Update user profile in company
 
 router.put(

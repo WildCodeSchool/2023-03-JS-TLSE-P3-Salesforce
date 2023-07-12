@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import CompanySettings from "./pages/CompanySettings/CompanySettings";
 import Invitation from "./pages/Invitation/Invitation";
+import PasswordReset from "./pages/PasswordReset/PasswordReset";
+import NewPassword from "./pages/NewPassword/NewPassword";
 import "./styles/reset.css";
 import "./styles/index.scss";
 
@@ -27,7 +29,11 @@ function App() {
               />
               <Route
                 path="/:company_slug/password-reset"
-                element={<Invitation />}
+                element={<PasswordReset />}
+              />
+              <Route
+                path="/:company_slug/new-password"
+                element={<NewPassword />}
               />
             </Routes>
           </Router>
