@@ -200,7 +200,7 @@ export default function NavBar({ activeLink }) {
             <SubNavBarLink
               title="Refonte des extranets"
               subtitle="Pierre DUPONT"
-              navigateLink={navigate(`/${companyInfos.id}/workspaces/1`)}
+              navigateLink={`/${companyInfos.slug}/workspaces/1`}
             />
             <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
           </div>

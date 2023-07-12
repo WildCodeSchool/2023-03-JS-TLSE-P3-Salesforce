@@ -1,17 +1,44 @@
 @use "../../styles/typography" as *;
 @use "../../styles/shadows" as *;
 
+.create-and-search-ideas-workspace {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 20px;
+  width: 100%;
+  gap: 12px;
+  border: 1px solid var(--grey-200);
+  border-radius: 0.4rem 0.4rem 0 0;
+  background-color: var(--grey-200);
+
+  .search-ideas-workspace {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 60%;
+    .search-component {
+      width: 50%;
+    }
+
+    .filter-and-selecting {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  }
+}
 .large-container-workspace {
   display: flex;
   align-items: center;
-  margin-top: 35px;
   padding: 20px;
   position: relative;
   height: 85vh;
   border: 1px solid var(--grey-200);
-  border-radius: 0.4rem;
+  border-radius: 0rem 0.4rem 0.4rem 0.4rem;
   background-color: var(--white);
   @include shadow("xs");
+
   .global-ideas-workspace {
     display: flex;
     flex-direction: column;
@@ -19,36 +46,34 @@
     gap: 12px;
     height: 85vh;
     width: 300px;
-
     padding: 20px 0px 20px 0px;
-    .create-and-search-ideas-workspace {
-      display: flex;
-      padding: 20px;
-      flex-direction: column;
-      gap: 12px;
-      align-self: stretch;
-      border: 1px solid var(--grey-grey-200, #e2e8f0);
-      background: #fff;
-      .search-ideas-workspace {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        width: 100%;
-        .filter-and-selecting {
-          display: flex;
-          justify-content: flex-end;
-          gap: 12px;
-        }
-      }
-    }
+
     .ideas-workspace {
       display: flex;
-      padding: 24px;
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
       flex: 1 0 0;
       align-self: stretch;
+      .container-idea-draggable {
+        height: "2000px";
+        width: "350px";
+        padding: "10px";
+        .idea-cards-workspace {
+          display: flex;
+          flex-wrap: wrap;
+          width: 100%;
+        }
+        .idea-card {
+          margin-bottom: 10px;
+          width: 350px;
+
+          margin-right: 0px;
+          .react-draggable-dragged {
+            margin: 0px;
+          }
+        }
+      }
     }
   }
 }

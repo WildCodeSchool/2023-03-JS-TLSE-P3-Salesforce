@@ -18,9 +18,9 @@ function App() {
         <div className="App">
           <Router>
             <Routes>
-              <Route path="/:company_id/" element={<Home />} />
+              <Route path="/:company_slug/" element={<Home />} />
               <Route
-                path="/:company_id/workspaces/:workspace_id"
+                path="/:company_slug/workspaces/:workspace_id"
                 element={<Workspace />}
               />
 

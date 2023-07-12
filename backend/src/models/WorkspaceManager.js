@@ -93,7 +93,7 @@ class WorkspaceManager extends AbstractManager {
 
   findWorkspacesUsersById(workspaceId) {
     return this.database.query(
-      `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id, w.team_id
+      `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id, w.team_id, w.name, w.creation_date
       FROM user u INNER JOIN workspace_has_user whu ON u.id = whu.user_id
       LEFT JOIN workspace w ON w.id = whu.workspace_id
       WHERE whu.workspace_id = ?;`,
