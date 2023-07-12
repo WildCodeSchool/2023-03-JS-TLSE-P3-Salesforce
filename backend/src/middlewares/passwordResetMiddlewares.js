@@ -43,7 +43,6 @@ const passwordResetUpdateUserProfile = (req, res, next) => {
     .then(([rows]) => {
       delete req.body.password;
       if (rows) {
-        // res.status(200).send(req.body);
         next();
       } else {
         res.sendStatus(404);
