@@ -17,15 +17,15 @@ import NewUserModal from "../../components/NewUserModal/NewUserModal";
 export default function CompanySettings() {
   const { userToken, userInfos } = useContext(AuthContext);
   const { setCompanyInfos } = useContext(CompanyContext);
-  const { company_id } = useParams();
+  const { company_slug } = useParams();
   const [isNewUserModalOpen, setIsNewUserModalOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
-      id: sanitize(company_id),
+      slug: sanitize(company_slug),
     }));
-  }, [company_id]);
+  }, [company_slug]);
 
   const navigate = useNavigate();
 
@@ -66,6 +66,6 @@ export default function CompanySettings() {
       )}
     </main>
   ) : (
-    navigate(`/${company_id}`)
+    navigate(`/${company_slug}`)
   );
 }

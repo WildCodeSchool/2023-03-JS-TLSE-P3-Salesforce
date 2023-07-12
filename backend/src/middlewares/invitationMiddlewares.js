@@ -33,15 +33,21 @@ const invitationVerifyUserInCompany = (req, res, next) => {
 };
 
 const sendInvitationMail = (req, res, next) => {
-  const { email, company_name, newTempPassword, grey50, primary600 } = req.body;
-  const { company_id } = req.params;
+  const {
+    email,
+    company_name,
+    newTempPassword,
+    grey50,
+    primary600,
+    company_slug,
+  } = req.body;
   const { userExist, userInCompany, user_firstname } = req;
 
   const emailSender = "IdeasForce <ne-pas-repondre@ideasforce.fr>";
 
-  const activationLink = `${process.env.FRONTEND_URL}/${company_id}/invitation?email=${email}&activation_code=${newTempPassword}`;
+  const activationLink = `${process.env.FRONTEND_URL}/${company_slug}/invitation?email=${email}&activation_code=${newTempPassword}`;
 
-  const connexionLink = `${process.env.FRONTEND_URL}/${company_id}/`;
+  const connexionLink = `${process.env.FRONTEND_URL}/${company_slug}/`;
 
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_BREVO,

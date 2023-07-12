@@ -18,17 +18,17 @@ import Connection from "../../components/Connection/Connection";
 
 export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
-  const { setCompanyInfos } = useContext(CompanyContext);
-  const { company_id } = useParams();
+  const { setCompanyInfos, companyInfos } = useContext(CompanyContext);
+  const { company_slug } = useParams();
   const [dataIdea, setDataIdea] = useState({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
-      id: sanitize(company_id),
+      slug: sanitize(company_slug),
     }));
-  }, [company_id]);
+  }, [company_slug]);
 
   let userCompaniesArray = [];
   if (Object.keys(userInfos).length) {
@@ -38,12 +38,12 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if ((company_id, userInfos.id)) {
+    if ((companyInfos.id, userInfos.id)) {
       axios
         .get(
-          `${import.meta.env.VITE_BACKEND_URL}/companies/${company_id}/users/${
-            userInfos.id
-          }/ideas/`,
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${
+            companyInfos.id
+          }/ideas/${userInfos.id}/`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
@@ -53,11 +53,11 @@ export default function Home() {
           setIsLoading(false);
         });
     }
-  }, [company_id, userInfos.id]);
+  }, [companyInfos.id, userInfos.id]);
 
   return userToken &&
     Object.keys(userInfos).length &&
-    (userCompaniesArray.includes(company_id) ||
+    (userCompaniesArray.includes(companyInfos.id) ||
       userInfos.is_salesforce_admin) ? (
     <main>
       <NavBar activeLink="home" />

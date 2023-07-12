@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import CompanySettings from "./pages/CompanySettings/CompanySettings";
@@ -9,12 +10,6 @@ import { CompanyProvider } from "./contexts/CompanyContext";
 
 import "./styles/reset.css";
 import "./styles/index.scss";
-
-import { defineColorTheme } from "../utils";
-
-const colorTheme = "indigo";
-
-defineColorTheme(colorTheme);
 
 function App() {
   return (
@@ -30,10 +25,17 @@ function App() {
               />
 
               <Route
-                path="/:company_id/settings"
+                path="/:company_slug/settings"
                 element={<CompanySettings />}
               />
-              <Route path="/:company_id/invitation" element={<Invitation />} />
+              <Route
+                path="/:company_slug/invitation"
+                element={<Invitation />}
+              />
+              <Route
+                path="/:company_slug/password-reset"
+                element={<Invitation />}
+              />
             </Routes>
           </Router>
         </div>
