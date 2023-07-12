@@ -335,7 +335,12 @@ const companyControllers = require("./controllers/companyControllers");
 
 router.get("/companies", companyControllers.browseCompany);
 router.get("/companies/:company_slug", companyControllers.getCompany);
-router.put("/companies/:id", companyControllers.editCompany);
+router.put(
+  "/companies/:id",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  companyControllers.editCompany
+);
 router.post("/companies", companyControllers.addCompany);
 router.delete("/companies/:id", companyControllers.destroyCompany);
 
