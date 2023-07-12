@@ -25,7 +25,7 @@ function App() {
             <Routes>
               <Route path="/:company_id/" element={<Home />} />
               <Route
-                path="/:company_id/teams/:team_id/workspaces/:workspace_id"
+                path="/:company_id/workspaces/:workspace_id"
                 element={<Workspace />}
               />
 

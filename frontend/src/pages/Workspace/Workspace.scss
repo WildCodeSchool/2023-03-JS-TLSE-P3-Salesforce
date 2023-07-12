@@ -7,7 +7,6 @@
   margin-top: 35px;
   padding: 20px;
   position: relative;
-  min-width: min-content;
   height: 85vh;
   border: 1px solid var(--grey-200);
   border-radius: 0.4rem;
@@ -26,28 +25,20 @@
       display: flex;
       padding: 20px;
       flex-direction: column;
-      align-items: flex-start;
       gap: 12px;
       align-self: stretch;
       border: 1px solid var(--grey-grey-200, #e2e8f0);
       background: #fff;
-
-      button {
-        display: flex;
-        height: 40px;
-        width: 100%;
-        padding: 10px 16px;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        color: var(--white, #fff);
-
-        border-radius: 8px;
-        background: var(--primary-700);
-      }
       .search-ideas-workspace {
         display: flex;
+        flex-direction: column;
+        gap: 12px;
         width: 100%;
+        .filter-and-selecting {
+          display: flex;
+          justify-content: flex-end;
+          gap: 12px;
+        }
       }
     }
     .ideas-workspace {
