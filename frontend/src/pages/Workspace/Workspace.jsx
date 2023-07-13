@@ -82,6 +82,18 @@ export default function Workspace() {
       });
   }, [workspace_id, userInfos.id]);
 
+  let creationDateWorkspaceInitial;
+  let creationDateWorkspaceSplited;
+  let creationDateDayFirst;
+  let creationDateWorkspace;
+
+  if (!isLoadingDataUsers) {
+    creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
+    creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
+    creationDateDayFirst = creationDateWorkspaceSplited[0].split("-");
+    creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
+  }
+
   return userToken &&
     Object.keys(userInfos).length &&
     (dataUsersByCompany.includes(userInfos.id) ||
@@ -89,37 +101,26 @@ export default function Workspace() {
       userInfos.is_salesforce_admin) ? (
     <main>
       <NavBar activeLink="workspace" />
-      {!isLoadingDataUsers &&
-        (() => {
-          const creationDateWorkspaceInitial =
-            dataUsersByCompany[0].creation_date;
-          const creationDateWorkspaceSplited =
-            creationDateWorkspaceInitial.split("T");
-          const creationDateDayFirst =
-            creationDateWorkspaceSplited[0].split("-");
-          const creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
-
-          return (
-            <PageHeader
-              title={dataUsersByCompany[0].name}
-              subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
-            >
-              <div className="actions">
-                <button className="button-md-red-outline" type="button">
-                  <i className="fi fi-rr-trash" />
-                  Supprimer
-                </button>
-                <button className="button-md-grey-outline" type="button">
-                  <i className="fi fi-rr-users" />
-                  Collaborer
-                </button>
-                <button className="button-primary-solid" type="button">
-                  Sauvegarder
-                </button>
-              </div>
-            </PageHeader>
-          );
-        })}
+      {!isLoadingDataUsers && (
+        <PageHeader
+          title={dataUsersByCompany[0].name}
+          subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+        >
+          <div className="actions">
+            <button className="button-md-red-outline" type="button">
+              <i className="fi fi-rr-trash" />
+              Supprimer
+            </button>
+            <button className="button-md-grey-outline" type="button">
+              <i className="fi fi-rr-users" />
+              Collaborer
+            </button>
+            <button className="button-primary-solid" type="button">
+              Sauvegarder
+            </button>
+          </div>
+        </PageHeader>
+      )}
 
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
