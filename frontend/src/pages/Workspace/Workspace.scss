@@ -85,15 +85,17 @@
         .idea-card {
           margin-bottom: 10px;
           width: 350px;
-          cursor: grab;
           transition: box-shadow 0.2s;
 
           margin-right: 0px;
-          & .react-draggable-dragged {
-            margin: 0px;
-          }
+          cursor: grab;
+
+          
           &.react-draggable-dragging {
             @include shadow("lg");
+            cursor: grabbing;
+          }
+          &.react-draggable-dragged {
           }
         }
       }

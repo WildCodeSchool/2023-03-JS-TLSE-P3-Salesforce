@@ -3,14 +3,12 @@ import React, { useState } from "react";
 import propTypes from "prop-types";
 import Draggable from "react-draggable";
 
-import LikeButton from "../LikeButton/LikeButton";
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
-import CommentButton from "../CommentButton/CommentButton";
+
 import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
 export default function IdeaCardWorkspace({ idea }) {
-  const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
 
   let splitIdeaCategories = [];
@@ -47,18 +45,6 @@ export default function IdeaCardWorkspace({ idea }) {
 
           <p className="idea-description">{idea.description}</p>
         </div>
-        <div className="footer-idea">
-          <CommentButton
-            commentCount={
-              idea.comments_count === null ? 0 : idea.comments_count
-            }
-          />
-          <LikeButton
-            likeCount={likeCount}
-            likeActive={idea.is_liked_by_user}
-            setLikeCount={setLikeCount}
-          />
-        </div>
       </div>
     </Draggable>
   );
@@ -68,10 +54,7 @@ IdeaCardWorkspace.propTypes = {
   idea: propTypes.shape({
     title: propTypes.string.isRequired,
     description: propTypes.string,
-    comments_count: propTypes.number,
-    likes_count: propTypes.number,
     categories: propTypes.string,
-    is_liked_by_user: propTypes.number,
   }),
 };
 
@@ -79,9 +62,6 @@ IdeaCardWorkspace.defaultProps = {
   idea: {
     title: "",
     description: "",
-    comments_count: 0,
-    likes_count: 0,
     categories: "",
-    is_liked_by_user: 0,
   },
 };
