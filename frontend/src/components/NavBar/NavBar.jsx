@@ -13,8 +13,10 @@ import Avatar from "../Avatar/Avatar";
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
   const { setUser, userInfos } = useContext(AuthContext);
-
-  const initials = userInfos.firstname[0] + userInfos.lastname[0];
+  let initials = "";
+  if (userInfos.firstname && userInfos.lastname) {
+    initials = userInfos.firstname[0] + userInfos.lastname[0];
+  }
   const { companyInfos } = useContext(CompanyContext);
 
   let companyLogoUrl =
@@ -198,6 +200,7 @@ export default function NavBar({ activeLink }) {
             <SubNavBarLink
               title="Refonte des extranets"
               subtitle="Pierre DUPONT"
+              navigateLink={`/${companyInfos.slug}/workspaces/1`}
             />
             <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
           </div>
