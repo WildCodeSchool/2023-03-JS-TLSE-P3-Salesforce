@@ -649,11 +649,12 @@ INSERT INTO
   )
 VALUES
   (
-    'La team1',
+    'La CoffeeTeam',
     '2023-06-21 12:00:00',
     1,
-    'https://example.com/team1.jpg',
-    'Description of Team 1',
+    'https://www.hsi.es/wp-content/uploads/2020/03/Logo-Teams.png',
+    "Groupe qui a pour mission la gestion de la machine à café de la cuisine ( achat dosettes,nettoyage,perception de la contribution)
+    pour l'ensemble des collègues",
     'Objective of Team 1',
     'Active',
     1,
@@ -671,11 +672,11 @@ VALUES
     2
   ),
   (
-    'Team 3',
+    'Welcome Home',
     '2023-06-21 14:45:00',
     0,
     'https://example.com/team3.jpg',
-    'Description of Team 3',
+    "Reflechir à de bonnes pratiques pour améliorer l'accueil de notre public au sein de la société",
     'Objective of Team 3',
     'Active',
     4,
@@ -784,8 +785,8 @@ VALUES
   (
     NULL,
     '2023-06-21 12:00:00',
-    'Idea 1',
-    'Description of Idea 1',
+    'Machine a café',
+    'Et si on achetait une nouvelle machine a café pour la cuisine?',
     'published',
     100,
     200,
