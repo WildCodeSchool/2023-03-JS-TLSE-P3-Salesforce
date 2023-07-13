@@ -14,11 +14,14 @@ class CompanyManager extends AbstractManager {
     );
   }
 
-  update(company, id) {
-    const { name, baseline, siret, type, sector, logo_url } = company;
+  update(company, companyId) {
+    const keys = Object.keys(company);
+    const values = Object.values(company);
+    const valueQuery = keys.map((key) => `${key} = ?`).join(", ");
+
     return this.database.query(
-      `update ${this.table} set name = ?, baseline = ?, siret = ?, type = ?, sector = ?, logo_url = ? where id = ?`,
-      [name, baseline, siret, type, sector, logo_url, id]
+      `UPDATE ${this.table} SET ${valueQuery} WHERE id = ?;`,
+      [...values, companyId]
     );
   }
 

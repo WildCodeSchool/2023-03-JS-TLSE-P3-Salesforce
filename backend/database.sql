@@ -664,11 +664,12 @@ INSERT INTO
         `company_id`
     )
 VALUES (
-        'La team1',
+        'La CoffeeTeam',
         '2023-06-21 12:00:00',
         1,
-        'https://example.com/team1.jpg',
-        'Description of Team 1',
+        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
+        "Groupe qui a pour mission la gestion de la machine à café de la cuisine ( achat dosettes,nettoyage,perception de la contribution)
+    pour l'ensemble des collègues",
         'Objective of Team 1',
         'Active',
         1,
@@ -684,11 +685,11 @@ VALUES (
         2,
         2
     ), (
-        'Team 3',
+        'Welcome Home',
         '2023-06-21 14:45:00',
         0,
-        'https://example.com/team3.jpg',
-        'Description of Team 3',
+        NULL,
+        "Reflechir à de bonnes pratiques pour améliorer l'accueil de notre public au sein de la société",
         'Objective of Team 3',
         'Active',
         4,
@@ -790,15 +791,15 @@ INSERT INTO
 VALUES (
         NULL,
         '2023-06-21 12:00:00',
-        'Idea 1',
-        'Description of Idea 1',
+        'Machine a café',
+        'Et si on achetait une nouvelle machine a café pour la cuisine?',
         'published',
         100,
         200,
         1,
         1,
         1,
-        2,
+        1,
         NULL,
         NULL,
         NULL,
@@ -830,7 +831,7 @@ VALUES (
         2,
         2,
         2,
-        2,
+        1,
         1,
         NULL,
         NULL,
