@@ -10,7 +10,15 @@ body {
 }
 
 body {
-  background-color: var(--primary-600);
+  // background-color: var(--primary-600);
+  background-repeat: no-repeat;
+
+  background-position: center;
+  background-image: linear-gradient(
+    135deg,
+    var(--primary-600) 0%,
+    var(--primary-800) 100%
+  );
 }
 
 main {

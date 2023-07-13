@@ -57,7 +57,7 @@ export default function Home() {
 
   return userToken &&
     Object.keys(userInfos).length &&
-    (userCompaniesArray.includes(companyInfos.id) ||
+    (userCompaniesArray.includes(companyInfos.id.toString()) ||
       userInfos.is_salesforce_admin) ? (
     <main>
       <NavBar activeLink="home" />

@@ -441,8 +441,8 @@ VALUES
     'Charlie',
     'Feix',
     'charlie.feix@gmail.com',
-    'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/charlie_vppxgf.jpg',
     '$argon2id$v=19$m=65536,t=5,p=1$f/fZo3zl1ksKvFkAlef5bg$JJADFRcFiEi/GG1pNgPx44ci4hXEUzp6XXmcdX+EU/M',
+    'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/charlie_vppxgf.jpg',
     0,
     1
   ),
@@ -1163,7 +1163,7 @@ VALUES
   (1, 1, 'Biography 1', 'Function 1', 1),
   (2, 2, 'Biography 2', 'Function 2', 0),
   (3, 1, 'Biography 3', 'Function 3', 1),
-  (4, 1, 'Biography 4', 'Function 4', 0),
+  (4, 3, '', 'Fondateur de CookBuddy', 0),
   (5, 4, 'Biography 5', 'Function 5', 0);
 
 --  WORKSPACE HAS USER 

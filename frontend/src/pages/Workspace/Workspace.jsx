@@ -13,6 +13,7 @@ import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
+import ModalNewIdea from "../../components/ModalNewIdea/ModalNewIdea";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -25,6 +26,7 @@ export default function Workspace() {
   const [dataIdeasWorkspace, setDataIdeasWorkspace] = useState([]);
   const [isLoadingDataIdeasWorkspace, setIsLoadingDataIdeasWorkspace] =
     useState(true);
+  const [isModalNewIdeaOpen, setIsModalNewIdeaOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -124,7 +126,11 @@ export default function Workspace() {
       </PageHeader>
 
       <div className="create-and-search-ideas-workspace">
-        <button className="button-md-primary-solid" type="button">
+        <button
+          className="button-md-primary-solid"
+          type="button"
+          onClick={() => setIsModalNewIdeaOpen(true)}
+        >
           <i className="fi fi-rr-plus" />
           Ajouter une idée
         </button>
@@ -193,6 +199,9 @@ export default function Workspace() {
           <div className="drag-and-drop-workspace" />
         </div>
       </div>
+      {isModalNewIdeaOpen && (
+        <ModalNewIdea setIsModalNewIdeaOpen={setIsModalNewIdeaOpen} />
+      )}
     </main>
   );
   // : (

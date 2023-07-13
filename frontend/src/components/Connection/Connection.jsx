@@ -3,6 +3,7 @@ import { useState, useContext } from "react";
 import "./Connection.scss";
 
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -138,6 +139,12 @@ export default function Connection() {
                 </div>
               </div>
             </div>
+            <Link
+              to={`/${companyInfos.slug}/password-reset`}
+              className="button-md-primary-link forgotten-password"
+            >
+              Mot de passe oublié ?
+            </Link>
             <button type="submit" className="button-lg-primary-solid">
               Se connecter
             </button>
@@ -151,7 +158,7 @@ export default function Connection() {
           )}
         </div>
         <a
-          className="salesforce-logo"
+          className="salesforce-logo-desktop"
           href="https://www.salesforce.com/"
           target="_blank"
           rel="noopener noreferrer"
@@ -159,7 +166,7 @@ export default function Connection() {
           <img
             src={SalesforceLogoSombre}
             alt="Salesforce logo"
-            className="salesforce-logo-desktop"
+            className="salesforce-logo"
           />
         </a>
       </div>
