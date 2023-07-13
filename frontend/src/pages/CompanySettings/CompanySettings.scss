@@ -92,6 +92,20 @@ section#personalisation {
             }
           }
         }
+
+        form#color-picker-form {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          .color-picker-container {
+            flex-wrap: wrap;
+            display: flex;
+            gap: 0.25rem;
+          }
+          button {
+            align-self: flex-start;
+          }
+        }
       }
     }
   }

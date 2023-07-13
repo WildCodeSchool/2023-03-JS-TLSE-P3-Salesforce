@@ -15,6 +15,9 @@ import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import Alert from "../../components/Alert/Alert";
 import NavBar from "../../components/NavBar/NavBar";
 import NewUserModal from "../../components/NewUserModal/NewUserModal";
+import ColorPicker from "../../components/ColorPicker/ColorPicker";
+
+import { defineColorTheme } from "../../../utils";
 
 export default function CompanySettings() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -23,17 +26,30 @@ export default function CompanySettings() {
   const [isNewUserModalOpen, setIsNewUserModalOpen] = useState(false);
   const [activePage, setActivePage] = useState("members");
   const [logoUpdateAlert, setLogoUpdateAlert] = useState("");
+  const [colors, setColors] = useState([]);
+  const [colorUpdateAlert, setColorUpdateAlert] = useState("");
   const [companyNewLogoUrl, setCompanyNewLogoUrl] = useState(
     companyInfos.logo_url ||
       "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg"
   );
-
+  const [selectedColor, setSelectedColor] = useState("");
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
       slug: sanitize(company_slug),
     }));
   }, [company_slug]);
+
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/colors`)
+      .then((response) => {
+        setColors(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const navigate = useNavigate();
 
@@ -70,6 +86,45 @@ export default function CompanySettings() {
           type: "error",
           message:
             "Impossible de modifier le logo de l'entreprise. Veuillez réessayer.",
+          icon: "cross-circle",
+        });
+        setTimeout(() => {
+          setLogoUpdateAlert("");
+        }, 3000);
+      });
+  };
+  const handleColorFormSubmit = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const dataFromForm = Object.fromEntries(formData.entries());
+    axios
+      .put(
+        `${import.meta.env.VITE_BACKEND_URL}/companies/${companyInfos.id}`,
+        dataFromForm,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      )
+      .then(() => {
+        defineColorTheme(selectedColor);
+        setColorUpdateAlert({
+          type: "success",
+          message: `La couleur de l'entreprise a bien été mis à jour ! `,
+          icon: "check-circle",
+        });
+        setTimeout(() => {
+          setColorUpdateAlert("");
+        }, 3000);
+      })
+      .catch((error) => {
+        console.error(error);
+        setColorUpdateAlert({
+          type: "error",
+          message:
+            "Impossible de modifier la couleur de l'entreprise. Veuillez réessayer.",
           icon: "cross-circle",
         });
         setTimeout(() => {
@@ -226,6 +281,31 @@ export default function CompanySettings() {
                     )}
                   </form>
                 </div>
+              </div>
+              <div className="elements-group">
+                <h3>Couleur du thème</h3>
+                <form id="color-picker-form" onSubmit={handleColorFormSubmit}>
+                  <div className="color-picker-container">
+                    {colors.map((color) => (
+                      <ColorPicker
+                        key={color.id}
+                        colorName={color.name}
+                        colorId={color.id}
+                        setSelectedColor={setSelectedColor}
+                      />
+                    ))}
+                  </div>
+                  <button type="submit" className="button-md-primary-solid">
+                    Modifier
+                  </button>
+                  {colorUpdateAlert && (
+                    <Alert
+                      type={colorUpdateAlert.type}
+                      text={colorUpdateAlert.message}
+                      icon={colorUpdateAlert.icon}
+                    />
+                  )}
+                </form>
               </div>
             </div>
           </div>

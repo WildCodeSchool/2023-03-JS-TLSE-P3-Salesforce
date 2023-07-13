@@ -1,0 +1,133 @@
+@use "../../styles/shadows" as *;
+
+.color-picker {
+  input {
+    display: none;
+  }
+  input:checked + .color-container {
+    border: 1px solid var(--grey-200);
+    @include shadow("xs");
+    .color-circle {
+      i {
+        display: block;
+        color: var(--white);
+        &::before {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+  .color-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    .color-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50px;
+      border: 1px solid var(--white);
+      @include shadow("sm");
+      i {
+        display: none;
+      }
+    }
+    &:hover {
+      border: 1px solid var(--grey-200);
+      @include shadow("xs");
+    }
+  }
+  &-amber {
+    .color-circle {
+      background-color: var(--amber-500);
+    }
+  }
+  &-blue {
+    .color-circle {
+      background-color: var(--blue-500);
+    }
+  }
+  &-cyan {
+    .color-circle {
+      background-color: var(--cyan-500);
+    }
+  }
+  &-emerald {
+    .color-circle {
+      background-color: var(--emerald-500);
+    }
+  }
+  &-fuchsia {
+    .color-circle {
+      background-color: var(--fuchsia-500);
+    }
+  }
+  &-green {
+    .color-circle {
+      background-color: var(--green-500);
+    }
+  }
+  &-indigo {
+    .color-circle {
+      background-color: var(--indigo-500);
+    }
+  }
+  &-lime {
+    .color-circle {
+      background-color: var(--lime-500);
+    }
+  }
+  &-orange {
+    .color-circle {
+      background-color: var(--orange-500);
+    }
+  }
+  &-pink {
+    .color-circle {
+      background-color: var(--pink-500);
+    }
+  }
+  &-purple {
+    .color-circle {
+      background-color: var(--purple-500);
+    }
+  }
+  &-red {
+    .color-circle {
+      background-color: var(--red-500);
+    }
+  }
+  &-rose {
+    .color-circle {
+      background-color: var(--rose-500);
+    }
+  }
+  &-sky {
+    .color-circle {
+      background-color: var(--sky-500);
+    }
+  }
+  &-teal {
+    .color-circle {
+      background-color: var(--teal-500);
+    }
+  }
+  &-violet {
+    .color-circle {
+      background-color: var(--violet-500);
+    }
+  }
+  &-yellow {
+    .color-circle {
+      background-color: var(--yellow-500);
+    }
+  }
+}
