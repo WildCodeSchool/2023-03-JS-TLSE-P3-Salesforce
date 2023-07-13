@@ -90,7 +90,6 @@
           margin-right: 0px;
           cursor: grab;
 
-          
           &.react-draggable-dragging {
             @include shadow("lg");
             cursor: grabbing;
