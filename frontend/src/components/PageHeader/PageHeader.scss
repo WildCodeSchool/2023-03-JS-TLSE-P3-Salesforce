@@ -30,10 +30,12 @@
 
   .actions {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     flex-direction: column;
     width: 100%;
+    button,
     .button {
+      flex-shrink: 0;
       &-primary {
         &-solid {
           @include button("lg", $color: "primary", $style: "solid");
@@ -70,6 +72,7 @@
       flex-direction: row;
       width: initial;
       align-items: center;
+      button,
       .button {
         &-primary {
           &-solid {

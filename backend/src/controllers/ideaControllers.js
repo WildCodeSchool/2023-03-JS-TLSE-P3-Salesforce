@@ -36,9 +36,9 @@ const getAllIdeasByUser = (req, res) => {
 };
 
 const getAllIdeasByCompany = (req, res) => {
-  const { companyId, userId } = req.params;
+  const { company_id, user_id } = req.params;
   models.idea
-    .findAllIdeasByCompany(companyId, userId)
+    .findAllIdeasByCompany(company_id, user_id)
     .then(([results]) => {
       if (results.length) {
         res.status(200).json(results);

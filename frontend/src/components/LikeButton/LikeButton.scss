@@ -4,12 +4,14 @@
   border: none;
   background-color: var(--white);
   @include text("sm", $weight: 600);
-  color: var(--grey-700);
+  color: var(--grey-500);
   display: flex;
   align-items: center;
-  gap: 4px;
+  justify-content: flex-end;
+  gap: 0.25rem;
   line-height: unset;
   cursor: pointer;
+  min-width: 3.5rem;
 
   i:before {
     line-height: unset;
@@ -19,12 +21,12 @@
   }
 
   .fi-rr-heart {
-    color: var(--grey-700);
+    color: var(--grey-500);
     font-size: 14px;
     line-height: 20px;
   }
   .fi-sr-heart {
-    color: var(--primary-600);
+    color: var(--grey-500);
     font-size: 14px;
     line-height: 20px;
   }

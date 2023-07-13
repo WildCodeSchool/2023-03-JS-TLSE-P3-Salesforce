@@ -1,7 +1,9 @@
+import { sanitize } from "isomorphic-dompurify";
 import { useState, useContext } from "react";
 import "./Connection.scss";
 
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -15,9 +17,15 @@ export default function Connection() {
   const { setUser, setUserInfos } = useContext(AuthContext);
 
   const { companyInfos } = useContext(CompanyContext);
+  let companyLogoUrl =
+    "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg";
+  if (companyInfos.logo_url) {
+    companyLogoUrl = companyInfos.logo_url;
+  }
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hasConnectionFailed, setHasConnectionFailed] = useState(false);
+  const [failedConnectionInfos, setFailedConnectionInfos] = useState({});
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -46,20 +54,39 @@ export default function Connection() {
         }
       })
       .catch((error) => {
-        console.error(error.message);
+        if (error.response.status === 401) {
+          setFailedConnectionInfos({
+            message:
+              "Les identifiants saisis semblent incorrects. Veuillez réessayer.",
+            icon: "diamond-exclamation",
+          });
+        } else if (error.response.status === 403) {
+          setFailedConnectionInfos({
+            message:
+              "Vous ne disposez pas des droits necessaires pour vous connecter à cette entreprise.",
+            icon: "lock",
+          });
+        } else if (error.response.status === 500) {
+          setFailedConnectionInfos({
+            message: "Une erreur est survenue. Veuillez réessayer.",
+            icon: "cross-circle",
+          });
+        } else {
+          console.error(error);
+        }
         setHasConnectionFailed(true);
       });
   };
 
   // handler for change in input mail
   const handleEmailChange = (event) => {
-    setEmail(event.target.value);
+    setEmail(sanitize(event.target.value));
     setHasConnectionFailed(false);
   };
 
   // handler for change in password input
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    setPassword(sanitize(event.target.value));
     setHasConnectionFailed(false);
   };
 
@@ -68,11 +95,9 @@ export default function Connection() {
       <div className="page">
         <div className="content">
           <div className="company-logo">
-            <img
-              src="https://scontent-cdg4-3.xx.fbcdn.net/v/t39.30808-6/327812371_467766558735889_3516838030788183867_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=3UVdTzh5BXwAX-NmNA2&_nc_ht=scontent-cdg4-3.xx&oh=00_AfAwL4ySGf_99ZTGxnJZTo8tuTT93TknyHjANXf3XMadgQ&oe=64A9FFF8"
-              alt="Logo de l'entreprise"
-            />
+            <img src={companyLogoUrl} alt={`Logo de ${companyInfos.name}`} />
           </div>
+
           <header>
             <h1>De retour ?</h1>
             <p>
@@ -91,6 +116,7 @@ export default function Connection() {
                     placeholder="Votre adresse email"
                     id="email"
                     value={email}
+                    autoComplete="email"
                     onChange={handleEmailChange}
                   />
                 </div>
@@ -108,10 +134,17 @@ export default function Connection() {
                     id="password"
                     value={password}
                     onChange={handlePasswordChange}
+                    autoComplete="current-password"
                   />
                 </div>
               </div>
             </div>
+            <Link
+              to={`/${companyInfos.slug}/password-reset`}
+              className="button-md-primary-link forgotten-password"
+            >
+              Mot de passe oublié ?
+            </Link>
             <button type="submit" className="button-lg-primary-solid">
               Se connecter
             </button>
@@ -119,14 +152,13 @@ export default function Connection() {
           {hasConnectionFailed && (
             <Alert
               type="error"
-              text="Les identifiants saisis semblent incorrects.
-                  Veuillez réessayer."
-              icon="diamond-exclamation"
+              text={failedConnectionInfos.message}
+              icon={failedConnectionInfos.icon}
             />
           )}
         </div>
         <a
-          className="salesforce-logo"
+          className="salesforce-logo-desktop"
           href="https://www.salesforce.com/"
           target="_blank"
           rel="noopener noreferrer"
@@ -134,7 +166,7 @@ export default function Connection() {
           <img
             src={SalesforceLogoSombre}
             alt="Salesforce logo"
-            className="salesforce-logo-desktop"
+            className="salesforce-logo"
           />
         </a>
       </div>

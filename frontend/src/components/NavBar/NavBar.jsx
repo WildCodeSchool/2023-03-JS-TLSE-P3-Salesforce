@@ -4,16 +4,27 @@ import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
 
 import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
-import CompanyLogo from "../../public/assets/logo/Logo-default.png";
 import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
 
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
+import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { userInfos } = useContext(AuthContext);
+  const { setUser, userInfos } = useContext(AuthContext);
+  let initials = "";
+  if (userInfos.firstname && userInfos.lastname) {
+    initials = userInfos.firstname[0] + userInfos.lastname[0];
+  }
   const { companyInfos } = useContext(CompanyContext);
+
+  let companyLogoUrl =
+    "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg";
+  if (companyInfos.logo_url) {
+    companyLogoUrl = companyInfos.logo_url;
+  }
+
   const [isSubNavBarWorkspaceOpen, setIsSubNavBarWorkspaceOpen] =
     useState(false);
   const [isSubNavBarTeamOpen, setIsSubNavBarTeamOpen] = useState(false);
@@ -53,12 +64,13 @@ export default function NavBar({ activeLink }) {
         <div
           className="logo-company-nav-bar"
           onClick={() => {
-            navigate(`/${companyInfos.id}/`);
+            navigate(`/${companyInfos.slug}/`);
           }}
           aria-hidden="true"
         >
-          <img src={CompanyLogo} alt="Company's logo" />
+          <img src={companyLogoUrl} alt={`Logo de ${companyInfos.name}`} />
         </div>
+
         <div className="burger-nav-bar">
           <i
             className="fi fi-rr-bars-staggered"
@@ -71,11 +83,11 @@ export default function NavBar({ activeLink }) {
             <div
               className="logo-company-nav-bar"
               onClick={() => {
-                navigate(`/${companyInfos.id}/`);
+                navigate(`/${companyInfos.slug}/`);
               }}
               aria-hidden="true"
             >
-              <img src={CompanyLogo} alt="Company's logo" />
+              <img src={companyLogoUrl} alt={`Logo de ${companyInfos.name}`} />
             </div>
             <div className="icon-nav-bar">
               {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
@@ -84,7 +96,7 @@ export default function NavBar({ activeLink }) {
                 className={activeLink === "home" ? "active" : ""}
                 onClick={() => {
                   closeSubNavBar();
-                  navigate(`/${companyInfos.id}/`);
+                  navigate(`/${companyInfos.slug}/`);
                 }}
               >
                 <i className="fi fi-rr-home" />
@@ -121,7 +133,7 @@ export default function NavBar({ activeLink }) {
                   className={activeLink === "settings" ? "active" : ""}
                   onClick={() => {
                     closeSubNavBar();
-                    navigate(`/${companyInfos.id}/settings`);
+                    navigate(`/${companyInfos.slug}/settings`);
                   }}
                 >
                   <i className="fi fi-rr-settings-sliders" />
@@ -140,6 +152,29 @@ export default function NavBar({ activeLink }) {
                   <span>Mentions légales</span>
                 </div>
               </button>
+            </div>
+            <div className="icon-nav-bar">
+              <button
+                type="button"
+                onClick={() => {
+                  setUser("");
+                }}
+              >
+                <i className="fi fi-rr-sign-out-alt" />
+                <div className="tooltip">
+                  <span>Se déconnecter</span>
+                </div>
+              </button>
+            </div>
+            <div className="avatar">
+              {userInfos.picture_url ? (
+                <Avatar type="navbar" pictureUrl={userInfos.picture_url} />
+              ) : (
+                <Avatar type="navbar" initials={initials} />
+              )}
+              <div className="tooltip">
+                <span>Mon profil</span>
+              </div>
             </div>
 
             <a
@@ -165,6 +200,7 @@ export default function NavBar({ activeLink }) {
             <SubNavBarLink
               title="Refonte des extranets"
               subtitle="Pierre DUPONT"
+              navigateLink={`/${companyInfos.slug}/workspaces/1`}
             />
             <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
           </div>
@@ -192,7 +228,10 @@ export default function NavBar({ activeLink }) {
           <div className="main-part-nav-bar-menu-burger">
             <div className="top">
               <div className="logo">
-                <img src={CompanyLogo} alt="Company's logo" />
+                <img
+                  src={companyLogoUrl}
+                  alt={`Logo de ${companyInfos.name}`}
+                />
               </div>
               <div className="content">
                 <div className="link">
@@ -292,7 +331,7 @@ export default function NavBar({ activeLink }) {
                     className="link"
                     onClick={() => {
                       closeSubNavBar();
-                      navigate(`/${companyInfos.id}/settings`);
+                      navigate(`/${companyInfos.slug}/settings`);
                     }}
                     aria-hidden="true"
                   >
@@ -308,23 +347,36 @@ export default function NavBar({ activeLink }) {
               <div className="link">
                 <div className="text">
                   <i className="fi fi-rr-interrogation" />
+
                   <p>Mentions légales</p>
                 </div>
               </div>
               <div className="profile">
                 <div className="avatar">
-                  <img
-                    src="https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=987&q=80"
-                    alt="Profile"
-                  />
+                  {userInfos.picture_url ? (
+                    <Avatar type="navbar" pictureUrl={userInfos.picture_url} />
+                  ) : (
+                    <Avatar type="navbar" initials={initials} />
+                  )}
                 </div>
                 <div className="content">
                   <p className="name">
                     {userInfos.firstname} {userInfos.lastname.toUpperCase()}
                   </p>
                   <p className="email">{userInfos.email}</p>
+                  <button
+                    className="log-out"
+                    onClick={() => {
+                      setUser("");
+                    }}
+                    type="button"
+                  >
+                    <i className="fi fi-rr-sign-out-alt" />
+                    Se déconnecter
+                  </button>
                 </div>
               </div>
+
               <a
                 className="salesforce-logo"
                 href="https://www.salesforce.com/"

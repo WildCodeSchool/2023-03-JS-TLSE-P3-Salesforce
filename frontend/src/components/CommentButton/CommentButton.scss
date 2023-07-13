@@ -8,14 +8,19 @@ i:before {
   vertical-align: middle;
 }
 
-.idea-comment-icon {
-  color: var(--grey-700);
+.idea-comment {
+  color: var(--grey-500);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  line-height: unset;
+  cursor: pointer;
+  min-width: 3.5rem;
   border: none;
-  background-color: var(--white);
+  background-color: transparent;
 }
 .idea-comment-count {
-  font-size: 14px;
-  line-height: 20px;
   @include text("sm", $weight: 600);
-  color: var(--grey-700);
+  color: var(--grey-500);
 }

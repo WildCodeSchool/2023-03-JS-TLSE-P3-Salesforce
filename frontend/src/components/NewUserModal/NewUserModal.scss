@@ -52,12 +52,7 @@
       border-bottom: 1px solid var(--grey-200);
 
       .icon {
-        @include icon(
-          "lg",
-          $color: "grey",
-          $style: "border",
-          $shape: "square"
-        );
+        @include icon("lg", $color: "grey", $style: "border", $shape: "square");
       }
 
       .content {

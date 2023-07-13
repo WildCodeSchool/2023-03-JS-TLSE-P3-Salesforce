@@ -3,7 +3,7 @@
 @use "../../styles/button" as *;
 
 #sign-in {
-  margin: 1.5rem;
+  margin: 1rem;
   min-height: calc(100vh - 4rem);
   min-height: calc(100dvh - 4rem);
 
@@ -42,6 +42,7 @@
       .company-logo {
         align-self: center;
         width: 4rem;
+        height: 4rem;
         padding: 0.5rem;
         border-radius: 12px;
         background-color: var(--white);
@@ -77,6 +78,11 @@
         gap: 1rem;
         align-items: stretch;
         justify-content: center;
+
+        .forgotten-password {
+          align-self: flex-end;
+          width: fit-content;
+        }
       }
     }
 
@@ -113,14 +119,18 @@
         width: clamp(200px, 100%, 400px);
         align-self: center;
       }
+      .salesforce-logo-desktop {
+        height: 4rem;
+        display: initial;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
     }
     .image {
       flex-basis: calc((100% / 3) * 2 - (1rem / 2));
       border-radius: 0;
-    }
-    .salesforce-logo-desktop {
-      height: 4rem;
-      display: initial;
     }
     .salesforce-logo-mobile {
       display: none;

@@ -2,33 +2,36 @@
 @use "../../styles/shadows" as *;
 
 .search-component {
-  width: 100%;
-
   display: flex;
   flex-direction: column;
+  width: 100%;
+
   .search-bar {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0;
+    justify-content: space-between;
     gap: 0.5rem;
-    position: relative;
-    min-width: min-content;
-    height: auto;
+    width: 100%;
     border: 1px solid var(--grey-200);
     border-radius: 0.4rem;
     background-color: var(--white);
     @include shadow("xs");
+    button {
+      justify-content: end;
+    }
     .search-input {
       @include text("md");
+      display: flex;
       border: none;
       margin: 0.5rem;
-      min-width: 18rem;
-      width: 100%;
+      width: 75%;
       outline: none;
       &::placeholder {
         color: var(--grey-500);
       }
+    }
+    .search-search {
+      display: flex;
+      width: 25%;
     }
     .fi-rs-search {
       background-color: var(--white);
@@ -64,7 +67,4 @@
 }
 
 @media screen and (min-width: 768px) {
-  .search-component {
-    width: min-content;
-  }
 }

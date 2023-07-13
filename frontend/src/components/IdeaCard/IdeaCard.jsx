@@ -1,64 +1,89 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable camelcase */
 import React, { useState } from "react";
+import propTypes from "prop-types";
 import LikeButton from "../LikeButton/LikeButton";
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 import CommentButton from "../CommentButton/CommentButton";
 import "./IdeaCard.scss";
 import Badge from "../Badge/Badge";
 
-function IdeaCard() {
-  const [commentCount, setCommentCount] = useState(0);
-  const [showCommentModal, setShowCommentModal] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [likeActive, setLikeActive] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+export default function IdeaCard({ idea }) {
+  const [commentCount, setCommentCount] = useState(idea.comments_count);
+
+  const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
+  const [likeActive, setLikeActive] = useState(false);
+
+  let splitIdeaCategories = [];
+
+  if (idea.categories) {
+    const nameAndColorCategories = idea.categories;
+    splitIdeaCategories = nameAndColorCategories.split(",");
+  }
 
   return (
     <div className="idea-card">
       <div className="header-card">
         {/* ajout du titre en entete  */}
-        <h2 className="title-idea">Titre de l'idée</h2>
+        <h2 className="title-idea">{idea.title}</h2>
         <SubmenuIdeaButton
           showSubmenu={showSubmenu}
           setShowSubmenu={setShowSubmenu}
         />
       </div>
-      <div>
-        {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}
-        <div className="content-idea">
+
+      {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}
+      <div className="content-idea">
+        {idea.categories && (
           <div className="badges-idea">
             {/* Afficher les composants de catégorie uniquement si une catégorie est sélectionnée */}
-            <Badge color="red">RH</Badge>
-            <Badge color="green">Marketing</Badge>
-            <Badge color="blue">Comptabilité</Badge>
+            {splitIdeaCategories.map((categories) => {
+              const splitCategory = categories.split("|");
+              return (
+                <Badge key={splitCategory[0]} color={splitCategory[1]}>
+                  {splitCategory[0]}
+                </Badge>
+              );
+            })}
           </div>
+        )}
 
-          <p className="idea-description">
-            Description de l'idée... <br />
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nihil
-            ipsum corporis debitis et enim reiciendis velit quidem aperiam illo
-            minima.
-          </p>
-        </div>
-        <div className="footer-idea">
-          <CommentButton
-            commentCount={commentCount}
-            showCommentModal={showCommentModal}
-            setCommentCount={setCommentCount}
-            setShowCommentModal={setShowCommentModal}
-          />
-          <LikeButton
-            likeCount={likeCount}
-            likeActive={likeActive}
-            isHovered={isHovered}
-            setLikeCount={setLikeCount}
-            setLikeActive={setLikeActive}
-            setIsHovered={setIsHovered}
-          />
-        </div>
+        <p className="idea-description">{idea.description}</p>
+      </div>
+      <div className="footer-idea">
+        <CommentButton
+          commentCount={idea.comments_count === null ? 0 : idea.comments_count}
+        />
+        <LikeButton
+          likeCount={likeCount}
+          likeActive={idea.is_liked_by_user}
+          setLikeCount={setLikeCount}
+          setLikeActive={setLikeActive}
+        />
       </div>
     </div>
   );
 }
 
-export default IdeaCard;
+IdeaCard.propTypes = {
+  idea: propTypes.shape({
+    title: propTypes.string.isRequired,
+    description: propTypes.string,
+    comments_count: propTypes.number,
+    likes_count: propTypes.number,
+    categories: propTypes.string,
+    is_liked_by_user: propTypes.number,
+  }),
+};
+
+IdeaCard.defaultProps = {
+  idea: {
+    title: "titre de l'idée",
+    description: "description de l'idée",
+    comments_count: 0,
+    likes_count: 0,
+    categories: "",
+    is_liked_by_user: 0,
+  },
+};

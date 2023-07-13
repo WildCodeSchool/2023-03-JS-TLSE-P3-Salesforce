@@ -6,6 +6,8 @@ const {
   hashPassword,
   verifyPassword,
   verifyToken,
+  randomPasswordGenerator,
+  verifyCompanyAdminOrSalesForceAdminRole,
 } = require("./services/auth");
 
 /* ---- USERS ROUTES ---- */
@@ -16,12 +18,6 @@ router.post(
   "/companies/:company_id/user/login",
   userControllers.authenticationCheck,
   verifyPassword
-);
-
-router.post(
-  "/companies/:company_id/users",
-  hashPassword,
-  userControllers.addUser
 );
 
 // récupérer les users d'une entreprise
@@ -38,7 +34,9 @@ router.post(
 
 // mettre à jour un profil utilisateur
 router.put(
-  "/companies/:company_id/users/:user_id",
+  "/users/:user_id",
+  verifyToken,
+  hashPassword,
   userControllers.updateUserProfile
 );
 
@@ -46,6 +44,42 @@ router.put(
 router.delete(
   "/companies/:company_id/users/:user_id",
   userControllers.deleteUser
+);
+
+const invitationMiddlewares = require("./middlewares/invitationMiddlewares");
+
+// Invite a new user to a company
+router.post(
+  "/companies/:company_id/users",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  invitationMiddlewares.invitationVerifyUserExists,
+  invitationMiddlewares.invitationVerifyUserInCompany,
+  randomPasswordGenerator,
+  hashPassword,
+  invitationMiddlewares.sendInvitationMail,
+  invitationMiddlewares.invitationNewUser,
+  userControllers.insertUser
+);
+
+const passwordResetMiddlewares = require("./middlewares/passwordResetMiddlewares");
+
+// Send password reset mail
+router.post(
+  "/password-reset",
+  passwordResetMiddlewares.passwordResetVerifyUserExists,
+  randomPasswordGenerator,
+  hashPassword,
+  passwordResetMiddlewares.passwordResetUpdateUserProfile,
+  passwordResetMiddlewares.sendResetPasswordMail
+);
+
+// Update user profile in company
+
+router.put(
+  "/companies/:company_id/users/:user_id",
+  verifyToken,
+  userControllers.updateUserProfileInCompany
 );
 
 /* ---- TEAMS ROUTES ---- */
@@ -167,10 +201,11 @@ router.get(
 
 // Get all ideas for a company
 router.get(
-  "/company/:company_id/ideas",
+  "/companies/:company_id/ideas/:user_id",
   verifyToken,
   ideaControllers.getAllIdeasByCompany
 );
+// Get all ideas for group idea
 router.get(
   "/ideasgroup/:ideas_group_id/ideas",
   verifyToken,
@@ -179,21 +214,21 @@ router.get(
 
 // Create an idea
 router.post(
-  "/company/:company_id/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.createIdea
 );
 
 // Update an idea
 router.put(
-  "/company/:company_id/users/:user_id/ideas/:idea_id",
+  "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.updateIdeaById
 );
 
 // Delete an idea
 router.delete(
-  "/company/:company_id/users/:user_id/ideas/:idea_id",
+  "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.deleteIdea
 );
@@ -284,4 +319,41 @@ router.delete(
   "/ideasgroup/:ideas_group_id",
   ideasgroupControllers.deleteIdeasGroup
 );
+
+/* ---- CATEGORIES ROUTES ---- */
+const categoryControllers = require("./controllers/categoryControllers");
+
+router.get("/categories", categoryControllers.browseCategory);
+
+router.get("/categories/:id", categoryControllers.readCategory);
+
+router.put("/categories/:id", categoryControllers.editCategory);
+
+router.post("/categories", categoryControllers.addCategory);
+
+router.delete("/categories/:id", categoryControllers.destroyCategory);
+
+/* ---- COLORS ROUTES ---- */
+const colorControllers = require("./controllers/colorControllers");
+
+router.get("/colors", colorControllers.browseColor);
+router.get("/colors/:id", colorControllers.readColor);
+router.put("/colors/:id", colorControllers.editColor);
+router.post("/colors", colorControllers.addColor);
+router.delete("/colors/:id", colorControllers.destroyColor);
+
+/* ---- COMPANIES ROUTES ---- */
+const companyControllers = require("./controllers/companyControllers");
+
+router.get("/companies", companyControllers.browseCompany);
+router.get("/companies/:company_slug", companyControllers.getCompany);
+router.put(
+  "/companies/:id",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  companyControllers.editCompany
+);
+router.post("/companies", companyControllers.addCompany);
+router.delete("/companies/:id", companyControllers.destroyCompany);
+
 module.exports = router;
