@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { sanitize } from "isomorphic-dompurify";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import propTypes from "prop-types";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -41,7 +40,7 @@ export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
           },
         }
       )
-      .then((response) => {
+      .then(() => {
         setIsModalNewIdeaOpen(false);
       })
       .catch((error) => {

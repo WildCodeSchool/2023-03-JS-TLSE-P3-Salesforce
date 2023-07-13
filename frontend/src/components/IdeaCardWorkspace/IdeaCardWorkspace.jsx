@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
 import propTypes from "prop-types";
-import Draggable, { DraggableCore } from "react-draggable";
+import Draggable from "react-draggable";
 
 import LikeButton from "../LikeButton/LikeButton";
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
@@ -11,11 +10,8 @@ import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
 export default function IdeaCardWorkspace({ idea }) {
-  const [commentCount, setCommentCount] = useState(idea.comments_count);
-
   const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
-  const [likeActive, setLikeActive] = useState(false);
 
   let splitIdeaCategories = [];
 
@@ -25,18 +21,7 @@ export default function IdeaCardWorkspace({ idea }) {
   }
 
   return (
-    <Draggable
-      bounds="parent"
-      axis="both"
-      // // handle=".handle"
-      // defaultPosition={{ x: 0, y: 0 }}
-      // // position={null}
-      // grid={[25, 25]}
-      // scale={1}
-      // // onStart={this.handleStart}
-      // // onDrag={this.handleDrag}
-      // // onStop={this.handleStop}
-    >
+    <Draggable bounds="parent" axis="both">
       <div className="idea-card">
         <div className="header-card">
           {/* ajout du titre en entete  */}
@@ -46,12 +31,9 @@ export default function IdeaCardWorkspace({ idea }) {
             setShowSubmenu={setShowSubmenu}
           />
         </div>
-
-        {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}
         <div className="content-idea">
           {idea.categories && (
             <div className="badges-idea">
-              {/* Afficher les composants de catégorie uniquement si une catégorie est sélectionnée */}
               {splitIdeaCategories.map((categories) => {
                 const splitCategory = categories.split("|");
                 return (
@@ -75,7 +57,6 @@ export default function IdeaCardWorkspace({ idea }) {
             likeCount={likeCount}
             likeActive={idea.is_liked_by_user}
             setLikeCount={setLikeCount}
-            setLikeActive={setLikeActive}
           />
         </div>
       </div>

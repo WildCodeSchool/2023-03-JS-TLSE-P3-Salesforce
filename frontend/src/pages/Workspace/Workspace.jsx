@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Draggable, { DraggableCore } from "react-draggable";
+import Draggable from "react-draggable";
 import "./Workspace.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -22,7 +21,6 @@ export default function Workspace() {
   const [dataUsersByCompany, setDataUsersByCompany] = useState([]);
   const [isLoadingDataUsers, setIsLoadingDataUsers] = useState(true);
   const [dataUsersByTeam, setDataUsersByTeam] = useState([]);
-  const [isLoadingDataByTeam, setIsLoadingDataByTeam] = useState(true);
   const [dataIdeasWorkspace, setDataIdeasWorkspace] = useState([]);
   const [isLoadingDataIdeasWorkspace, setIsLoadingDataIdeasWorkspace] =
     useState(true);
@@ -34,13 +32,6 @@ export default function Workspace() {
       slug: company_slug,
     }));
   }, [company_slug]);
-
-  let userCompaniesArray = [];
-  if (Object.keys(userInfos).length) {
-    if (userInfos.companies) {
-      userCompaniesArray = userInfos.companies.split(",");
-    }
-  }
 
   useEffect(() => {
     const promise = axios
@@ -67,7 +58,6 @@ export default function Workspace() {
               )
               .then((res) => {
                 setDataUsersByTeam(res.data);
-                setIsLoadingDataByTeam(false);
               });
           })
           .catch((error) => {
