@@ -13,7 +13,7 @@
   background-color: var(--white);
   width: 100%;
   &:hover {
-    @include shadow("md");
+    @include shadow("xs");
   }
 
   .header-card {
