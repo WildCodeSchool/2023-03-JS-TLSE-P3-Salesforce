@@ -9,10 +9,11 @@ import "./ModalNewIdea.scss";
 
 export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
   const { companyInfos } = useContext(CompanyContext);
-  const [email, setEmail] = useState("");
-  const { userToken } = useContext(AuthContext);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [categories, setCategories] = useState("");
 
-  const [hasConnectionFailed, setHasConnectionFailed] = useState(false);
+  const { userToken } = useContext(AuthContext);
 
   const handleFormSubmit = (event) => {
     event.preventDefault();
@@ -45,14 +46,18 @@ export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
       })
       .catch((error) => {
         console.error(error.message);
-        setHasConnectionFailed(true);
       });
   };
 
   // handler for change in input mail
-  const handleEmailChange = (event) => {
-    setEmail(sanitize(event.target.value));
-    setHasConnectionFailed(false);
+  const handleTitleChange = (event) => {
+    setTitle(sanitize(event.target.value));
+  };
+  const handleDescriptionChange = (event) => {
+    setDescription(sanitize(event.target.value));
+  };
+  const handleCategoriesChange = (event) => {
+    setCategories(sanitize(event.target.value));
   };
 
   return (
@@ -65,12 +70,12 @@ export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
       <div className="container">
         <div className="header">
           <div className="icon">
-            <i className="fi fi-rr-user-add" />
+            <i className="fi fi-rr-bulb" />
           </div>
           <div className="content">
-            <h3>Nouveau membre</h3>
+            <h3>Nouvelle idée</h3>
             <p className="details">
-              Invitez vos collègues à partager leurs idées.
+              Faites briller votre imagination avec cette nouvelle idée.
             </p>
           </div>
           <button
@@ -85,27 +90,52 @@ export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
           <form onSubmit={handleFormSubmit}>
             <div className="input-line">
               <div className="input-field">
-                <label htmlFor="email">Adresse email</label>
+                <label htmlFor="titleidea">Titre de l'idée *</label>
+                <div className="input">
+                  <input
+                    type="text"
+                    name="text"
+                    placeholder="titre de la nouvelle idée"
+                    id="titleidea"
+                    onChange={handleTitleChange}
+                    value={title}
+                  />
+                </div>
+              </div>
+              <div className="input-field">
+                <label htmlFor="descriptionidea">Description *</label>
+                <div className="textarea">
+                  <textarea
+                    name="description"
+                    rows="3"
+                    placeholder="description de la nouvelle idée"
+                    id="descriptionidea"
+                    onChange={handleDescriptionChange}
+                    value={description}
+                  />
+                </div>
+              </div>
+              <div className="input-field">
+                <label htmlFor="categorieidea">Catégories</label>
                 <div className="input-help">
-                  Renseignez l'adresse mail avec laquelle le membre se
-                  connectera.
+                  Renseignez une ou plusieurs catégories d'idées
                 </div>
                 <div className="input">
-                  <i className="fi fi-rr-envelope" />
                   <input
-                    type="email"
-                    name="email"
-                    placeholder="Son adresse email"
-                    id="email"
-                    onChange={handleEmailChange}
-                    value={email}
+                    type="text"
+                    name="text"
+                    placeholder="catégories de la nouvelle idée"
+                    id="categoriesidea"
+                    onChange={handleCategoriesChange}
+                    value={categories}
                   />
                 </div>
               </div>
             </div>
             <div className="actions">
               <button className="submit" type="submit">
-                Envoyer l'invitation <i className="fi fi-rr-paper-plane-top" />
+                <i className="fi fi-rr-plus" />
+                Ajouter
               </button>
             </div>
           </form>

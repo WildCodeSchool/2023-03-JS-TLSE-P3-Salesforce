@@ -96,8 +96,8 @@ IdeaCardWorkspace.propTypes = {
 
 IdeaCardWorkspace.defaultProps = {
   idea: {
-    title: "titre de l'idée",
-    description: "description de l'idée",
+    title: "",
+    description: "",
     comments_count: 0,
     likes_count: 0,
     categories: "",

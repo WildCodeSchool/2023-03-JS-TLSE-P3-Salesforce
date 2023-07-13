@@ -93,10 +93,6 @@ export default function Workspace() {
       });
   }, [workspace_id, userInfos.id]);
 
-  const creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
-  const creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
-  const creationDateWorkspace = creationDateWorkspaceSplited[0];
-
   return (
     // userToken &&
     //   Object.keys(userInfos).length &&
@@ -105,98 +101,111 @@ export default function Workspace() {
     //   userInfos.is_salesforce_admin ? (
     <main>
       <NavBar activeLink="workspace" />
+      {!isLoadingDataUsers &&
+        (() => {
+          const creationDateWorkspaceInitial =
+            dataUsersByCompany[0].creation_date;
+          const creationDateWorkspaceSplited =
+            creationDateWorkspaceInitial.split("T");
+          const creationDateDayFirst =
+            creationDateWorkspaceSplited[0].split("-");
+          const creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
 
-      <PageHeader
-        title={dataUsersByCompany[0].name}
-        subtitle={`Date de création :  ${creationDateWorkspace}, nom de l'équipe `}
-      >
-        <div className="actions">
-          <button className="button-md-red-outline" type="button">
-            <i className="fi fi-rr-trash" />
-            Supprimer
-          </button>
-          <button className="button-md-grey-outline" type="button">
-            <i className="fi fi-rr-users" />
-            Collaborer
-          </button>
-          <button className="button-primary-solid" type="button">
-            Sauvegarder
-          </button>
-        </div>
-      </PageHeader>
+          return (
+            <PageHeader
+              title={dataUsersByCompany[0].name}
+              subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+            >
+              <div className="actions">
+                <button className="button-md-red-outline" type="button">
+                  <i className="fi fi-rr-trash" />
+                  Supprimer
+                </button>
+                <button className="button-md-grey-outline" type="button">
+                  <i className="fi fi-rr-users" />
+                  Collaborer
+                </button>
+                <button className="button-primary-solid" type="button">
+                  Sauvegarder
+                </button>
+              </div>
+            </PageHeader>
+          );
+        })()}
 
-      <div className="create-and-search-ideas-workspace">
-        <button
-          className="button-md-primary-solid"
-          type="button"
-          onClick={() => setIsModalNewIdeaOpen(true)}
-        >
-          <i className="fi fi-rr-plus" />
-          Ajouter une idée
-        </button>
+      <div className="board-container">
+        <div className="create-and-search-ideas-workspace">
+          <button
+            className="button-md-primary-solid"
+            type="button"
+            onClick={() => setIsModalNewIdeaOpen(true)}
+          >
+            <i className="fi fi-rr-plus" />
+            Ajouter une idée
+          </button>
 
-        <div className="search-ideas-workspace">
-          <SearchBar />
-          <div className="filter-and-selecting">
-            <button className="button-md-grey-outline" type="button">
-              <i className="fi-rr-angle-small-down" />
-              trier
-            </button>
-            <button className="button-md-grey-outline" type="button">
-              <i className="i fi-rr-bars-filter" />
-              filtrer
-            </button>
+          <div className="search-ideas-workspace">
+            <SearchBar />
+            <div className="filter-and-selecting">
+              <button className="button-md-grey-outline" type="button">
+                <i className="fi-rr-angle-small-down" />
+                trier
+              </button>
+              <button className="button-md-grey-outline" type="button">
+                <i className="i fi-rr-bars-filter" />
+                filtrer
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+        <div className="large-container-workspace">
+          <div
+            className="box"
+            style={{
+              height: "100%",
+              width: "100%",
+              position: "relative",
+              overflow: "scroll",
+              padding: "0",
+            }}
+          >
+            <div className="global-ideas-workspace">
+              <div className="ideas-workspace">
+                <div
+                  className="box"
+                  style={{
+                    height: "3000px",
+                    width: "3000px",
+                    position: "relative",
 
-      <div className="large-container-workspace">
-        <div
-          className="box"
-          style={{
-            height: "100%",
-            width: "100%",
-            position: "relative",
-            overflow: "scroll",
-            padding: "0",
-          }}
-        >
-          <div className="global-ideas-workspace">
-            <div className="ideas-workspace">
-              <div
-                className="box"
-                style={{
-                  height: "3000px",
-                  width: "3000px",
-                  position: "relative",
-
-                  padding: "0",
-                }}
-              >
-                <div className="container-idea-draggable">
-                  <div className="idea-cards-workspace">
-                    <div
-                      style={{
-                        height: "3000px",
-                        width: "3000px",
-                      }}
-                    >
-                      {!isLoadingDataIdeasWorkspace &&
-                        dataIdeasWorkspace.map((idea) => (
-                          <IdeaCardWorkspace key={idea.id} idea={idea} />
-                        ))}
+                    padding: "0",
+                  }}
+                >
+                  <div className="container-idea-draggable">
+                    <div className="idea-cards-workspace">
+                      <div
+                        style={{
+                          height: "3000px",
+                          width: "3000px",
+                        }}
+                      >
+                        {!isLoadingDataIdeasWorkspace &&
+                          dataIdeasWorkspace.map((idea) => (
+                            <IdeaCardWorkspace key={idea.id} idea={idea} />
+                          ))}
+                      </div>
                     </div>
+                    <Draggable bounds="parent">
+                      <div>
+                        <IdeaCardWorkspace />
+                      </div>
+                    </Draggable>
                   </div>
-                  <Draggable bounds="parent">
-                    <div>
-                      <IdeaCardWorkspace />
-                    </div>
-                  </Draggable>
                 </div>
               </div>
             </div>
+            <div className="drag-and-drop-workspace" />
           </div>
-          <div className="drag-and-drop-workspace" />
         </div>
       </div>
       {isModalNewIdeaOpen && (
