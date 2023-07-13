@@ -138,15 +138,11 @@ export default function Home() {
 
           {pagePart === "teams" && (
             <div>
-              <ul className="teams-card-container">
+              <div className="teams-card-container">
                 {teams.map((team) => {
-                  return (
-                    <li key={team.id}>
-                      <TeamCard team={team} />
-                    </li>
-                  );
+                  return <TeamCard team={team} key={team.id} />;
                 })}
-              </ul>
+              </div>
             </div>
           )}
         </main>

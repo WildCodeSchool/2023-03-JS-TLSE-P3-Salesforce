@@ -19,25 +19,33 @@
     @include shadow("md");
   }
   .team-picture {
+    flex-shrink: 0;
+    overflow: hidden;
     @include icon("lg", $color: "grey", $style: solid, $shape: "circle");
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
   }
 
-  .name-team {
-    width: 100%;
-    @include text("md", $weight: 600);
-    color: var(--grey-900);
-  }
-  .team-description {
-    max-height: auto;
-    max-width: 100%;
-    color: var(--grey-600);
-    @include text("sm", $weight: 400);
+  .team-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    .name-team {
+      @include text("md", $weight: 600);
+      color: var(--grey-900);
+    }
+    .team-description {
+      color: var(--grey-600);
+      @include text("sm", $weight: 400);
+    }
   }
 }
 
 @media screen and (min-width: 768px) {
   .team-card {
-    width: 30vw;
-    height: 100%;
+    align-self: stretch;
   }
 }

@@ -8,15 +8,13 @@ import Badge from "../Badge/Badge";
 export default function TeamCard({ team }) {
   return (
     <div className="team-card">
-      {team.picture_url ? (
-        <p className="team-picture">
+      <div className="team-picture">
+        {team.picture_url ? (
           <img src={team.picture_url} alt="team_picture" />
-        </p>
-      ) : (
-        <p className="team-picture">
+        ) : (
           <i className="fi fi-rr-users" />
-        </p>
-      )}
+        )}
+      </div>
       <div className="team-card-content">
         <h3 className="name-team">{team.name}</h3>
         <p className="team-description">{team.description}</p>
