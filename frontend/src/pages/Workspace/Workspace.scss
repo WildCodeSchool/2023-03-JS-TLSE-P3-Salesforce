@@ -1,0 +1,102 @@
+@use "../../styles/typography" as *;
+@use "../../styles/shadows" as *;
+@use "../../styles/button" as *;
+@use "../../styles/icon" as *;
+
+.board-container {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.75rem;
+  @include shadow("xs");
+  overflow: hidden;
+  border: 1px solid var(--grey-200);
+  margin-top: 2rem;
+}
+
+.create-and-search-ideas-workspace {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  width: 100%;
+  gap: 12px;
+
+  background-color: var(--grey-50);
+
+  .search-ideas-workspace {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 60%;
+    .search-component {
+      width: 50%;
+    }
+
+    .filter-and-selecting {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+  }
+}
+.large-container-workspace {
+  display: flex;
+  align-items: center;
+
+  position: relative;
+  height: 85vh;
+  border-top: 1px solid var(--grey-200);
+  background-color: var(--white);
+
+  background: linear-gradient(90deg, var(--white) (22px - 2px), transparent 1%)
+      center,
+    linear-gradient(var(--white) (22px - 2px), transparent 1%) center,
+    var(--grey-300);
+  background-size: 22px 22px;
+  @include shadow("xs");
+
+  .box {
+    padding: 1rem !important;
+  }
+
+  .global-ideas-workspace {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    height: 85vh;
+    width: 300px;
+
+    .ideas-workspace {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1 0 0;
+      align-self: stretch;
+      .container-idea-draggable {
+        height: "2000px";
+        width: "350px";
+        padding: "10px";
+        .idea-cards-workspace {
+          display: flex;
+          flex-wrap: wrap;
+          width: 100%;
+        }
+        .idea-card {
+          margin-bottom: 10px;
+          width: 350px;
+          cursor: grab;
+          transition: box-shadow 0.2s;
+
+          margin-right: 0px;
+          & .react-draggable-dragged {
+            margin: 0px;
+          }
+          &.react-draggable-dragging {
+            @include shadow("lg");
+          }
+        }
+      }
+    }
+  }
+}

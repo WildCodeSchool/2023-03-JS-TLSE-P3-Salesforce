@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import "./SubNavBarLink.scss";
+import { Link } from "react-router-dom";
 
-export default function SubNavBarLink({ title, subtitle }) {
+export default function SubNavBarLink({ title, subtitle, navigateLink }) {
   return (
-    <div className="sub-navbar-link">
+    <Link to={navigateLink} className="sub-navbar-link">
       <div className="content">
         <p className="title">{title}</p>
         <p className="subtitle">{subtitle}</p>
@@ -11,16 +12,18 @@ export default function SubNavBarLink({ title, subtitle }) {
       <div className="icon">
         <i className="fi fi-rr-share-square" />
       </div>
-    </div>
+    </Link>
   );
 }
 
 SubNavBarLink.defaultProps = {
   title: "Tableau XXX",
   subtitle: "Créateur·trice",
+  navigateLink: "/",
 };
 
 SubNavBarLink.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
+  navigateLink: PropTypes.string,
 };

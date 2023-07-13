@@ -5,11 +5,13 @@ import CompanySettings from "./pages/CompanySettings/CompanySettings";
 import Invitation from "./pages/Invitation/Invitation";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import NewPassword from "./pages/NewPassword/NewPassword";
-import "./styles/reset.css";
-import "./styles/index.scss";
+import Workspace from "./pages/Workspace/Workspace";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
+
+import "./styles/reset.css";
+import "./styles/index.scss";
 
 function App() {
   return (
@@ -19,6 +21,11 @@ function App() {
           <Router>
             <Routes>
               <Route path="/:company_slug/" element={<Home />} />
+              <Route
+                path="/:company_slug/workspaces/:workspace_id"
+                element={<Workspace />}
+              />
+
               <Route
                 path="/:company_slug/settings"
                 element={<CompanySettings />}

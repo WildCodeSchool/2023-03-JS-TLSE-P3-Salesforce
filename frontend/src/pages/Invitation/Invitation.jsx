@@ -250,7 +250,6 @@ export default function Connection() {
                     <label htmlFor="company-biography">Présentation</label>
                     <div className="textarea">
                       <textarea
-                        type="text"
                         name="company-biography"
                         placeholder="Présentez vous en quelques mots"
                         id="company-biography"

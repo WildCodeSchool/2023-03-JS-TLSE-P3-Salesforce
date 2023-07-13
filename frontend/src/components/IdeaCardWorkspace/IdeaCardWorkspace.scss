@@ -11,6 +11,7 @@
   border-radius: 12px;
   transition: box-shadow 0.3s;
   background-color: var(--white);
+  width: 100%;
   &:hover {
     @include shadow("md");
   }
