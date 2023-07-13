@@ -41,7 +41,7 @@ export default function Workspace() {
       userCompaniesArray = userInfos.companies.split(",");
     }
   }
-  // get users's workspace
+
   useEffect(() => {
     const promise = axios
       .get(
@@ -71,7 +71,6 @@ export default function Workspace() {
               });
           })
           .catch((error) => {
-            // Handle error here
             console.error(error);
           });
       });
@@ -93,12 +92,11 @@ export default function Workspace() {
       });
   }, [workspace_id, userInfos.id]);
 
-  return (
-    // userToken &&
-    //   Object.keys(userInfos).length &&
-    //   (dataUsersByCompany.includes(userInfos.id) ||
-    //     dataUsersByTeam.includes(userInfos.id)) &&
-    //   userInfos.is_salesforce_admin ? (
+  return userToken &&
+    Object.keys(userInfos).length &&
+    (dataUsersByCompany.includes(userInfos.id) ||
+      dataUsersByTeam.includes(userInfos.id) ||
+      userInfos.is_salesforce_admin) ? (
     <main>
       <NavBar activeLink="workspace" />
       {!isLoadingDataUsers &&
@@ -131,7 +129,7 @@ export default function Workspace() {
               </div>
             </PageHeader>
           );
-        })()}
+        })}
 
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
@@ -212,8 +210,7 @@ export default function Workspace() {
         <ModalNewIdea setIsModalNewIdeaOpen={setIsModalNewIdeaOpen} />
       )}
     </main>
+  ) : (
+    <Home />
   );
-  // : (
-  //   <Home />
-  // );
 }

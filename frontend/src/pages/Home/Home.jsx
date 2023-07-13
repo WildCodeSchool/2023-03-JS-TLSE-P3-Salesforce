@@ -38,7 +38,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if ((companyInfos.id, userInfos.id)) {
+    if (companyInfos.id && userInfos.id) {
       axios
         .get(
           `${import.meta.env.VITE_BACKEND_URL}/companies/${

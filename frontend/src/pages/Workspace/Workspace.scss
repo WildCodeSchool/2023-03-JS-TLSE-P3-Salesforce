@@ -1,5 +1,7 @@
 @use "../../styles/typography" as *;
 @use "../../styles/shadows" as *;
+@use "../../styles/button" as *;
+@use "../../styles/icon" as *;
 
 .board-container {
   display: flex;
