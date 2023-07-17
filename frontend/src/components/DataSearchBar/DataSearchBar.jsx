@@ -1,4 +1,5 @@
 import "./DataSearchBar.scss";
+import propTypes from "prop-types";
 
 export default function DataSearchBar({ setSearchTerm, searchTerm }) {
   return (
@@ -18,3 +19,13 @@ export default function DataSearchBar({ setSearchTerm, searchTerm }) {
     </div>
   );
 }
+
+DataSearchBar.propTypes = {
+  setSearchTerm: propTypes.func,
+  searchTerm: propTypes.string,
+};
+
+DataSearchBar.defaultProps = {
+  searchTerm: "",
+  setSearchTerm: () => {},
+};
