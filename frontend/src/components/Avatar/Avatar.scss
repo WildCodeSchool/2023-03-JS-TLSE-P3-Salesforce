@@ -25,4 +25,23 @@
       background-color: var(--primary-700);
     }
   }
+  &-table {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--grey-50);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 2.5rem;
+    @include text("md", $weight: 500);
+    color: var(--grey-600);
+    overflow: hidden;
+    border: 1px solid var(--grey-200);
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
 }

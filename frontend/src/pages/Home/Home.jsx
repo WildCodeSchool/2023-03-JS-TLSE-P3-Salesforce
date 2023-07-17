@@ -12,9 +12,9 @@ import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import TeamCard from "../../components/TeamCard/TeamCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import Connection from "../../components/Connection/Connection";
 import NewTeamModal from "../../components/NewTeamModal/NewTeamModal";
+import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 
 export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -27,6 +27,8 @@ export default function Home() {
   const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [searchTermIdea, setSearchTermIdea] = useState("");
+  const [searchTermTeam, setSearchTermTeam] = useState("");
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -155,32 +157,93 @@ export default function Home() {
               </li>
             </HorizontalTabs>
           </PageHeader>
-          <div className="page-actions">
-            <SearchBar pagePart={pagePart} />
-          </div>
-
           {pagePart === "ideas" && (
-            <div className="idea-cards-list">
-              {!isLoading &&
-                dataIdea.map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
-            </div>
+            <>
+              <div className="page-actions">
+                <DataSearchBar
+                  searchTerm={searchTermIdea}
+                  setSearchTerm={setSearchTermIdea}
+                  placeholderText="Rechercher une idée"
+                />
+              </div>
+
+              <div className="idea-cards-list">
+                {!isLoading &&
+                  dataIdea
+                    .filter((value) => {
+                      if (searchTermIdea === "") {
+                        return true;
+                      }
+                      if (
+                        value.title
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase()) ||
+                        value.description
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase()) ||
+                        value.creator_firstname
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase()) ||
+                        value.creator_lastname
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase())
+                      ) {
+                        return true;
+                      }
+                      return false;
+                    })
+                    .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
+              </div>
+            </>
           )}
           {/* Ajouter la modale de l'idea ci-dessous */}
 
           {pagePart === "teams" && (
-            <div>
-              <div className="teams-card-container">
-                {teams.map((team) => {
-                  return <TeamCard team={team} key={team.id} />;
-                })}
-              </div>
-              {isNewTeamModalOpen && (
-                <NewTeamModal
-                  isNewTeamModalOpen={isNewTeamModalOpen}
-                  setIsNewTeamModalOpen={setIsNewTeamModalOpen}
+            <>
+              <div className="page-actions">
+                <DataSearchBar
+                  searchTerm={searchTermTeam}
+                  setSearchTerm={setSearchTermTeam}
+                  placeholderText="Rechercher une équipe"
                 />
-              )}
-            </div>
+              </div>
+              <div>
+                <div className="teams-card-container">
+                  {teams
+                    .filter((value) => {
+                      if (searchTermTeam === "") {
+                        return true;
+                      }
+                      if (
+                        value.name
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase()) ||
+                        value.description
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase()) ||
+                        value.objective
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase()) ||
+                        value.status
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase())
+                      ) {
+                        return true;
+                      }
+                      return false;
+                    })
+                    .map((team) => {
+                      return <TeamCard team={team} key={team.id} />;
+                    })}
+                </div>
+                {isNewTeamModalOpen && (
+                  <NewTeamModal
+                    isNewTeamModalOpen={isNewTeamModalOpen}
+                    setIsNewTeamModalOpen={setIsNewTeamModalOpen}
+                  />
+                )}
+              </div>
+            </>
           )}
         </main>
       ) : (
