@@ -13,6 +13,7 @@ import Home from "../Home/Home";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
 import ModalNewIdea from "../../components/ModalNewIdea/ModalNewIdea";
+import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -25,6 +26,9 @@ export default function Workspace() {
   const [isLoadingDataIdeasWorkspace, setIsLoadingDataIdeasWorkspace] =
     useState(true);
   const [isModalNewIdeaOpen, setIsModalNewIdeaOpen] = useState(false);
+
+  const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
+    useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -130,10 +134,21 @@ export default function Workspace() {
               <i className="fi fi-rr-trash" />
               Supprimer
             </button>
-            <button className="button-md-grey-outline" type="button">
+            <button
+              className="button-md-grey-outline"
+              type="button"
+              onClick={() => {
+                setIsNewCollaboratorModalOpen(true);
+              }}
+            >
               <i className="fi fi-rr-users" />
               Collaborer
             </button>
+            {isNewCollaboratorModalOpen && (
+              <NewCollaboratorModal
+                setIsNewCollaboratorModalOpen={setIsNewCollaboratorModalOpen}
+              />
+            )}
             <button
               className="button-primary-solid"
               type="button"

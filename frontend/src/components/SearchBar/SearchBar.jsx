@@ -1,62 +1,37 @@
-import { useState } from "react";
 import "./SearchBar.scss";
-import PropTypes from "prop-types";
-import { availableNames } from "../../../utils";
+import propTypes from "prop-types";
 
-export default function SearchBar({ pagePart }) {
-  const [datas, setDatas] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const handleSearchTerm = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
-  };
-
-  let placeholder = "";
-
-  if (pagePart === "ideas") {
-    placeholder = "Rechercher une idée";
-  } else if (pagePart === "teams") {
-    placeholder = "Rechercher une équipe";
-  }
-
+export default function DataSearchBar({
+  setSearchTerm,
+  searchTerm,
+  placeholderText,
+}) {
   return (
-    <div className="search-component">
-      <div className="search-bar">
+    <div className="input-search-bar">
+      <div className="input">
+        <i className="fi fi-rr-search" />
         <input
-          className="search-input"
           type="text"
-          placeholder={placeholder}
-          onChange={handleSearchTerm}
+          className="input-search-bar"
+          placeholder={placeholderText}
+          value={searchTerm}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
         />
-        <button
-          type="button"
-          className="search-search"
-          onClick={() => setDatas(availableNames)}
-        >
-          <i className="fi fi-rr-search" />
-        </button>
-      </div>
-      <div className="search-result">
-        {datas
-          .filter((val) => {
-            return val.name.toLowerCase().includes(searchTerm.toLowerCase());
-          })
-          .map((val) => {
-            return (
-              <ul className="search-result" key={val.id}>
-                <li className="line-result">{val.name}</li>
-              </ul>
-            );
-          })}
       </div>
     </div>
   );
 }
 
-SearchBar.propTypes = {
-  pagePart: PropTypes.string,
+DataSearchBar.propTypes = {
+  setSearchTerm: propTypes.func,
+  searchTerm: propTypes.string,
+  placeholderText: propTypes.string,
 };
 
-SearchBar.defaultProps = {
-  pagePart: "ideas",
+DataSearchBar.defaultProps = {
+  searchTerm: "",
+  setSearchTerm: () => {},
+  placeholderText: "Recherche",
 };
