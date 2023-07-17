@@ -12,9 +12,9 @@ import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import TeamCard from "../../components/TeamCard/TeamCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import Connection from "../../components/Connection/Connection";
 import NewTeamModal from "../../components/NewTeamModal/NewTeamModal";
+import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 
 export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -27,6 +27,7 @@ export default function Home() {
   const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
   // eslint-disable-next-line no-unused-vars
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -152,13 +153,40 @@ export default function Home() {
             </HorizontalTabs>
           </PageHeader>
           <div className="page-actions">
-            <SearchBar pagePart={pagePart} />
+            <DataSearchBar
+              searchTerm={searchTerm}
+              setSearchTerm={setSearchTerm}
+              placeholderText="Rechercher une idée"
+            />
           </div>
 
           {pagePart === "ideas" && (
             <div className="idea-cards-list">
               {!isLoading &&
-                dataIdea.map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
+                dataIdea
+                  .filter((value) => {
+                    if (searchTerm === "") {
+                      return true;
+                    }
+                    if (
+                      value.title
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                      value.description
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                      value.creator_firstname
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase()) ||
+                      value.creator_lastname
+                        .toLowerCase()
+                        .includes(searchTerm.toLowerCase())
+                    ) {
+                      return true;
+                    }
+                    return false;
+                  })
+                  .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
             </div>
           )}
           {/* Ajouter la modale de l'idea ci-dessous */}
