@@ -41,6 +41,6 @@ TeamCard.defaultProps = {
     name: "titre de l'équipe",
     description: "description de l'équipe",
     objective: "objectif de l'équipe",
-    status: "status",
+    status: "Inactive", // Mettez ici la valeur de statut par défaut appropriée
   },
 };
