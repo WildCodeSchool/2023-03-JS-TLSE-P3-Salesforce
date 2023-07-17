@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { sanitize } from "isomorphic-dompurify";
+
 import axios from "axios";
 import "./Home.scss";
 import AuthContext from "../../contexts/AuthContext";
@@ -13,6 +14,7 @@ import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import Connection from "../../components/Connection/Connection";
+import NewTeamModal from "../../components/NewTeamModal/NewTeamModal";
 
 export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -22,6 +24,9 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [teams, setTeams] = useState([]);
   const [pagePart, setPagePart] = useState("ideas");
+  const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -99,10 +104,30 @@ export default function Home() {
         <main>
           <NavBar activeLink="home" />
           <PageHeader title={title} subtitle={subtitle}>
-            <button className="button-primary-solid" type="button">
-              <i className="fi fi-rr-plus" />
-              {buttonAdd}
-            </button>
+            {pagePart === "teams" && (
+              <button
+                className="button-primary-solid"
+                type="button"
+                onClick={() => {
+                  setIsNewTeamModalOpen(true);
+                }}
+              >
+                <i className="fi fi-rr-plus" />
+                {buttonAdd}
+              </button>
+            )}
+            {pagePart === "ideas" && (
+              <button
+                className="button-primary-solid"
+                type="button"
+                onClick={() => {
+                  setIsNewIdeaModalOpen(true);
+                }}
+              >
+                <i className="fi fi-rr-plus" />
+                {buttonAdd}
+              </button>
+            )}
             <HorizontalTabs type="tabs">
               <li
                 className={pagePart === "ideas" ? "active" : null}
@@ -127,14 +152,22 @@ export default function Home() {
             </HorizontalTabs>
           </PageHeader>
           <div className="page-actions">
-            <SearchBar />
+            <SearchBar pagePart={pagePart} />
           </div>
+
           {pagePart === "ideas" && (
             <div className="idea-cards-list">
               {!isLoading &&
                 dataIdea.map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
             </div>
           )}
+          {/* Ajouter la modale de l'idée ici  */}
+          {/* {isNewIdeaModalOpen && (
+            <NewIdeaModal
+              isNewIdeaModalOpen={isNewIdeaModalOpen}
+              setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+            />
+          )} */}
 
           {pagePart === "teams" && (
             <div>
@@ -143,6 +176,12 @@ export default function Home() {
                   return <TeamCard team={team} key={team.id} />;
                 })}
               </div>
+              {isNewTeamModalOpen && (
+                <NewTeamModal
+                  isNewTeamModalOpen={isNewTeamModalOpen}
+                  setIsNewTeamModalOpen={setIsNewTeamModalOpen}
+                />
+              )}
             </div>
           )}
         </main>
@@ -152,3 +191,6 @@ export default function Home() {
     </div>
   );
 }
+Home.defaultProps = {
+  pagePart: "ideas",
+};
