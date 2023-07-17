@@ -65,7 +65,7 @@ class TeamManager extends AbstractManager {
 
     return this.database.query(
       `INSERT INTO ${this.table} (name, is_private, picture_url, description, objective, status, user_id, company_id)
-         VALUES (?,?, ?, ?, ?, ?, ?, ?);`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
       [
         name,
         is_private,

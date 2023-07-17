@@ -386,7 +386,7 @@ ADD
 
 ALTER TABLE `team_has_user`
 ADD
-    CONSTRAINT `fk_team_has_user_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`),
+    CONSTRAINT `fk_team_has_user_team` FOREIGN KEY (`team_id`) REFERENCES `team` (`id`) ON DELETE CASCADE,
 ADD
     CONSTRAINT `fk_team_has_user_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
@@ -689,7 +689,7 @@ VALUES (
         '2023-06-21 14:45:00',
         0,
         NULL,
-        "Reflechir à de bonnes pratiques pour améliorer l'accueil de notre public au sein de la société",
+        "Reflechir à de bonnes pratiques pour optimiser l'accueil de clients au sein de notre société",
         'Objective of Team 3',
         'Active',
         4,
