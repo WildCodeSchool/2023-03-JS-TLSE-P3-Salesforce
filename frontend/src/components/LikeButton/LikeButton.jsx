@@ -1,23 +1,39 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import "./LikeButton.scss";
 
 export default function LikeButton({
-  likeActive,
-  setLikeActive,
-  likeCount,
-  setLikeCount,
+  ideaId,
+  initialLikeActive,
+  initialLikeCount,
 }) {
+  const [likeActive, setLikeActive] = useState(initialLikeActive);
+  const [likeCount, setLikeCount] = useState(initialLikeCount);
   const [isHovered, setIsHovered] = useState(false);
+
   const handleLike = () => {
     if (likeActive) {
-      if (likeActive > 0) {
-        setLikeCount(likeCount - 1);
-      }
+      axios
+        .delete(`${import.meta.env.VITE_BACKEND_URL}/ideas/${ideaId}/likes`)
+        .then(() => {
+          setLikeCount(likeCount - 1);
+          setLikeActive(false);
+        })
+        .catch((error) => {
+          console.error("Error removing like:", error);
+        });
     } else {
-      setLikeCount(likeCount + 1);
+      axios
+        .post(`${import.meta.env.VITE_BACKEND_URL}/ideas/${ideaId}/likes`)
+        .then(() => {
+          setLikeCount(likeCount + 1);
+          setLikeActive(true);
+        })
+        .catch((error) => {
+          console.error("Error adding like:", error);
+        });
     }
-    setLikeActive(!likeActive);
   };
 
   const handleHover = () => {
@@ -47,8 +63,7 @@ export default function LikeButton({
 }
 
 LikeButton.propTypes = {
-  likeActive: PropTypes.number.isRequired,
-  setLikeActive: PropTypes.func.isRequired,
-  likeCount: PropTypes.number.isRequired,
-  setLikeCount: PropTypes.func.isRequired,
+  ideaId: PropTypes.number.isRequired,
+  initialLikeActive: PropTypes.bool.isRequired,
+  initialLikeCount: PropTypes.number.isRequired,
 };

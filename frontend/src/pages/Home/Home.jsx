@@ -25,7 +25,6 @@ export default function Home() {
   const [teams, setTeams] = useState([]);
   const [pagePart, setPagePart] = useState("ideas");
   const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
 
   useEffect(() => {

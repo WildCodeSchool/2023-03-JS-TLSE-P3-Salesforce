@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
 import propTypes from "prop-types";
@@ -9,11 +8,10 @@ import "./IdeaCard.scss";
 import Badge from "../Badge/Badge";
 
 export default function IdeaCard({ idea }) {
-  const [commentCount, setCommentCount] = useState(idea.comments_count);
-
-  const [likeCount, setLikeCount] = useState(idea.likes_count);
+  // const [commentCount, setCommentCount] = useState(idea.comments_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
-  const [likeActive, setLikeActive] = useState(false);
+  const [likeCount, setLikeCount] = useState(idea.likes_count);
+  const [likeActive, setLikeActive] = useState(idea.is_liked_by_user === 1);
 
   let splitIdeaCategories = [];
 
@@ -56,10 +54,10 @@ export default function IdeaCard({ idea }) {
           commentCount={idea.comments_count === null ? 0 : idea.comments_count}
         />
         <LikeButton
-          likeCount={likeCount}
-          likeActive={idea.is_liked_by_user}
-          setLikeCount={setLikeCount}
+          likeActive={likeActive}
           setLikeActive={setLikeActive}
+          likeCount={likeCount}
+          setLikeCount={setLikeCount}
         />
       </div>
     </div>
