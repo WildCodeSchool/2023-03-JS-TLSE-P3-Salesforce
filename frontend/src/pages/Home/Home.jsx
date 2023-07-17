@@ -161,13 +161,7 @@ export default function Home() {
                 dataIdea.map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
             </div>
           )}
-          {/* Ajouter la modale de l'idée ici  */}
-          {/* {isNewIdeaModalOpen && (
-            <NewIdeaModal
-              isNewIdeaModalOpen={isNewIdeaModalOpen}
-              setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
-            />
-          )} */}
+          {/* Ajouter la modale de l'idea ci-dessous */}
 
           {pagePart === "teams" && (
             <div>
