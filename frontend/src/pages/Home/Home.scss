@@ -38,6 +38,9 @@
   .page-actions {
     flex-direction: row;
     justify-content: flex-end;
+    .input-search-bar {
+      max-width: 300px;
+    }
   }
 
   .teams-card-container {

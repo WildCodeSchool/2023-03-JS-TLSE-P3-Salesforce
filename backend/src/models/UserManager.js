@@ -43,7 +43,7 @@ class UserManager extends AbstractManager {
   // récupérer tous les utilisateurs
   getAllUsers(company_id) {
     return this.database.query(
-      `SELECT ${this.table}.id,${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=?`,
+      `SELECT ${this.table}.id,${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url, uhc.function FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=? AND ${this.table}.has_accepted_invitation = 1`,
       [company_id]
     );
   }
