@@ -42,15 +42,39 @@ export default function CompanySettingsMembers() {
 
   const sorting = (column) => {
     if (order === "asc") {
-      const sortedData = [...companyUsers].sort((a, b) =>
-        a[column].toLowerCase() > b[column].toLowerCase() ? 1 : -1
-      );
+      const sortedData = [...companyUsers].sort((a, b) => {
+        let aData;
+        if (!a[column]) {
+          aData = "";
+        } else {
+          aData = a[column];
+        }
+        let bData;
+        if (!b[column]) {
+          bData = "";
+        } else {
+          bData = b[column];
+        }
+        return aData.toLowerCase() > bData.toLowerCase() ? 1 : -1;
+      });
       setCompanyUsers(sortedData);
       setOrder("desc");
     } else {
-      const sortedData = [...companyUsers].sort((a, b) =>
-        a[column].toLowerCase() < b[column].toLowerCase() ? 1 : -1
-      );
+      const sortedData = [...companyUsers].sort((a, b) => {
+        let aData;
+        if (!a[column]) {
+          aData = "";
+        } else {
+          aData = a[column];
+        }
+        let bData;
+        if (!b[column]) {
+          bData = "";
+        } else {
+          bData = b[column];
+        }
+        return aData.toLowerCase() < bData.toLowerCase() ? 1 : -1;
+      });
       setCompanyUsers(sortedData);
       setOrder("asc");
     }
@@ -89,6 +113,7 @@ export default function CompanySettingsMembers() {
             <DataSearchBar
               setSearchTerm={setSearchTerm}
               searchTerm={searchTerm}
+              placeholderText="Rechercher un membre"
             />
             <button
               type="button"
