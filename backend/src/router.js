@@ -21,7 +21,12 @@ router.post(
 );
 
 // récupérer les users d'une entreprise
-router.get("/companies/:company_id/users", userControllers.getUsers);
+router.get(
+  "/companies/:company_id/users",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  userControllers.getUsers
+);
 
 // récupérer un user d'une société
 router.get("/companies/:company_id/users/:user_id", userControllers.getUser);
@@ -43,6 +48,8 @@ router.put(
 // effacer un profil utilisateur
 router.delete(
   "/companies/:company_id/users/:user_id",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
   userControllers.deleteUser
 );
 
