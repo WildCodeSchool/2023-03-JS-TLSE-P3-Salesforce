@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
 class IdeaManager extends AbstractManager {
@@ -148,6 +149,25 @@ class IdeaManager extends AbstractManager {
       [title, description, fileId, companyId, userId, ideaId]
     );
   }
+
+  updateCoordinatesIdea(idea) {
+    const { x_coordinate, y_coordinate, id } = idea;
+    return this.database.query(
+      `UPDATE ${this.table} 
+    SET
+      x_coordinate = ?,
+      y_coordinate = ?
+    WHERE ${this.table}.id = ?`,
+      [x_coordinate, y_coordinate, id]
+    );
+  }
 }
 
 module.exports = IdeaManager;
+
+// UPDATE idea
+// LEFT JOIN workspace ON workspace.id = idea.workspace_id
+// SET
+//   x_coordinate = 150,
+//   y_coordinate = 350
+// WHERE idea.id = ;

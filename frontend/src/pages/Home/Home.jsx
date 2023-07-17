@@ -60,17 +60,21 @@ export default function Home() {
   }, [companyInfos.id, userInfos.id]);
 
   useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_BACKEND_URL}/companies/${companyInfos.id}/teams`
-      )
-      .then((response) => {
-        setTeams(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching teams:", error);
-      });
+    if (companyInfos.id) {
+      axios
+        .get(
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${
+            companyInfos.id
+          }/teams`
+        )
+        .then((response) => {
+          setTeams(response.data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching teams:", error);
+        });
+    }
   }, [companyInfos.id]);
 
   let title = "";

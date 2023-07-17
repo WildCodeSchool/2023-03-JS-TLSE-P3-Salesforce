@@ -94,6 +94,25 @@ export default function Workspace() {
     creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
   }
 
+  // for save ideas and their position in workspace
+
+  const handleSaveIdeas = () => {
+    dataIdeasWorkspace.forEach((idea) => {
+      axios
+        .put(`${import.meta.env.VITE_BACKEND_URL}/ideas/${idea.id}`, idea, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        })
+        .then((res) => {
+          if (res.affectedRows === 0) {
+            console.error("l'idée n'a pas été modifiée");
+          }
+        })
+        .catch((err) => {
+          console.error(err).sendStatus(500);
+        });
+    });
+  };
+
   return userToken &&
     Object.keys(userInfos).length &&
     (dataUsersByCompany.includes(userInfos.id) ||
@@ -115,7 +134,11 @@ export default function Workspace() {
               <i className="fi fi-rr-users" />
               Collaborer
             </button>
-            <button className="button-primary-solid" type="button">
+            <button
+              className="button-primary-solid"
+              type="button"
+              onClick={handleSaveIdeas}
+            >
               Sauvegarder
             </button>
           </div>
@@ -180,7 +203,11 @@ export default function Workspace() {
                       >
                         {!isLoadingDataIdeasWorkspace &&
                           dataIdeasWorkspace.map((idea) => (
-                            <IdeaCardWorkspace key={idea.id} idea={idea} />
+                            <IdeaCardWorkspace
+                              key={idea.id}
+                              idea={idea}
+                              setDataIdeasWorkspace={setDataIdeasWorkspace}
+                            />
                           ))}
                       </div>
                     </div>

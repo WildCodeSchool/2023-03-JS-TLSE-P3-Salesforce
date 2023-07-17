@@ -225,6 +225,12 @@ router.put(
   verifyToken,
   ideaControllers.updateIdeaById
 );
+// Update idea for a workspace
+router.put(
+  "/ideas/:idea_id",
+  verifyToken,
+  ideaControllers.updateCoordinatesIdeaWorkspace
+);
 
 // Delete an idea
 router.delete(

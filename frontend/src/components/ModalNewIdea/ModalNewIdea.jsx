@@ -1,69 +1,88 @@
-import { sanitize } from "isomorphic-dompurify";
-import { useState, useContext } from "react";
+/* eslint-disable no-unused-vars */
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import propTypes from "prop-types";
-import CompanyContext from "../../contexts/CompanyContext";
+import PropTypes from "prop-types";
+import SearchBar from "../SearchBar/SearchBar";
 import AuthContext from "../../contexts/AuthContext";
+import CompanyContext from "../../contexts/CompanyContext";
+import Badge from "../Badge/Badge";
 import "./ModalNewIdea.scss";
 
-export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
+export default function NewIdeaModal({ setIsIdeaModalOpen }) {
+  // const AuthValue = useContext(AuthContext);
+  const { userToken, userInfos } = useContext(AuthContext);
   const { companyInfos } = useContext(CompanyContext);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [categories, setCategories] = useState("");
+  const [titleIdea, setTitleIdea] = useState([]);
+  const [textIdea, setTextIdea] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const { userToken } = useContext(AuthContext);
-
-  const handleFormSubmit = (event) => {
-    event.preventDefault();
-    const style = getComputedStyle(document.body);
-    const primary600 = style.getPropertyValue("--primary-600");
-    const grey50 = style.getPropertyValue("--grey-50");
-
-    const form = event.target;
-    const formData = new FormData(form);
-    const dataFromForm = Object.fromEntries(formData.entries());
-    dataFromForm.company_name = companyInfos.name;
-    dataFromForm.primary600 = primary600;
-    dataFromForm.grey50 = grey50;
-    dataFromForm.company_slug = companyInfos.slug;
-
+  useEffect(() => {
     axios
-      .post(
-        `${import.meta.env.VITE_BACKEND_URL}/companies/${
-          companyInfos.id
-        }/users`,
-        dataFromForm,
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
+      .get(`${import.meta.env.VITE_BACKEND_URL}/categories`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setCategories(response.data);
+          setIsIdeaModalOpen(true);
         }
-      )
-      .then(() => {
-        setIsModalNewIdeaOpen(false);
       })
       .catch((error) => {
         console.error(error.message);
       });
+  }, []);
+  const handleChangeTitle = (e) => {
+    setTitleIdea(e.target.value);
   };
+  const handleChangeText = (e) => {
+    setTextIdea(e.target.value);
+  };
+  const handleKillCategory = (categoryId) => {
+    const newSelectedCategories = [...selectedCategories];
+    const index = newSelectedCategories.findIndex(
+      (category) => category.id === categoryId
+    );
+    if (index > -1) {
+      newSelectedCategories.splice(index, 1);
+    }
+    setSelectedCategories(newSelectedCategories);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formObject = [
+      titleIdea,
+      textIdea,
+      selectedCategories,
+      parseInt(companyInfos.id, 10),
+      userInfos.id,
+    ];
+    // console.log(formObject);
 
-  // handler for change in input mail
-  const handleTitleChange = (event) => {
-    setTitle(sanitize(event.target.value));
-  };
-  const handleDescriptionChange = (event) => {
-    setDescription(sanitize(event.target.value));
-  };
-  const handleCategoriesChange = (event) => {
-    setCategories(sanitize(event.target.value));
+    // axios
+    //   .post(`${import.meta.env.VITE_BACKEND_URL}/ideas`, formObject, {
+    //     headers: {
+    //       Authorization: `Bearer ${userToken}`,
+    //     },
+    //   })
+    //   .then((response) => {
+    //     if (response.status === 201) {
+    //       setIsNewIdeaModalOpen(false);
+    //     }
+    //     mysql;
+    //   })
+    //   .catch((error) => {
+    //     console.error(error.message);
+    //   });
   };
 
   return (
-    <div className="modal new-user-modal">
+    <div className="modal new-idea-modal">
       <div
         className="filter"
-        onClick={() => setIsModalNewIdeaOpen(false)}
+        onClick={() => setIsIdeaModalOpen(false)}
         aria-hidden="true"
       />
       <div className="container">
@@ -73,77 +92,75 @@ export default function ModalNewIdea({ setIsModalNewIdeaOpen }) {
           </div>
           <div className="content">
             <h3>Nouvelle idée</h3>
-            <p className="details">
-              Faites briller votre imagination avec cette nouvelle idée.
-            </p>
+            <p>Faites briller votre imagination avec cette nouvelle idée.</p>
           </div>
           <button
             className="close"
-            onClick={() => setIsModalNewIdeaOpen(false)}
+            onClick={() => setIsIdeaModalOpen(false)}
             type="button"
           >
             <i className="fi fi-rr-cross" />
           </button>
         </div>
         <div className="body">
-          <form onSubmit={handleFormSubmit}>
-            <div className="input-line">
-              <div className="input-field">
-                <label htmlFor="titleidea">Titre de l'idée *</label>
-                <div className="input">
-                  <input
-                    type="text"
-                    name="text"
-                    placeholder="titre de la nouvelle idée"
-                    id="titleidea"
-                    onChange={handleTitleChange}
-                    value={title}
+          <h3 className="input-label">Titre (obligatoire)</h3>
+          <input
+            className="input-title"
+            type="text"
+            onChange={handleChangeTitle}
+          />
+          <h3 className="input-label">Description</h3>
+          <input
+            className="input-text"
+            type="textarea"
+            onChange={handleChangeText}
+          />
+          <h3 className="input-label">Categorie</h3>
+
+          <SearchBar
+            categories={categories}
+            setSelectedCategories={setSelectedCategories}
+            selectedCategories={selectedCategories}
+          />
+          <div className="search-badges">
+            {selectedCategories
+              .filter(
+                (category, index, self) =>
+                  index === self.findIndex((c) => c.id === category.id)
+              )
+              .map((data) => (
+                <Badge key={data.id} color={data.color}>
+                  {data.name}
+
+                  <i
+                    type="button"
+                    aria-hidden="true"
+                    className="fi fi-rr-cross-small"
+                    onClick={() => handleKillCategory(data.id)}
                   />
-                </div>
-              </div>
-              <div className="input-field">
-                <label htmlFor="descriptionidea">Description *</label>
-                <div className="textarea">
-                  <textarea
-                    name="description"
-                    rows="3"
-                    placeholder="description de la nouvelle idée"
-                    id="descriptionidea"
-                    onChange={handleDescriptionChange}
-                    value={description}
-                  />
-                </div>
-              </div>
-              <div className="input-field">
-                <label htmlFor="categorieidea">Catégories</label>
-                <div className="input-help">
-                  Renseignez une ou plusieurs catégories d'idées
-                </div>
-                <div className="input">
-                  <input
-                    type="text"
-                    name="text"
-                    placeholder="catégories de la nouvelle idée"
-                    id="categoriesidea"
-                    onChange={handleCategoriesChange}
-                    value={categories}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="actions">
-              <button className="submit" type="submit">
-                <i className="fi fi-rr-plus" />
-                Ajouter
-              </button>
-            </div>
-          </form>
+                </Badge>
+              ))}
+          </div>
+
+          <div className="actions">
+            <button
+              type="button"
+              aria-hidden="true"
+              className="cancel"
+              onClick={() => setIsIdeaModalOpen(false)}
+            >
+              Annuler <i className="fi fi-rr-check" />
+            </button>
+            <button type="button" className="submit" onClick={handleSubmit}>
+              Ajouter
+              <i className="fi fi-rr-check" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
-
-ModalNewIdea.propTypes = {
-  setIsModalNewIdeaOpen: propTypes.func.isRequired,
+NewIdeaModal.propTypes = {
+  setIsIdeaModalOpen: PropTypes.func.isRequired,
 };

@@ -8,18 +8,74 @@ import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
-export default function IdeaCardWorkspace({ idea }) {
+export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
   const [showSubmenu, setShowSubmenu] = useState(false);
 
+  let ideaXCoordinate;
+  if (idea.x_coordinate === null) {
+    ideaXCoordinate = 0;
+  } else {
+    ideaXCoordinate = idea.x_coordinate;
+  }
+
+  let ideaYCoordinate;
+  if (idea.y_coordinate === null) {
+    ideaYCoordinate = 0;
+  } else {
+    ideaYCoordinate = idea.y_coordinate;
+  }
+
   let splitIdeaCategories = [];
+  const [position, setPosition] = useState({
+    xcoordinate: ideaXCoordinate,
+    ycoordinate: ideaYCoordinate,
+  });
+
+  const handleStop = (event, data) => {
+    // Mise à jour de la position finale lorsque le glissement est terminé
+    // console.log("data : ", data);
+    // console.log("position : ", position);
+    // const newX = position.xcoordinate + data.x;
+    // const newY = position.ycoordinate + data.y;
+    // console.log(newX, newY);
+
+    setPosition({
+      xcoordinate: data.x,
+      ycoordinate: data.y,
+    });
+
+    setDataIdeasWorkspace((prevData) =>
+      prevData.map((ideaItem) => {
+        if (ideaItem.id === idea.id) {
+          return {
+            ...ideaItem,
+            x_coordinate: data.x,
+            y_coordinate: data.y,
+          };
+        }
+        return ideaItem;
+      })
+    );
+  };
 
   if (idea.categories) {
     const nameAndColorCategories = idea.categories;
     splitIdeaCategories = nameAndColorCategories.split(",");
   }
+  // for position of the idea in the workspace
 
   return (
-    <Draggable bounds="parent" axis="both">
+    <Draggable
+      bounds="parent"
+      axis="both"
+      // onDrag={handleDrag}
+      onStop={handleStop}
+      position={{ x: position.xcoordinate, y: position.ycoordinate }}
+      defaultPosition={{
+        x: ideaXCoordinate,
+        y: ideaYCoordinate,
+      }}
+    >
       <div className="idea-card">
         <div className="header-card">
           {/* ajout du titre en entete  */}
@@ -55,7 +111,12 @@ IdeaCardWorkspace.propTypes = {
     title: propTypes.string.isRequired,
     description: propTypes.string,
     categories: propTypes.string,
+    x_coordinate: propTypes.number,
+    y_coordinate: propTypes.number,
+    id: propTypes.number,
   }),
+
+  setDataIdeasWorkspace: propTypes.func,
 };
 
 IdeaCardWorkspace.defaultProps = {
@@ -63,5 +124,10 @@ IdeaCardWorkspace.defaultProps = {
     title: "",
     description: "",
     categories: "",
+    x_coordinate: 0,
+    y_coordinate: 0,
+    id: 0,
   },
+
+  setDataIdeasWorkspace: null,
 };
