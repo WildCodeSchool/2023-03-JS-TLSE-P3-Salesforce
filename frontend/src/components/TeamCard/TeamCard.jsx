@@ -1,5 +1,5 @@
-import React from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 import "./TeamCard.scss";
 
@@ -7,7 +7,7 @@ import Badge from "../Badge/Badge";
 
 export default function TeamCard({ team }) {
   return (
-    <div className="team-card">
+    <Link to={`teams/${team.id}`} className="team-card">
       <div className="team-picture">
         {team.picture_url ? (
           <img src={team.picture_url} alt="team_picture" />
@@ -22,7 +22,7 @@ export default function TeamCard({ team }) {
       <Badge color={team.status === "Active" ? "green" : "red"}>
         {team.status}
       </Badge>
-    </div>
+    </Link>
   );
 }
 

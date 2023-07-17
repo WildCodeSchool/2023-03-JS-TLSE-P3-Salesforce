@@ -1,3 +1,7 @@
+@use "../../styles/shadows" as *;
+@use "../../styles/typography" as *;
+@use "../../styles/button" as *;
+
 .page-actions {
   border-top: 1px solid var(--grey-200);
   margin-top: 1rem;

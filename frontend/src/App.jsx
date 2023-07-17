@@ -6,6 +6,7 @@ import Invitation from "./pages/Invitation/Invitation";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import NewPassword from "./pages/NewPassword/NewPassword";
 import Workspace from "./pages/Workspace/Workspace";
+import Team from "./pages/Team/Team";
 
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
@@ -42,6 +43,7 @@ function App() {
                 path="/:company_slug/new-password"
                 element={<NewPassword />}
               />
+              <Route path="/teams/:team_id" element={<Team />} />
             </Routes>
           </Router>
         </div>
