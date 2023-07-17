@@ -25,7 +25,7 @@ export default function Home() {
   const [teams, setTeams] = useState([]);
   const [pagePart, setPagePart] = useState("ideas");
   const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
-  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [setIsNewIdeaModalOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -170,10 +170,7 @@ export default function Home() {
                 })}
               </div>
               {isNewTeamModalOpen && (
-                <NewTeamModal
-                  isNewTeamModalOpen={isNewTeamModalOpen}
-                  setIsNewTeamModalOpen={setIsNewTeamModalOpen}
-                />
+                <NewTeamModal setIsNewTeamModalOpen={setIsNewTeamModalOpen} />
               )}
             </div>
           )}
