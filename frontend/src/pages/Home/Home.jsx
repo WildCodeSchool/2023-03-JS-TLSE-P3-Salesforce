@@ -190,9 +190,9 @@ export default function Home() {
                     })
                     .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
               </div>
+              {/* Ajouter la modale de l'idea ci-dessous */}
             </>
           )}
-          {/* Ajouter la modale de l'idea ci-dessous */}
 
           {pagePart === "teams" && (
             <>
