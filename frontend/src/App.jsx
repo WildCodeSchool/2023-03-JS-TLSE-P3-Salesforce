@@ -43,7 +43,7 @@ function App() {
                 path="/:company_slug/new-password"
                 element={<NewPassword />}
               />
-              <Route path="/teams/:team_id" element={<Team />} />
+              <Route path="/:company_slug/teams/:team_id" element={<Team />} />
             </Routes>
           </Router>
         </div>

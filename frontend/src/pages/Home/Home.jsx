@@ -67,7 +67,12 @@ export default function Home() {
   useEffect(() => {
     axios
       .get(
-        `${import.meta.env.VITE_BACKEND_URL}/companies/${companyInfos.id}/teams`
+        `${import.meta.env.VITE_BACKEND_URL}/companies/${
+          companyInfos.id
+        }/teams`,
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
       )
       .then((response) => {
         setTeams(response.data);

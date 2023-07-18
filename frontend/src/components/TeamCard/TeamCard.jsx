@@ -33,6 +33,7 @@ TeamCard.propTypes = {
     picture_url: PropTypes.string,
     objective: PropTypes.string,
     status: PropTypes.string,
+    id: PropTypes.number,
   }),
 };
 
@@ -41,6 +42,7 @@ TeamCard.defaultProps = {
     name: "titre de l'équipe",
     description: "description de l'équipe",
     objective: "objectif de l'équipe",
+    id: 0,
     status: "Inactive", // Mettez ici la valeur de statut par défaut appropriée
   },
 };

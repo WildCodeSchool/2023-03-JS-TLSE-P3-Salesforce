@@ -87,10 +87,18 @@ router.put(
 const teamControllers = require("./controllers/teamControllers");
 
 // afficher les équipes d'une entreprise
-router.get("/companies/:company_id/teams", teamControllers.getTeams);
+router.get(
+  "/companies/:company_id/teams",
+  verifyToken,
+  teamControllers.getTeams
+);
 
 // afficher une équipe
-router.get("/companies/:company_id/teams/:team_id", teamControllers.getTeam);
+router.get(
+  "/companies/:company_id/teams/:team_id",
+  verifyToken,
+  teamControllers.getTeam
+);
 
 // afficher les membres d'une équipe
 router.get("/teams/:team_id/users", teamControllers.getAllUsersFromTeam);

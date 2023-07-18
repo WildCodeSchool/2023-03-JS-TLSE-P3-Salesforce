@@ -104,7 +104,11 @@ export default function NavBar({ activeLink }) {
                   <span>Accueil</span>
                 </div>
               </button>
-              <button type="button" onClick={() => openNavBarTeam()}>
+              <button
+                type="button"
+                className={activeLink === "teams" ? "active" : ""}
+                onClick={() => openNavBarTeam()}
+              >
                 <i className="fi fi-rr-users" />
                 <div className="tooltip">
                   <span>Mes équipes</span>
