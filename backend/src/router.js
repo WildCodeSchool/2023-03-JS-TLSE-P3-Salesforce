@@ -266,7 +266,11 @@ router.post(
 );
 
 // Delete a like to an idea
-router.delete("/likes/:liked_id", verifyToken, likeControllers.deleteLike);
+router.delete(
+  "/ideas/:idea_id/likes/users/:user_id",
+  verifyToken,
+  likeControllers.deleteLike
+);
 
 /* ---- COMMENTS ROUTES ---- */
 

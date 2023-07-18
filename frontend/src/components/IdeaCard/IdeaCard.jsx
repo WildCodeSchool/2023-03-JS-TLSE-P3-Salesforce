@@ -1,17 +1,16 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable camelcase */
 import React, { useState } from "react";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import LikeButton from "../LikeButton/LikeButton";
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
-import CommentButton from "../CommentButton/CommentButton";
 import "./IdeaCard.scss";
 import Badge from "../Badge/Badge";
 
 export default function IdeaCard({ idea }) {
-  // const [commentCount, setCommentCount] = useState(idea.comments_count);
-  const [showSubmenu, setShowSubmenu] = useState(false);
   const [likeCount, setLikeCount] = useState(idea.likes_count);
-  const [likeActive, setLikeActive] = useState(idea.is_liked_by_user === 1);
+  const [showSubmenu, setShowSubmenu] = useState(false);
+  const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
 
   let splitIdeaCategories = [];
 
@@ -50,14 +49,12 @@ export default function IdeaCard({ idea }) {
         <p className="idea-description">{idea.description}</p>
       </div>
       <div className="footer-idea">
-        <CommentButton
-          commentCount={idea.comments_count === null ? 0 : idea.comments_count}
-        />
         <LikeButton
+          ideaId={idea.id}
           likeActive={likeActive}
-          setLikeActive={setLikeActive}
           likeCount={likeCount}
           setLikeCount={setLikeCount}
+          setLikeActive={setLikeActive}
         />
       </div>
     </div>
@@ -65,13 +62,14 @@ export default function IdeaCard({ idea }) {
 }
 
 IdeaCard.propTypes = {
-  idea: propTypes.shape({
-    title: propTypes.string.isRequired,
-    description: propTypes.string,
-    comments_count: propTypes.number,
-    likes_count: propTypes.number,
-    categories: propTypes.string,
-    is_liked_by_user: propTypes.number,
+  idea: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    comments_count: PropTypes.number,
+    likes_count: PropTypes.number,
+    categories: PropTypes.string,
+    is_liked_by_user: PropTypes.number,
   }),
 };
 

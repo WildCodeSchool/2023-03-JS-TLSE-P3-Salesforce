@@ -26,10 +26,10 @@ class LikeManager extends AbstractManager {
     );
   }
 
-  delete(likedId) {
+  delete(ideaId, userId) {
     return this.database.query(
-      `delete from ${this.table} where ${this.table}.id = ?`,
-      [likedId]
+      `delete from ${this.table} where ${this.table}.idea_id = ? AND user_id = ?`,
+      [ideaId, userId]
     );
   }
 }
