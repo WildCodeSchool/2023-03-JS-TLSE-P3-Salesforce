@@ -1,23 +1,61 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import "./LikeButton.scss";
+import AuthContext from "../../contexts/AuthContext";
 
 export default function LikeButton({
+  ideaId,
   likeActive,
-  setLikeActive,
   likeCount,
   setLikeCount,
+  setLikeActive,
 }) {
+  const { userInfos, userToken } = useContext(AuthContext);
   const [isHovered, setIsHovered] = useState(false);
+
   const handleLike = () => {
     if (likeActive) {
-      if (likeActive > 0) {
-        setLikeCount(likeCount - 1);
-      }
+      axios
+        .delete(
+          `${import.meta.env.VITE_BACKEND_URL}/ideas/${ideaId}/likes/users/${
+            userInfos.id
+          }`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        )
+        .then(() => {
+          setLikeCount((prevCount) => prevCount - 1); // Utiliser la fonction de mise à jour précédente pour décrémenter le nombre de likes
+          setLikeActive(0);
+        })
+        .catch((error) => {
+          console.error("Error removing like:", error);
+        });
     } else {
-      setLikeCount(likeCount + 1);
+      axios
+        .post(
+          `${import.meta.env.VITE_BACKEND_URL}/ideas/${ideaId}/likes/users/${
+            userInfos.id
+          }`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        )
+
+        .then(() => {
+          setLikeCount((prevCount) => prevCount + 1); // Utiliser la fonction de mise à jour précédente pour incrémenter le nombre de likes
+          setLikeActive(1);
+        })
+        .catch((error) => {
+          console.error("Error adding like:", error);
+        });
     }
-    setLikeActive(!likeActive);
   };
 
   const handleHover = () => {
@@ -47,8 +85,9 @@ export default function LikeButton({
 }
 
 LikeButton.propTypes = {
-  likeActive: PropTypes.number.isRequired,
-  setLikeActive: PropTypes.func.isRequired,
+  ideaId: PropTypes.number.isRequired,
+  likeActive: PropTypes.bool.isRequired,
   likeCount: PropTypes.number.isRequired,
   setLikeCount: PropTypes.func.isRequired,
+  setLikeActive: PropTypes.func.isRequired,
 };
