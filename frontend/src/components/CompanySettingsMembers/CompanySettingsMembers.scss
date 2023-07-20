@@ -41,11 +41,11 @@ section#members {
 
           &:nth-child(odd) {
             background-color: var(--grey-50);
-            td{
-                .avatar-table {
-                    background-color: var(--white);
-                    color: var(--grey-500);
-                  }
+            td {
+              .avatar-table {
+                background-color: var(--white);
+                color: var(--grey-500);
+              }
             }
           }
           &:hover {
@@ -60,7 +60,6 @@ section#members {
                 color: var(--grey-700);
                 @include text("sm", $weight: 600);
               }
-            
             }
             &.actions {
               text-align: center;

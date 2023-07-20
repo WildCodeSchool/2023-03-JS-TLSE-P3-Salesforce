@@ -1,8 +1,6 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-
 import "./TeamCard.scss";
-
 import Badge from "../Badge/Badge";
 
 export default function TeamCard({ team }) {
@@ -43,6 +41,6 @@ TeamCard.defaultProps = {
     description: "description de l'équipe",
     objective: "objectif de l'équipe",
     id: 0,
-    status: "Inactive", // Mettez ici la valeur de statut par défaut appropriée
+    status: "Inactive",
   },
 };

@@ -7,7 +7,7 @@ import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import NewPassword from "./pages/NewPassword/NewPassword";
 import Workspace from "./pages/Workspace/Workspace";
 import Team from "./pages/Team/Team";
-
+import UserIdeas from "./pages/UserIdeas/UserIdeas";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
 
@@ -25,6 +25,10 @@ function App() {
               <Route
                 path="/:company_slug/workspaces/:workspace_id"
                 element={<Workspace />}
+              />
+              <Route
+                path="/:company_slug/ideas/:user_id"
+                element={<UserIdeas />}
               />
 
               <Route
