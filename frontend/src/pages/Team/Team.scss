@@ -5,14 +5,18 @@
 .team {
   header {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 1.5rem;
 
     .picture {
-      width: 9.5rem;
-      height: 9.5rem;
+      width: 100%;
+      min-height: 15rem;
+      max-height: 17rem;
+      align-self: stretch;
       border-radius: 1.25rem;
       overflow: hidden;
+      flex-shrink: 0;
 
       img {
         width: 100%;
@@ -24,6 +28,8 @@
       padding: 1.25rem;
       border-radius: 1.25rem;
       display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
       background: linear-gradient(
         135deg,
         var(--primary-600) 0%,
@@ -37,6 +43,7 @@
         flex-direction: column;
         gap: 1rem;
         color: var(--white);
+        flex: 1;
         h2 {
           @include title("sm", $weight: 600);
         }
@@ -47,12 +54,37 @@
         }
       }
       .actions {
-        align-self: center;
+        align-self: stretch;
         display: flex;
+        flex-direction: column;
         flex-shrink: 0;
         gap: 0.5rem;
         & > * {
           flex-shrink: 0;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .team {
+    header {
+      flex-direction: row;
+      .picture {
+        width: 9.5rem;
+        min-height: 9.5rem;
+        align-self: stretch;
+        border-radius: 1.25rem;
+        overflow: hidden;
+        flex-shrink: 0;
+      }
+      .container {
+        flex-direction: row;
+        .actions {
+          flex-direction: row;
+          align-self: center;
+          flex-wrap: wrap;
         }
       }
     }

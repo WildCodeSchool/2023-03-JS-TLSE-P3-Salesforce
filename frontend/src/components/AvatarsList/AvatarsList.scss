@@ -1,2 +1,10 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/typography" as *;
+
+.avatars-list {
+  display: flex;
+  & > * {
+      @include shadow("lg");
+    margin-right: -0.75rem;
+  }
+}

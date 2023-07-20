@@ -160,17 +160,21 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
                   />
                   <div className="toggle-switch" />
                   {isPrivate ? (
-                    <p>
-                      <span>Équipe privée</span> <br />
-                      Si vous cochez cette option, votre équipe n’apparaîtra pas
-                      dans les résultats de recherche.
-                    </p>
+                    <div className="label">
+                      <p className="title">Équipe privée</p>
+                      <p className="help">
+                        Si vous cochez cette option, votre équipe n’apparaîtra
+                        pas dans les résultats de recherche.
+                      </p>
+                    </div>
                   ) : (
-                    <p>
-                      <span>Équipe publique</span> <br />
-                      Si vous cochez cette option, votre équipe apparaîtra dans
-                      les résultats de recherche.
-                    </p>
+                    <div className="label">
+                      <p className="title">Équipe publique</p>
+                      <p className="help">
+                        Si vous cochez cette option, votre équipe apparaîtra
+                        dans les résultats de recherche.
+                      </p>
+                    </div>
                   )}
                 </label>
               </div>
