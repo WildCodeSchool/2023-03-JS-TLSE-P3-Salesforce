@@ -26,7 +26,7 @@ function App() {
                 element={<Workspace />}
               />
               <Route
-                path="/:company_slug/ideas/:user_id"
+                path="/:company_slug/users/ideas"
                 element={<UserIdeas />}
               />
 

@@ -3,11 +3,10 @@ const models = require("../models");
 
 const createIdea = (req, res) => {
   const { company_id, user_id } = req.params;
-
   models.idea
     .insert(req.body, company_id, user_id)
     .then(([results]) => {
-      if (results.length) {
+      if (results.affectedRows) {
         res.sendStatus(201);
       } else {
         res.sendStatus(404);
