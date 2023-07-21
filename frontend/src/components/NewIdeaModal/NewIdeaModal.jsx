@@ -17,8 +17,8 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [emptyField, setEmptyField] = useState("input-title");
-  // const [insertedIdeaId, setInsertedIdeaId] = useState(null);
-
+  const [colorBadge, setColorBadge] = useState([]);
+  /* ---- recupère les catégories ---- */
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/categories`, {
@@ -30,6 +30,23 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
         if (response.status === 200) {
           setCategories(response.data);
           setIsNewIdeaModalOpen(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error.message);
+      });
+  }, []);
+  /* recupère les couleurs pour afficher les badges ---- */
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_BACKEND_URL}/colors`, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setColorBadge(response.data);
         }
       })
       .catch((error) => {
@@ -65,7 +82,6 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
         description: textIdea,
         fileId: null,
       };
-
       axios
         .post(
           `${import.meta.env.VITE_BACKEND_URL}/companies/${
@@ -79,12 +95,9 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
           }
         )
         .then((response) => {
-          // console.log(response);
           if (response.status === 201) {
             setIsNewIdeaModalOpen(false);
             const insertedIdeaId = response.data.insertId;
-            console.log("insert ____ ", insertedIdeaId);
-            console.log("categories : ", selectedCategories);
             if (selectedCategories.length) {
               selectedCategories.map(
                 (el) =>
@@ -151,7 +164,6 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
             <h3 className="input-label">Description</h3>
             <textarea className="input-text" onChange={handleChangeText} />
             <h3 className="input-label">Categorie</h3>
-
             <SearchCategories
               categories={categories}
               setSelectedCategories={setSelectedCategories}
@@ -164,7 +176,7 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
                     index === self.findIndex((c) => c.id === category.id)
                 )
                 .map((data) => (
-                  <Badge key={data.id} color={data.color}>
+                  <Badge color={colorBadge[data.color].name} key={data.id}>
                     {data.name}
                     <i
                       type="button"

@@ -12,11 +12,10 @@ function SearchBar({ categories, setSelectedCategories, selectedCategories }) {
     setSearchClass("list");
   };
   const Handleselect = (data) => {
-    // copy selected item in the input field.
-    // on the project, return data.name to the parent.
     const selectedCategory = {
       name: data.name,
       id: data.id,
+      color: data.color_id,
     };
     setSelectedCategories([...selectedCategories, selectedCategory]);
     setSearchClass("list-none");
@@ -81,7 +80,7 @@ SearchBar.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
-      color: PropTypes.string,
+      color: PropTypes.number,
     })
   ).isRequired,
   setSelectedCategories: PropTypes.func.isRequired,
@@ -89,6 +88,7 @@ SearchBar.propTypes = {
     PropTypes.shape({
       id: PropTypes.number.isRequired,
       name: PropTypes.string.isRequired,
+      color: PropTypes.number,
     })
   ).isRequired,
 };

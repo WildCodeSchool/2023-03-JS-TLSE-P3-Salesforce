@@ -164,6 +164,7 @@
 }
 .search-badges {
   display: flex;
+  flex-wrap: wrap;
   padding: 0.2rem;
   min-height: 2rem;
   border: none;
