@@ -331,14 +331,16 @@ router.delete(
 const categoryControllers = require("./controllers/categoryControllers");
 
 router.get("/categories", categoryControllers.browseCategory);
-
 router.get("/categories/:id", categoryControllers.readCategory);
-
 router.put("/categories/:id", categoryControllers.editCategory);
-
 router.post("/categories", categoryControllers.addCategory);
-
 router.delete("/categories/:id", categoryControllers.destroyCategory);
+
+/* ---- CATEGORY HAS IDEA ---- */
+const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
+
+router.get("/cathasidea", catHasIdeaControllers.browsecatHasIdea);
+router.post("/cathasidea", catHasIdeaControllers.addcatHasIdea);
 
 /* ---- COLORS ROUTES ---- */
 const colorControllers = require("./controllers/colorControllers");

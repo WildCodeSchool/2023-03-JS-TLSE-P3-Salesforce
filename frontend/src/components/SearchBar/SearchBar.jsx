@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "./SearchBar.scss";
 import PropTypes from "prop-types";
-import { availableNames } from "../../../utils";
 
 export default function SearchBar({ pagePart }) {
+  // console.log(pagePart);
   const [datas, setDatas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const handleSearchTerm = (e) => {
@@ -31,7 +31,7 @@ export default function SearchBar({ pagePart }) {
         <button
           type="button"
           className="search-search"
-          onClick={() => setDatas(availableNames)}
+          onClick={() => setDatas()}
         >
           <i className="fi fi-rr-search" />
         </button>
