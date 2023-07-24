@@ -175,10 +175,6 @@ export default function Workspace() {
             <SearchBar />
             <div className="filter-and-selecting">
               <button className="button-md-grey-outline" type="button">
-                <i className="fi-rr-angle-small-down" />
-                trier
-              </button>
-              <button className="button-md-grey-outline" type="button">
                 <i className="i fi-rr-bars-filter" />
                 filtrer
               </button>

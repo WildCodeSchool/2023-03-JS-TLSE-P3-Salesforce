@@ -112,6 +112,17 @@ const verifyCompanyAdminOrSalesForceAdminRole = (req, res, next) => {
   }
 };
 
+const testIfCompanyAdminOrSalesForceAdminRole = (req, res, next) => {
+  const { isCompanyAdmin, isAdmin } = req.payload.role;
+  if (isAdmin || isCompanyAdmin) {
+    req.isAdmin = true;
+    next();
+  } else {
+    req.isAdmin = false;
+    next();
+  }
+};
+
 const checkId = (req, res, next) => {
   const id = parseInt(req.params.id, 10);
   const payload = req.payload.sub;
@@ -146,4 +157,5 @@ module.exports = {
   verifyCompanyAdminOrSalesForceAdminRole,
   checkId,
   randomPasswordGenerator,
+  testIfCompanyAdminOrSalesForceAdminRole,
 };

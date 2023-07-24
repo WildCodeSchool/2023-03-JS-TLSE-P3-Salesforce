@@ -8,6 +8,7 @@ const {
   verifyToken,
   randomPasswordGenerator,
   verifyCompanyAdminOrSalesForceAdminRole,
+  testIfCompanyAdminOrSalesForceAdminRole,
 } = require("./services/auth");
 
 /* ---- USERS ROUTES ---- */
@@ -139,11 +140,18 @@ router.get(
   workspaceControllers.getTeamWorkspaces
 );
 
+// Get the team of a workspace
+router.get(
+  "/workspaces/:workspace_id",
+  verifyToken,
+  workspaceControllers.getTeamByWorkspace
+);
+
 // Get all workspaces for a user
 router.get(
   "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
-  workspaceControllers.getUserWorkspaces
+  workspaceControllers.getTeamWorkspaces
 );
 
 // Get all users for a workspace
@@ -171,6 +179,9 @@ router.post(
 router.post(
   "/workspaces/:workspace_id/users/:user_id",
   verifyToken,
+  testIfCompanyAdminOrSalesForceAdminRole,
+  invitationMiddlewares.invitationVerifyUserInTeam,
+  workspaceMiddlewares.workspaceVerifyUserInWorkspace,
   workspaceControllers.addUserToWorkspace
 );
 
