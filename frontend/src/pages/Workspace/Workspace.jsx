@@ -10,7 +10,7 @@ import CompanyContext from "../../contexts/CompanyContext";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
-import SearchBar from "../../components/SearchBar/SearchBar";
+import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
 import ModalNewIdea from "../../components/ModalNewIdea/ModalNewIdea";
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
@@ -29,6 +29,7 @@ export default function Workspace() {
 
   const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
     useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -172,7 +173,11 @@ export default function Workspace() {
           </button>
 
           <div className="search-ideas-workspace">
-            <SearchBar />
+            <DataSearchBar
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              placeholderText="Rechercher une idée"
+            />
             <div className="filter-and-selecting">
               <button className="button-md-grey-outline" type="button">
                 <i className="i fi-rr-bars-filter" />
@@ -181,6 +186,7 @@ export default function Workspace() {
             </div>
           </div>
         </div>
+
         <div className="large-container-workspace">
           <div
             className="box"
@@ -213,13 +219,33 @@ export default function Workspace() {
                         }}
                       >
                         {!isLoadingDataIdeasWorkspace &&
-                          dataIdeasWorkspace.map((idea) => (
-                            <IdeaCardWorkspace
-                              key={idea.id}
-                              idea={idea}
-                              setDataIdeasWorkspace={setDataIdeasWorkspace}
-                            />
-                          ))}
+                          dataIdeasWorkspace
+                            .filter((value) => {
+                              if (searchTerm === "") {
+                                return true;
+                              }
+                              if (
+                                value.title
+                                  .toLowerCase()
+                                  .includes(searchTerm.toLowerCase())
+                                // value.description
+                                //   .toLowerCase()
+                                //   .includes(searchTerm.toLowerCase()) ||
+                                // value.categories
+                                //   .toLowerCase()
+                                //   .includes(searchTerm.toLowerCase())
+                              ) {
+                                return true;
+                              }
+                              return false;
+                            })
+                            .map((idea) => (
+                              <IdeaCardWorkspace
+                                key={idea.id}
+                                idea={idea}
+                                setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              />
+                            ))}
                       </div>
                     </div>
                     <Draggable bounds="parent">

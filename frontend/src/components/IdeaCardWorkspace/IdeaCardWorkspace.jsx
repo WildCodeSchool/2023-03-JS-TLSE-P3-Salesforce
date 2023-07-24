@@ -32,13 +32,6 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
   });
 
   const handleStop = (event, data) => {
-    // Mise à jour de la position finale lorsque le glissement est terminé
-    // console.log("data : ", data);
-    // console.log("position : ", position);
-    // const newX = position.xcoordinate + data.x;
-    // const newY = position.ycoordinate + data.y;
-    // console.log(newX, newY);
-
     setPosition({
       xcoordinate: data.x,
       ycoordinate: data.y,
@@ -129,5 +122,5 @@ IdeaCardWorkspace.defaultProps = {
     id: 0,
   },
 
-  setDataIdeasWorkspace: null,
+  setDataIdeasWorkspace: () => {},
 };
