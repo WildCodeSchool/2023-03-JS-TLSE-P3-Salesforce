@@ -15,6 +15,7 @@ import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import Alert from "../../components/Alert/Alert";
 import NavBar from "../../components/NavBar/NavBar";
 import ColorPicker from "../../components/ColorPicker/ColorPicker";
+import NewCategoryModal from "../../components/NewCategory/NewCategoryModal";
 
 import { defineColorTheme } from "../../../utils";
 import CompanySettingsMembers from "../../components/CompanySettingsMembers/CompanySettingsMembers";
@@ -32,6 +33,8 @@ export default function CompanySettings() {
       "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg"
   );
   const [selectedColor, setSelectedColor] = useState("");
+  const [isNewCategoryModalOpen, setIsNewCategoryModalOpen] = useState(false);
+
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
@@ -191,13 +194,26 @@ export default function CompanySettings() {
                 </p>
               </div>
               <div className="actions">
-                <button type="button" className="button-md-primary-solid">
+                <button
+                  type="button"
+                  className="button-md-primary-solid"
+                  onClick={() => {
+                    setIsNewCategoryModalOpen(true);
+                  }}
+                  aria-hidden="true"
+                >
                   <i className="fi fi-rr-plus" />
                   Ajouter une catégorie
                 </button>
               </div>
             </div>
           </div>
+          {isNewCategoryModalOpen && (
+            <NewCategoryModal
+              isNewCategoryModalOpen={isNewCategoryModalOpen}
+              setIsNewCategoryModalOpen={setIsNewCategoryModalOpen}
+            />
+          )}
         </section>
       )}
       {activePage === "personalisation" && (
