@@ -28,8 +28,9 @@ const getUserWorkspaces = (req, res) => {
 };
 
 const getWorkspaceUsers = (req, res) => {
+  const { user_id, company_id } = req.params;
   models.workspace
-    .findWorkspacesUsersById(req.params.workspace_id)
+    .findUserWorkspacesByUserAndCompanyId(user_id, company_id)
     .then(([rows]) => {
       res.status(200).send(rows);
     })
