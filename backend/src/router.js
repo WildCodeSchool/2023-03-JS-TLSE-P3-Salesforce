@@ -201,7 +201,7 @@ const ideaControllers = require("./controllers/ideaControllers");
 
 // Get all ideas for a user
 router.get(
-  "/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByUser
 );
@@ -266,7 +266,11 @@ router.post(
 );
 
 // Delete a like to an idea
-router.delete("/likes/:liked_id", verifyToken, likeControllers.deleteLike);
+router.delete(
+  "/ideas/:idea_id/likes/users/:user_id",
+  verifyToken,
+  likeControllers.deleteLike
+);
 
 /* ---- COMMENTS ROUTES ---- */
 

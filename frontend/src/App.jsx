@@ -6,7 +6,7 @@ import Invitation from "./pages/Invitation/Invitation";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import NewPassword from "./pages/NewPassword/NewPassword";
 import Workspace from "./pages/Workspace/Workspace";
-
+import UserIdeas from "./pages/UserIdeas/UserIdeas";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
 
@@ -24,6 +24,10 @@ function App() {
               <Route
                 path="/:company_slug/workspaces/:workspace_id"
                 element={<Workspace />}
+              />
+              <Route
+                path="/:company_slug/users/ideas"
+                element={<UserIdeas />}
               />
 
               <Route

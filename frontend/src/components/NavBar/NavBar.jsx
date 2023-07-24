@@ -121,7 +121,13 @@ export default function NavBar({ activeLink }) {
                   <span>Mes espaces de travail</span>
                 </div>
               </button>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => {
+                  navigate(`/${companyInfos.slug}/users/ideas/`);
+                }}
+                aria-hidden="true"
+              >
                 <i className="fi fi-rr-bulb" />
                 <div className="tooltip">
                   <span>Mes idées</span>
