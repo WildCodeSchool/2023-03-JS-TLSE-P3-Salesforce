@@ -164,6 +164,13 @@ class IdeaManager extends AbstractManager {
       [x_coordinate, y_coordinate, id]
     );
   }
+
+  deleteAllIdeasWorkspace(workspace_id) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE workspace_id = ?`,
+      [workspace_id]
+    );
+  }
 }
 
 module.exports = IdeaManager;

@@ -263,6 +263,13 @@ router.delete(
   ideaControllers.deleteIdea
 );
 
+// Delete ideas's workspace
+router.delete(
+  "/workspaces/:workspace_id/ideas",
+  verifyToken,
+  ideaControllers.deleteIdeasWorkspace
+);
+
 /* ---- LIKES ROUTES ---- */
 
 const likeControllers = require("./controllers/likeControllers");
