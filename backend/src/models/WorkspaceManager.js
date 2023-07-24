@@ -77,7 +77,7 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  async findUserWorkspacesByUserAndCompanyId(userId, companyId) {
+  findUserWorkspacesByUserAndCompanyId(userId, companyId) {
     return this.database.query(
       `
       SELECT
