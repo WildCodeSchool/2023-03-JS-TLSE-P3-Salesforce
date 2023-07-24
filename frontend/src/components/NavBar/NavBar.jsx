@@ -33,7 +33,7 @@ export default function NavBar({ activeLink }) {
   const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
   const [dataWorkspace, setDataWorkspace] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [setIsLoading] = useState(true);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
@@ -66,7 +66,6 @@ export default function NavBar({ activeLink }) {
         )
         .then((response) => {
           setDataWorkspace(response.data);
-          console.log(response.data);
           setIsLoading(false);
         })
         .catch((error) => {
