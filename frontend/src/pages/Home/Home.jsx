@@ -65,7 +65,7 @@ export default function Home() {
           console.error("Error fetching ideas:", error);
         });
     }
-  }, [companyInfos.id, userInfos.id]);
+  }, [companyInfos.id, userInfos.id, isNewIdeaModalOpen]);
 
   useEffect(() => {
     axios

@@ -356,7 +356,10 @@ router.delete(
 /* ---- CATEGORIES ROUTES ---- */
 const categoryControllers = require("./controllers/categoryControllers");
 
-router.get("/categories", categoryControllers.browseCategory);
+router.get(
+  "/companies/:company_id/categories",
+  categoryControllers.browseCompanyCategories
+);
 router.get("/categories/:id", categoryControllers.readCategory);
 router.put("/categories/:id", categoryControllers.editCategory);
 router.post("/categories", categoryControllers.addCategory);
