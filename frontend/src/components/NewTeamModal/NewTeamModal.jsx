@@ -42,7 +42,7 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/companies/${
           companyInfos.id
-        }/teams`,
+        }/users/${userInfos.id}/teams`,
         dataFromForm,
         {
           headers: {

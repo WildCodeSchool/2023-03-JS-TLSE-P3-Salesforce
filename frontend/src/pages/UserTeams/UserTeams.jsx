@@ -4,23 +4,24 @@ import { useParams } from "react-router-dom";
 import { sanitize } from "isomorphic-dompurify";
 
 import axios from "axios";
-import "./UserIdeas.scss";
+import "./UserTeams.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
 import PageHeader from "../../components/PageHeader/PageHeader";
-import IdeaCard from "../../components/IdeaCard/IdeaCard";
+import TeamCard from "../../components/TeamCard/TeamCard";
 import NavBar from "../../components/NavBar/NavBar";
 import Connection from "../../components/Connection/Connection";
 import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
+import NewTeamModal from "../../components/NewTeamModal/NewTeamModal";
 
-export default function UserIdeas() {
+export default function UserTeams() {
   const { userToken, userInfos } = useContext(AuthContext);
   const { setCompanyInfos, companyInfos } = useContext(CompanyContext);
   const { company_slug } = useParams();
-  const [dataIdea, setDataIdea] = useState([]);
+  const [dataTeam, setDataTeam] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [setIsNewIdeaModalOpen] = useState(false);
-  const [searchTermIdea, setSearchTermIdea] = useState("");
+  const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
+  const [searchTermTeam, setSearchTermTeam] = useState("");
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -42,20 +43,21 @@ export default function UserIdeas() {
         .get(
           `${import.meta.env.VITE_BACKEND_URL}/companies/${
             companyInfos.id
-          }/users/${userInfos.id}/ideas/`,
+          }/users/${userInfos.id}/teams/`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
         )
         .then((response) => {
-          setDataIdea(response.data);
+          setDataTeam(response.data);
           setIsLoading(false);
         })
         .catch((error) => {
-          console.error("Error fetching ideas:", error);
+          console.error("Error fetching teams:", error);
         });
     }
   }, [companyInfos.id, userInfos.id]);
+
   return (
     <div>
       {userToken &&
@@ -63,57 +65,62 @@ export default function UserIdeas() {
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
         userInfos.is_salesforce_admin) ? (
         <main>
-          <NavBar activeLink="ideas" />
+          <NavBar activeLink="teams" />
           <PageHeader
-            title="Mes idées"
-            subtitle="Voici l'ensemble des idées que vous avez créé, souhaitez-vous en ajouter une autre?"
+            title="Mes équipes"
+            subtitle="Voici l'ensemble des équipes dans lesquelles vous faites partie, souhaitez-vous en ajouter une autre?"
           >
             <button
               className="button-primary-solid"
               type="button"
               onClick={() => {
-                setIsNewIdeaModalOpen(true);
+                setIsNewTeamModalOpen(true);
               }}
             >
               <i className="fi fi-rr-plus" />
-              Ajouter une idée
+              Ajouter une équipe
             </button>
           </PageHeader>
           <div className="page-actions">
             <DataSearchBar
-              searchTerm={searchTermIdea}
-              setSearchTerm={setSearchTermIdea}
-              placeholderText="Rechercher une idée"
+              searchTerm={searchTermTeam}
+              setSearchTerm={setSearchTermTeam}
+              placeholderText="Rechercher une équipe"
             />
           </div>
-          <div className="idea-cards-list">
+          <div className="team-cards-list">
             {!isLoading &&
-              dataIdea
+              dataTeam
                 .filter((value) => {
-                  if (searchTermIdea === "") {
+                  if (searchTermTeam === "") {
                     return true;
                   }
-                  if (
-                    value.title
-                      .toLowerCase()
-                      .includes(searchTermIdea.toLowerCase()) ||
-                    value.description
-                      .toLowerCase()
-                      .includes(searchTermIdea.toLowerCase()) ||
-                    value.creator_firstname
-                      .toLowerCase()
-                      .includes(searchTermIdea.toLowerCase()) ||
-                    value.creator_lastname
-                      .toLowerCase()
-                      .includes(searchTermIdea.toLowerCase())
-                  ) {
-                    return true;
-                  }
-                  return false;
+
+                  const titleLower = value.title?.toLowerCase();
+                  const descriptionLower = value.description?.toLowerCase();
+                  const creatorFirstNameLower =
+                    value.creator_firstname?.toLowerCase();
+                  const creatorLastNameLower =
+                    value.creator_lastname?.toLowerCase();
+
+                  // Vérification que les valeurs existent avant d'appeler toLowerCase()
+                  return (
+                    titleLower?.includes(searchTermTeam.toLowerCase()) ||
+                    descriptionLower?.includes(searchTermTeam.toLowerCase()) ||
+                    creatorFirstNameLower?.includes(
+                      searchTermTeam.toLowerCase()
+                    ) ||
+                    creatorLastNameLower?.includes(searchTermTeam.toLowerCase())
+                  );
                 })
-                .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
+                .map((team) => <TeamCard key={team.id} team={team} />)}
           </div>
-          {/* Ajouter la modale de l'idea ci-dessous */}
+          {isNewTeamModalOpen && (
+            <NewTeamModal
+              isNewTeamModalOpen={isNewTeamModalOpen}
+              setIsNewTeamModalOpen={setIsNewTeamModalOpen}
+            />
+          )}
         </main>
       ) : (
         <Connection />
@@ -122,6 +129,6 @@ export default function UserIdeas() {
   );
 }
 
-UserIdeas.defaultProps = {
-  pagePart: "ideas",
+UserTeams.defaultProps = {
+  pagePart: "teams",
 };

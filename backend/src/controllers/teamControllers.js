@@ -8,7 +8,7 @@ const getTeams = (req, res) => {
   models.team
     .getAllTeams(company_id)
     .then(([result]) => {
-      if (result.length) {
+      if (result) {
         res.status(200).json(result);
       } else {
         res.sendStatus(404);
@@ -27,7 +27,7 @@ const getTeam = (req, res) => {
   models.team
     .getOneTeam(team_id, company_id)
     .then(([result]) => {
-      if (result.length) {
+      if (result) {
         res.status(200).json(result);
       } else {
         res.sendStatus(404);
@@ -46,7 +46,7 @@ const getAllUsersFromTeam = (req, res) => {
   models.team
     .getUsersByTeamId(team_id)
     .then(([rows]) => {
-      if (rows.length) {
+      if (rows) {
         res.status(200).send(rows);
       } else {
         res.sendStatus(404);
@@ -60,11 +60,10 @@ const getAllUsersFromTeam = (req, res) => {
 
 // afficher les équipes d'un utilisateur
 const getAllTeamsFromUser = (req, res) => {
-  const { user_id } = req.params;
   models.team
-    .getTeamsByUserId(user_id)
+    .getTeamsByUserId(req.params.user_id)
     .then(([result]) => {
-      if (result.length) {
+      if (result) {
         res.status(200).json(result);
       } else {
         res.sendStatus(404);
@@ -79,14 +78,16 @@ const getAllTeamsFromUser = (req, res) => {
 // créer une équipe
 const addTeamOnCompany = (req, res) => {
   const { body, params } = req;
-  const { company_id } = params;
+  const { user_id, company_id } = params;
 
   models.team
-    .addTeam(body, company_id)
+    .addTeam(body, user_id, company_id)
     .then(([result]) => {
       if (result.affectedRows) {
         res
-          .location(`/companies/${company_id}/teams/${result.insertId}`)
+          .location(
+            `/companies/${company_id}/users/"${user_id}teams/${result.insertId}`
+          )
           .sendStatus(201);
         models.team.addUserByTeam(body.userId, result.insertId);
       } else {

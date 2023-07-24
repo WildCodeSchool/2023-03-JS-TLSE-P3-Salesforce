@@ -42,7 +42,14 @@ class TeamManager extends AbstractManager {
   // récupérer toutes les teams d'un membre
   getTeamsByUserId(userId) {
     return this.database.query(
-      `SELECT ${this.table}.id, ${this.table}.name,${this.table}.is_private, ${this.table}.picture_url, ${this.table}.description, ${this.table}.objective,${this.table}.status,thu.joining_date
+      `SELECT ${this.table}.id,
+       ${this.table}.name,
+       ${this.table}.is_private,
+        ${this.table}.picture_url,
+         ${this.table}.description,
+          ${this.table}.objective,
+          ${this.table}.status,
+          thu.joining_date
        FROM ${this.table} 
        JOIN team_has_user thu ON ${this.table}.id = thu.team_id
        WHERE thu.user_id = ?`,
@@ -52,16 +59,9 @@ class TeamManager extends AbstractManager {
 
   // créer une équipe
 
-  addTeam(team, companyId) {
-    const {
-      name,
-      is_private,
-      picture_url,
-      description,
-      objective,
-      status,
-      userId,
-    } = team;
+  addTeam(team, userId, companyId) {
+    const { name, is_private, picture_url, description, objective, status } =
+      team;
 
     return this.database.query(
       `INSERT INTO ${this.table} (name, is_private, picture_url, description, objective, status, user_id, company_id)

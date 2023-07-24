@@ -111,10 +111,16 @@ router.get(
 router.get("/teams/:team_id/users", teamControllers.getAllUsersFromTeam);
 
 // afficher les équipes d'un utilisateur
-router.get("/users/:user_id/teams", teamControllers.getAllTeamsFromUser);
+router.get(
+  "/companies/:company_id/users/:user_id/teams",
+  teamControllers.getAllTeamsFromUser
+);
 
 // créer une équipe
-router.post("/companies/:company_id/teams", teamControllers.addTeamOnCompany);
+router.post(
+  "/companies/:company_id/users/:user_id/teams",
+  teamControllers.addTeamOnCompany
+);
 
 // ajouter un utilisateur dans une équipe
 
@@ -217,7 +223,7 @@ const ideaControllers = require("./controllers/ideaControllers");
 
 // Get all ideas for a user
 router.get(
-  "/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByUser
 );

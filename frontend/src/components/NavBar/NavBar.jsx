@@ -41,14 +41,6 @@ export default function NavBar({ activeLink }) {
     }
   }
 
-  /* au click, ouvre ou ferme la subnavbar Idea et ferme la subnavbar tableau si elle est ouverte */
-  function openNavBarTeam() {
-    setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
-    if (isSubNavBarWorkspaceOpen === true) {
-      setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
-    }
-  }
-
   /* au click, ferme les navbar pouvant être ouvertes ailleurs */
   function closeSubNavBar() {
     if (isSubNavBarWorkspaceOpen === true) {
@@ -107,7 +99,10 @@ export default function NavBar({ activeLink }) {
               <button
                 type="button"
                 className={activeLink === "teams" ? "active" : ""}
-                onClick={() => openNavBarTeam()}
+                onClick={() => {
+                  navigate(`/${companyInfos.slug}/users/teams/`);
+                }}
+                aria-hidden="true"
               >
                 <i className="fi fi-rr-users" />
                 <div className="tooltip">
@@ -127,8 +122,9 @@ export default function NavBar({ activeLink }) {
               </button>
               <button
                 type="button"
+                className={activeLink === "ideas" ? "active" : ""}
                 onClick={() => {
-                  navigate(`/${companyInfos.slug}/ideas/${userInfos.id}`);
+                  navigate(`/${companyInfos.slug}/users/ideas/`);
                 }}
                 aria-hidden="true"
               >
@@ -216,23 +212,7 @@ export default function NavBar({ activeLink }) {
           </div>
         </div>
       )}
-      {/* ternaire pour faire apparaitre le sous menu des équipes en fonction du state */}
-      {isSubNavBarTeamOpen && (
-        <div className="first-sub-nav-bar">
-          <p className="title-sub-nav-bar">Équipes</p>
-          <button className="nav-bar-button" type="button">
-            <i className="fi fi-rr-plus" />
-            Nouvelle équipe
-          </button>
-          <div className="links-sub-nav-bar">
-            <SubNavBarLink title="Direction" subtitle="6 personnes" />
-            <SubNavBarLink
-              title="Ressources Humaines"
-              subtitle="14 personnes"
-            />
-          </div>
-        </div>
-      )}
+
       {showMenu && (
         <div id="nav-links">
           <div className="main-part-nav-bar-menu-burger">
