@@ -1,6 +1,7 @@
 import "./NavBar.scss";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import propTypes from "prop-types";
 
 import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
@@ -12,7 +13,7 @@ import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { setUser, userInfos } = useContext(AuthContext);
+  const { setUser, userInfos, userToken } = useContext(AuthContext);
   let initials = "";
   if (userInfos.firstname && userInfos.lastname) {
     initials = userInfos.firstname[0] + userInfos.lastname[0];
@@ -31,6 +32,8 @@ export default function NavBar({ activeLink }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
+  const [dataWorkspace, setDataWorkspace] = useState([]);
+  const [setIsLoading] = useState(true);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
@@ -49,6 +52,27 @@ export default function NavBar({ activeLink }) {
       setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
     }
   }
+
+  useEffect(() => {
+    if (companyInfos.id && userInfos.id) {
+      axios
+        .get(
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${
+            companyInfos.id
+          }/users/${userInfos.id}/workspaces/`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        )
+        .then((response) => {
+          setDataWorkspace(response.data);
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching teams:", error);
+        });
+    }
+  }, [companyInfos.id, userInfos.id]);
 
   return (
     <div className="global-nav-bar">
@@ -203,16 +227,24 @@ export default function NavBar({ activeLink }) {
             Nouvel espace
           </button>
           <div className="links-sub-nav-bar">
-            <SubNavBarLink
-              title="Refonte des extranets"
-              subtitle="Pierre DUPONT"
-              navigateLink={`/${companyInfos.slug}/workspaces/1`}
-            />
-            <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
+            {/* Utilisez map pour afficher chaque espace de travail */}
+            {dataWorkspace.map((workspace) => (
+              <SubNavBarLink
+                key={workspace.id}
+                title={workspace.name}
+                subtitle={
+                  workspace.team_name !== null
+                    ? `${workspace.team_name}`
+                    : `${
+                        workspace.creator_firstname
+                      } ${workspace.creator_lastname.toUpperCase()}`
+                }
+                navigateLink={`/${companyInfos.slug}/workspaces/${workspace.id}`}
+              />
+            ))}
           </div>
         </div>
       )}
-
       {showMenu && (
         <div id="nav-links">
           <div className="main-part-nav-bar-menu-burger">

@@ -79,13 +79,18 @@ class WorkspaceManager extends AbstractManager {
 
   findUserWorkspacesByUserAndCompanyId(userId, companyId) {
     return this.database.query(
-      `SELECT
+      `
+      SELECT
       ${this.table}.id,
       ${this.table}.name,
       ${this.table}.creation_date,
       ${this.table}.description,
       ${this.table}.is_private,
-
+      u.firstname AS creator_firstname,
+      u.lastname AS creator_lastname,
+      u.id AS user_id,
+      t.id AS team_id,
+      t.name AS team_name,
       (
         SELECT COUNT(DISTINCT idea.id)
         FROM idea
@@ -96,26 +101,25 @@ class WorkspaceManager extends AbstractManager {
         FROM workspace_has_user
         WHERE workspace_has_user.workspace_id = ${this.table}.id
       ) AS total_users
-    FROM
-      ${this.table}
+      FROM ${this.table}
+      LEFT JOIN user AS u ON ${this.table}.user_id = u.id
+      LEFT JOIN team AS t ON ${this.table}.team_id = t.id
       LEFT JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
-    WHERE
-      ${this.table}.company_id = ?
+      WHERE ${this.table}.company_id = ?
       AND workspace_has_user.user_id = ?
-    GROUP BY
-      ${this.table}.id;`,
+      GROUP BY ${this.table}.id;`,
       [companyId, userId]
     );
   }
 
-  findWorkspacesUsersById(workspaceId) {
+  findWorkspacesUsersById(userId, companyId) {
     return this.database.query(
       `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id as workspace_id, w.team_id, w.name, w.creation_date, t.name as team_name
       FROM user u INNER JOIN workspace_has_user whu ON u.id = whu.user_id
-      LEFT JOIN workspace w ON w.id = whu.workspace_id
+      LEFT JOIN ${this.table} w ON w.id = whu.workspace_id
       LEFT JOIN team t ON t.id = w.team_id
-      WHERE whu.workspace_id = ?;`,
-      [workspaceId]
+      WHERE whu.workspace_id = ? and ${this.table}.company_id = ?;`,
+      [userId, companyId]
     );
   }
 
