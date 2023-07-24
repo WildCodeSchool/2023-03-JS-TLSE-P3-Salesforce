@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
 class IdeaManager extends AbstractManager {
@@ -5,11 +6,10 @@ class IdeaManager extends AbstractManager {
     super({ table: "idea" });
   }
 
-  insert(idea, companyId, userId) {
-    const { title, description, fileId } = idea;
+  insert(title, description, company_id, user_id) {
     return this.database.query(
-      `insert into ${this.table} (title, description, file_id, company_id, user_id) values ( ?, ?, ?, ?, ?);`,
-      [title, description, fileId, companyId, userId]
+      `insert into ${this.table} (title, description, company_id, user_id) values ( ?, ?, ?, ?);`,
+      [title, description, company_id, user_id]
     );
   }
 
@@ -150,6 +150,18 @@ class IdeaManager extends AbstractManager {
         user_id = ?
       WHERE ${this.table}.id = ?`,
       [title, description, fileId, companyId, userId, ideaId]
+    );
+  }
+
+  updateCoordinatesIdea(idea) {
+    const { x_coordinate, y_coordinate, id } = idea;
+    return this.database.query(
+      `UPDATE ${this.table} 
+    SET
+      x_coordinate = ?,
+      y_coordinate = ?
+    WHERE ${this.table}.id = ?`,
+      [x_coordinate, y_coordinate, id]
     );
   }
 }

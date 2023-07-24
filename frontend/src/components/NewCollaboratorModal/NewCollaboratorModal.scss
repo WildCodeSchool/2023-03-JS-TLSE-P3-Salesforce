@@ -3,7 +3,7 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/icon" as *;
 
-.new-idea-modal {
+.new-collaborator-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -52,12 +52,7 @@
       border-bottom: 1px solid var(--grey-200);
 
       .icon {
-        @include icon(
-          "lg",
-          $color: "primary",
-          $style: "outline",
-          $shape: "square"
-        );
+        @include icon("lg", $color: "grey", $style: "border", $shape: "square");
       }
 
       .content {
@@ -65,9 +60,11 @@
         h3 {
           color: var(--grey-800);
           @include text("lg", $weight: 500);
+          text-wrap: balance;
         }
         .details {
           color: var(--grey-500);
+          text-wrap: balance;
         }
       }
       .close {
@@ -88,19 +85,89 @@
     }
     .body {
       padding: 1.5rem;
-      form {
+      .form {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-      }
-      .actions {
-        display: flex;
-        width: 100%;
-        justify-content: flex-end;
-        margin-top: 1rem;
-        gap: 1rem;
-        .submit {
-          @include button("md", $color: "primary", $style: "solid");
+        gap: 1.5rem;
+        .members-team-modal {
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+
+          .user-and-infos {
+            display: flex;
+            justify-content: space-between;
+
+            .user {
+              display: flex;
+              align-items: center;
+              width: 100%;
+              .avatar.avatar-table {
+                width: 40px;
+                height: 40px;
+              }
+              .infos {
+                display: flex;
+                flex-direction: column;
+                margin-left: 10px;
+                gap: 3px;
+              }
+            }
+          }
+        }
+        .actions {
+          display: flex;
+          width: 100%;
+          justify-content: flex-end;
+          gap: 1rem;
+          .submit {
+            @include button("md", $color: "primary", $style: "outline");
+          }
+          .remove {
+            @include button("md", $color: "error", $style: "outline");
+          }
+        }
+        .search-results {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          overflow: auto;
+          gap: 0.75rem;
+
+          &::-webkit-scrollbar {
+            width: 0.5rem;
+            height: 0.5rem;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 0.5rem;
+            background-color: var(--grey-300);
+            visibility: hidden;
+          }
+          &:hover::-webkit-scrollbar-thumb {
+            visibility: visible;
+          }
+
+          .user-and-infos {
+            display: flex;
+            justify-content: space-between;
+            .user {
+              display: flex;
+              align-items: center;
+              width: 100%;
+
+              .infos {
+                display: flex;
+                flex-direction: column;
+                margin-left: 10px;
+                gap: 3px;
+              }
+            }
+            button {
+              display: flex;
+              align-items: center;
+              border-radius: 10px;
+            }
+          }
         }
       }
     }
@@ -108,7 +175,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .new-idea-modal {
+  .new-collaborator-modal {
     .container {
       background-color: var(--white);
       width: clamp(40%, 50%, 50%);

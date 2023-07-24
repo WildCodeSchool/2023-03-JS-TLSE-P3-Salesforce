@@ -8,6 +8,7 @@ const {
   verifyToken,
   randomPasswordGenerator,
   verifyCompanyAdminOrSalesForceAdminRole,
+  testIfCompanyAdminOrSalesForceAdminRole,
 } = require("./services/auth");
 
 /* ---- USERS ROUTES ---- */
@@ -145,11 +146,18 @@ router.get(
   workspaceControllers.getTeamWorkspaces
 );
 
+// Get the team of a workspace
+router.get(
+  "/workspaces/:workspace_id",
+  verifyToken,
+  workspaceControllers.getTeamByWorkspace
+);
+
 // Get all workspaces for a user
 router.get(
   "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
-  workspaceControllers.getUserWorkspaces
+  workspaceControllers.getTeamWorkspaces
 );
 
 // Get all users for a workspace
@@ -177,6 +185,9 @@ router.post(
 router.post(
   "/workspaces/:workspace_id/users/:user_id",
   verifyToken,
+  testIfCompanyAdminOrSalesForceAdminRole,
+  invitationMiddlewares.invitationVerifyUserInTeam,
+  workspaceMiddlewares.workspaceVerifyUserInWorkspace,
   workspaceControllers.addUserToWorkspace
 );
 
@@ -237,6 +248,12 @@ router.put(
   "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.updateIdeaById
+);
+// Update idea for a workspace
+router.put(
+  "/ideas/:idea_id",
+  verifyToken,
+  ideaControllers.updateCoordinatesIdeaWorkspace
 );
 
 // Delete an idea
@@ -341,14 +358,16 @@ router.delete(
 const categoryControllers = require("./controllers/categoryControllers");
 
 router.get("/categories", categoryControllers.browseCategory);
-
 router.get("/categories/:id", categoryControllers.readCategory);
-
 router.put("/categories/:id", categoryControllers.editCategory);
-
 router.post("/categories", categoryControllers.addCategory);
-
 router.delete("/categories/:id", categoryControllers.destroyCategory);
+
+/* ---- CATEGORY HAS IDEA ---- */
+const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
+
+router.get("/cathasidea", catHasIdeaControllers.browsecatHasIdea);
+router.post("/cathasidea", catHasIdeaControllers.addcatHasIdea);
 
 /* ---- COLORS ROUTES ---- */
 const colorControllers = require("./controllers/colorControllers");

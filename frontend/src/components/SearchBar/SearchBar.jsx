@@ -1,15 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./SearchBar.scss";
-import PropTypes from "prop-types";
-import { availableNames } from "../../../utils";
+import propTypes from "prop-types";
 
 export default function SearchBar({ pagePart }) {
   const [datas, setDatas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const handleSearchTerm = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
-  };
 
   let placeholder = "";
 
@@ -20,18 +15,22 @@ export default function SearchBar({ pagePart }) {
   }
 
   return (
-    <div className="search-component">
-      <div className="search-bar">
+    <div className="input-search-bar">
+      <div className="input">
+        <i className="fi fi-rr-search" />
         <input
-          className="search-input"
           type="text"
+          className="input-search-bar"
           placeholder={placeholder}
-          onChange={handleSearchTerm}
+          value={searchTerm}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
         />
         <button
           type="button"
           className="search-search"
-          onClick={() => setDatas(availableNames)}
+          onClick={() => setDatas()}
         >
           <i className="fi fi-rr-search" />
         </button>
@@ -54,7 +53,7 @@ export default function SearchBar({ pagePart }) {
 }
 
 SearchBar.propTypes = {
-  pagePart: PropTypes.string,
+  pagePart: propTypes.string,
 };
 
 SearchBar.defaultProps = {

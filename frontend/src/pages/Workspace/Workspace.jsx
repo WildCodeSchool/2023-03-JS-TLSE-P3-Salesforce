@@ -10,9 +10,9 @@ import CompanyContext from "../../contexts/CompanyContext";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
-import SearchBar from "../../components/SearchBar/SearchBar";
+import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
-import ModalNewIdea from "../../components/ModalNewIdea/ModalNewIdea";
+import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -24,7 +24,10 @@ export default function Workspace() {
   const [dataIdeasWorkspace, setDataIdeasWorkspace] = useState([]);
   const [isLoadingDataIdeasWorkspace, setIsLoadingDataIdeasWorkspace] =
     useState(true);
-  const [isModalNewIdeaOpen, setIsModalNewIdeaOpen] = useState(false);
+
+  const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
+    useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -94,6 +97,25 @@ export default function Workspace() {
     creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
   }
 
+  // for save ideas and their position in workspace
+
+  const handleSaveIdeas = () => {
+    dataIdeasWorkspace.forEach((idea) => {
+      axios
+        .put(`${import.meta.env.VITE_BACKEND_URL}/ideas/${idea.id}`, idea, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        })
+        .then((res) => {
+          if (res.affectedRows === 0) {
+            console.error("l'idée n'a pas été modifiée");
+          }
+        })
+        .catch((err) => {
+          console.error(err).sendStatus(500);
+        });
+    });
+  };
+
   return userToken &&
     Object.keys(userInfos).length &&
     (dataUsersByCompany.includes(userInfos.id) ||
@@ -111,11 +133,26 @@ export default function Workspace() {
               <i className="fi fi-rr-trash" />
               Supprimer
             </button>
-            <button className="button-md-grey-outline" type="button">
+            <button
+              className="button-md-grey-outline"
+              type="button"
+              onClick={() => {
+                setIsNewCollaboratorModalOpen(true);
+              }}
+            >
               <i className="fi fi-rr-users" />
               Collaborer
             </button>
-            <button className="button-primary-solid" type="button">
+            {isNewCollaboratorModalOpen && (
+              <NewCollaboratorModal
+                setIsNewCollaboratorModalOpen={setIsNewCollaboratorModalOpen}
+              />
+            )}
+            <button
+              className="button-primary-solid"
+              type="button"
+              onClick={handleSaveIdeas}
+            >
               Sauvegarder
             </button>
           </div>
@@ -124,22 +161,18 @@ export default function Workspace() {
 
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
-          <button
-            className="button-md-primary-solid"
-            type="button"
-            onClick={() => setIsModalNewIdeaOpen(true)}
-          >
+          <button className="button-md-primary-solid" type="button">
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
 
           <div className="search-ideas-workspace">
-            <SearchBar />
+            <DataSearchBar
+              setSearchTerm={setSearchTerm}
+              searchTerm={searchTerm}
+              placeholderText="Rechercher une idée"
+            />
             <div className="filter-and-selecting">
-              <button className="button-md-grey-outline" type="button">
-                <i className="fi-rr-angle-small-down" />
-                trier
-              </button>
               <button className="button-md-grey-outline" type="button">
                 <i className="i fi-rr-bars-filter" />
                 filtrer
@@ -147,6 +180,7 @@ export default function Workspace() {
             </div>
           </div>
         </div>
+
         <div className="large-container-workspace">
           <div
             className="box"
@@ -179,9 +213,27 @@ export default function Workspace() {
                         }}
                       >
                         {!isLoadingDataIdeasWorkspace &&
-                          dataIdeasWorkspace.map((idea) => (
-                            <IdeaCardWorkspace key={idea.id} idea={idea} />
-                          ))}
+                          dataIdeasWorkspace
+                            .filter((value) => {
+                              if (searchTerm === "") {
+                                return true;
+                              }
+                              if (
+                                value.title
+                                  .toLowerCase()
+                                  .includes(searchTerm.toLowerCase())
+                              ) {
+                                return true;
+                              }
+                              return false;
+                            })
+                            .map((idea) => (
+                              <IdeaCardWorkspace
+                                key={idea.id}
+                                idea={idea}
+                                setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              />
+                            ))}
                       </div>
                     </div>
                     <Draggable bounds="parent">
@@ -197,9 +249,6 @@ export default function Workspace() {
           </div>
         </div>
       </div>
-      {isModalNewIdeaOpen && (
-        <ModalNewIdea setIsModalNewIdeaOpen={setIsModalNewIdeaOpen} />
-      )}
     </main>
   ) : (
     <Home />

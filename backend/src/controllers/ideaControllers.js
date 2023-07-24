@@ -3,17 +3,18 @@ const models = require("../models");
 
 const createIdea = (req, res) => {
   const { company_id, user_id } = req.params;
+  const { title, description } = req.body;
   models.idea
-    .insert(req.body, company_id, user_id)
-    .then(([results]) => {
-      if (results.affectedRows) {
-        res.sendStatus(201);
+    .insert(title, description, company_id, user_id)
+    .then(([result]) => {
+      if (result.affectedRows) {
+        res.status(201).json(result);
       } else {
         res.sendStatus(404);
       }
     })
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.error(error);
       res.sendStatus(500);
     });
 };
@@ -87,6 +88,21 @@ const updateIdeaById = (req, res) => {
     });
 };
 
+const updateCoordinatesIdeaWorkspace = (req, res) => {
+  models.idea
+    .updateCoordinatesIdea(req.body, req.params.idea_id)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(204).send("l'idée a bien été modifiée");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 const deleteIdea = (req, res) => {
   models.idea
     .delete(req.params.idea_id)
@@ -108,6 +124,7 @@ module.exports = {
   getAllIdeasByCompany,
   getAllIdeasByIdeasGroup,
   updateIdeaById,
+  updateCoordinatesIdeaWorkspace,
   createIdea,
   deleteIdea,
 };

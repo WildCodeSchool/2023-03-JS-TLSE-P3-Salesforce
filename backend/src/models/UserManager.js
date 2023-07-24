@@ -102,6 +102,21 @@ class UserManager extends AbstractManager {
     );
   }
 
+  getUsersInTeam(teamId, userId) {
+    return this.database.query(
+      `SELECT
+      ${this.table}.id,
+      ${this.table}.firstname,
+      ${this.table}.lastname,
+      ${this.table}.email,
+      ${this.table}.picture_url
+    FROM
+      ${this.table}
+      INNER JOIN team_has_user AS thu ON thu.user_id = ? AND thu.team_id = ?;`,
+      [userId, teamId]
+    );
+  }
+
   getUserByMail(email) {
     return this.database.query(
       `SELECT ${this.table}.id, ${this.table}.firstname, ${this.table}.lastname, ${this.table}.email, ${this.table}.picture_url FROM ${this.table} WHERE ${this.table}.email = ?;`,

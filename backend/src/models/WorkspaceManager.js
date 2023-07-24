@@ -60,6 +60,14 @@ class WorkspaceManager extends AbstractManager {
     }
   }
 
+  findTeamByWorkspace(workspaceId) {
+    return this.database.query(
+      `SELECT *
+      FROM ${this.table} WHERE ${this.table}.id = ?;`,
+      [workspaceId]
+    );
+  }
+
   async findUserWorkspacesByUserAndCompanyId(userId, companyId) {
     return this.database.query(
       `
@@ -97,7 +105,7 @@ class WorkspaceManager extends AbstractManager {
 
   findWorkspacesUsersById(userId, companyId) {
     return this.database.query(
-      `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id, w.team_id, w.name, w.creation_date, t.name as team_name
+      `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id as workspace_id, w.team_id, w.name, w.creation_date, t.name as team_name
       FROM user u INNER JOIN workspace_has_user whu ON u.id = whu.user_id
       LEFT JOIN ${this.table} w ON w.id = whu.workspace_id
       LEFT JOIN team t ON t.id = w.team_id
