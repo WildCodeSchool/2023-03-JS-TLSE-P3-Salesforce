@@ -98,6 +98,7 @@ export default function NavBar({ activeLink }) {
               </button>
               <button
                 type="button"
+                className={activeLink === "teams" ? "active" : ""}
                 onClick={() => {
                   navigate(`/${companyInfos.slug}/users/teams/`);
                 }}
@@ -121,6 +122,7 @@ export default function NavBar({ activeLink }) {
               </button>
               <button
                 type="button"
+                className={activeLink === "ideas" ? "active" : ""}
                 onClick={() => {
                   navigate(`/${companyInfos.slug}/users/ideas/`);
                 }}

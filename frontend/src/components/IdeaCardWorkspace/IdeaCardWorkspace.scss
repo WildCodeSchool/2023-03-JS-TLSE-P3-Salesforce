@@ -1,13 +1,12 @@
 @use "../../styles/typography" as *;
 @use "../../styles/shadows" as *;
 
-.idea-card {
+.idea-card-workspace {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   border: 1px solid var(--grey-200);
   @include shadow("xs");
-  cursor: pointer;
   border-radius: 12px;
   transition: box-shadow 0.3s;
   background-color: var(--white);
@@ -75,7 +74,7 @@
 }
 
 @media screen and (max-width: 768px) {
-  .idea-card {
+  .idea-card-workspace {
     width: 100%;
   }
 }

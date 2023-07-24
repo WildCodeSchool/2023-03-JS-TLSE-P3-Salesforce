@@ -12,19 +12,32 @@
     @include text("sm");
     color: var(--grey-700);
     font-weight: 500;
+
+    .label {
+      p {
+        &.title {
+          @include text("sm", $weight: 500);
+          color: var(--grey-700);
+        }
+        &.help {
+          @include text("sm", $weight: 400);
+          color: var(--grey-600);
+        }
+      }
+    }
   }
   input[type="checkbox"] {
     display: none;
   }
   input[type="checkbox"]:checked + .toggle-switch {
-    background-color: var(--blue-600);
+    background-color: var(--primary-600);
     border-radius: 12px;
     position: relative;
     &::before {
       background-color: var(--white);
     }
     &:hover {
-      background-color: var(--blue-700);
+      background-color: var(--primary-700);
     }
   }
 

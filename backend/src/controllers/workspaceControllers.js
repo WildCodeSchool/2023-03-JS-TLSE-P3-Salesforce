@@ -2,9 +2,14 @@
 const models = require("../models");
 
 const getTeamWorkspaces = (req, res) => {
-  const { team_id, user_id } = req.params;
+  const { team_id } = req.params;
   models.workspace
-    .findWorkspacesByTeamId(team_id, user_id, req.isSalesForceAdmin)
+    .findWorkspacesByTeamId(
+      team_id,
+      req.isInWorkspace,
+      req.isSalesForceAdmin,
+      req.isCompanyAdmin
+    )
     .then(([rows]) => {
       res.status(200).send(rows);
     })

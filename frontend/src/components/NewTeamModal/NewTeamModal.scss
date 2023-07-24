@@ -3,63 +3,6 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/icon" as *;
 
-.switch {
-  position: relative;
-  display: inline-block;
-  min-width: 60px;
-  min-height: 34px;
-  cursor: pointer;
-}
-
-.switch .slider {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 34px;
-  background-color: #ccc;
-  transition: 0.4s;
-}
-
-.switch .slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  border-radius: 50%;
-  background-color: white;
-  transition: 0.4s;
-}
-
-.switch.on .slider {
-  background-color: #2196f3;
-}
-
-.switch.on .slider:before {
-  transform: translateX(26px);
-}
-
-.switch.off .slider:before {
-  transform: translateX(0);
-}
-
-.switch .slider:before {
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.24), 0 2px 10px 0 rgba(0, 0, 0, 0.19);
-}
-
-.switch.on .slider:before {
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.24), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.switch input[type="checkbox"] {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
 .new-team-modal {
   position: fixed;
   top: 0;
@@ -76,10 +19,6 @@
   justify-content: flex-end;
 
   overflow: hidden;
-
-  p span {
-    font-weight: bold;
-  }
 
   .filter {
     position: absolute;

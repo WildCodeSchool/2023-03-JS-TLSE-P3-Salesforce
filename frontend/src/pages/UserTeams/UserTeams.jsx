@@ -65,7 +65,7 @@ export default function UserTeams() {
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
         userInfos.is_salesforce_admin) ? (
         <main>
-          <NavBar activeLink="home" />
+          <NavBar activeLink="teams" />
           <PageHeader
             title="Mes équipes"
             subtitle="Voici l'ensemble des équipes dans lesquelles vous faites partie, souhaitez-vous en ajouter une autre?"

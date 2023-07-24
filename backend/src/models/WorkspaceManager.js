@@ -12,8 +12,17 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  findWorkspacesByTeamId(teamId, userId, isSalesForceAdmin) {
-    switch (isSalesForceAdmin) {
+  findWorkspacesByTeamId(
+    teamId,
+    isInWorkspace,
+    isSalesForceAdmin,
+    isCompanyAdmin
+  ) {
+    switch (
+      isInWorkspace === true ||
+      isSalesForceAdmin === true ||
+      isCompanyAdmin === true
+    ) {
       case true:
         return this.database.query(
           `SELECT
@@ -51,11 +60,11 @@ class WorkspaceManager extends AbstractManager {
             INNER JOIN idea ON ${this.table}.id = idea.workspace_id
             INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
           WHERE
-            ${this.table}.team_id = ? AND workspace_has_user.user_id = ? 
+            ${this.table}.team_id = ? AND ${this.table}.is_private = 0 
           GROUP BY
             ${this.table}.id,
             workspace_has_user.workspace_id;`,
-          [teamId, userId]
+          [teamId]
         );
     }
   }
