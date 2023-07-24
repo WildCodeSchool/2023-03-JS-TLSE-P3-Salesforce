@@ -26,7 +26,7 @@ function SearchBar({ categories, setSelectedCategories, selectedCategories }) {
   };
 
   return (
-    <div className="search">
+    <div className="search-categories">
       <div className="search-container">
         <div className="search-bar">
           <input
