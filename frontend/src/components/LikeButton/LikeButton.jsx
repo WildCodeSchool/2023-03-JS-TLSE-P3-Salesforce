@@ -86,7 +86,7 @@ export default function LikeButton({
 
 LikeButton.propTypes = {
   ideaId: PropTypes.number.isRequired,
-  likeActive: PropTypes.bool.isRequired,
+  likeActive: PropTypes.number.isRequired,
   likeCount: PropTypes.number.isRequired,
   setLikeCount: PropTypes.func.isRequired,
   setLikeActive: PropTypes.func.isRequired,

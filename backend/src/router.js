@@ -201,7 +201,7 @@ const ideaControllers = require("./controllers/ideaControllers");
 
 // Get all ideas for a user
 router.get(
-  "/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByUser
 );

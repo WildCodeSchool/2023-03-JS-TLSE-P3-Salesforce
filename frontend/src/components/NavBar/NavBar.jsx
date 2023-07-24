@@ -124,7 +124,7 @@ export default function NavBar({ activeLink }) {
               <button
                 type="button"
                 onClick={() => {
-                  navigate(`/${companyInfos.slug}/ideas/${userInfos.id}`);
+                  navigate(`/${companyInfos.slug}/users/ideas/`);
                 }}
                 aria-hidden="true"
               >

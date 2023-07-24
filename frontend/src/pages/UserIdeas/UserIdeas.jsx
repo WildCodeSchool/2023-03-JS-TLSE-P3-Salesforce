@@ -42,7 +42,7 @@ export default function UserIdeas() {
         .get(
           `${import.meta.env.VITE_BACKEND_URL}/companies/${
             companyInfos.id
-          }/ideas/${userInfos.id}/`,
+          }/users/${userInfos.id}/ideas/`,
           {
             headers: { Authorization: `Bearer ${userToken}` },
           }
