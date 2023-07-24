@@ -14,6 +14,7 @@ import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
 import Connection from "../../components/Connection/Connection";
 import NewTeamModal from "../../components/NewTeamModal/NewTeamModal";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
 import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 
 export default function Home() {
@@ -25,11 +26,11 @@ export default function Home() {
   const [teams, setTeams] = useState([]);
   const [pagePart, setPagePart] = useState("ideas");
   const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
+
   // eslint-disable-next-line no-unused-vars
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
   const [searchTermIdea, setSearchTermIdea] = useState("");
   const [searchTermTeam, setSearchTermTeam] = useState("");
-
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
@@ -99,6 +100,12 @@ export default function Home() {
 
   return (
     <div>
+      {pagePart === "ideas" && isNewIdeaModalOpen && (
+        <NewIdeaModal
+          isNewIdeaModalOpen={isNewIdeaModalOpen}
+          setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+        />
+      )}
       {userToken &&
       Object.keys(userInfos).length &&
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
@@ -236,6 +243,13 @@ export default function Home() {
                   <NewTeamModal
                     isNewTeamModalOpen={isNewTeamModalOpen}
                     setIsNewTeamModalOpen={setIsNewTeamModalOpen}
+                  />
+                )}
+
+                {isNewIdeaModalOpen && (
+                  <NewIdeaModal
+                    isNewIdeaModalOpen={isNewIdeaModalOpen}
+                    setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
                   />
                 )}
               </div>
