@@ -3,7 +3,6 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import CompanyContext from "../../contexts/CompanyContext";
 import AuthContext from "../../contexts/AuthContext";
-import SearchBar from "../SearchBar/SearchBar";
 import "./NewTeamModal.scss";
 
 export default function NewTeamModal({ setIsNewTeamModalOpen }) {
@@ -182,7 +181,6 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
                 <div className="input-help">
                   Ajoutez des membres à votre équipe
                 </div>
-                <SearchBar />
               </div>
             </div>
 

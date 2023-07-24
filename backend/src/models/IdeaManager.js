@@ -152,6 +152,18 @@ class IdeaManager extends AbstractManager {
       [title, description, fileId, companyId, userId, ideaId]
     );
   }
+
+  updateCoordinatesIdea(idea) {
+    const { x_coordinate, y_coordinate, id } = idea;
+    return this.database.query(
+      `UPDATE ${this.table} 
+    SET
+      x_coordinate = ?,
+      y_coordinate = ?
+    WHERE ${this.table}.id = ?`,
+      [x_coordinate, y_coordinate, id]
+    );
+  }
 }
 
 module.exports = IdeaManager;
