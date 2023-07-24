@@ -4,7 +4,6 @@
 .avatars-list {
   display: flex;
   & > * {
-      @include shadow("lg");
     margin-right: -0.75rem;
   }
 }

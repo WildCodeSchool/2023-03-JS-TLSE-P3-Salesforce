@@ -4,11 +4,16 @@ import { useEffect, useContext, useState } from "react";
 import { sanitize } from "isomorphic-dompurify";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Splide, SplideSlide } from "@splidejs/react-splide";
+// eslint-disable-next-line import/no-unresolved
+import "@splidejs/react-splide/css";
 import NavBar from "../../components/NavBar/NavBar";
 
 import CompanyContext from "../../contexts/CompanyContext";
 import AuthContext from "../../contexts/AuthContext";
 import AvatarsList from "../../components/AvatarsList/AvatarsList";
+import WorkspaceCard from "../../components/WorkspaceCard/WorkspaceCard";
+import IdeaCard from "../../components/IdeaCard/IdeaCard";
 
 export default function Team() {
   const navigate = useNavigate();
@@ -18,6 +23,7 @@ export default function Team() {
   const [teamInfos, setTeamInfos] = useState({});
   const [teamMembers, setTeamMembers] = useState([]);
   const [teamsWorkspaces, setTeamsWorkspaces] = useState([]);
+  const [teamsIdeas, setTeamsIdeas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -46,6 +52,9 @@ export default function Team() {
         `${import.meta.env.VITE_BACKEND_URL}/teams/${team_id}/workspaces/${
           userInfos.id
         }`,
+        `${import.meta.env.VITE_BACKEND_URL}/teams/${team_id}/ideas/${
+          userInfos.id
+        }`,
       ];
       Promise.all(
         endpoints.map((endpoint) =>
@@ -59,10 +68,12 @@ export default function Team() {
             { data: dbTeams },
             { data: dbMembers },
             { data: dbWorkspaces },
+            { data: dbTeamIdeas },
           ]) => {
             setTeamInfos(dbTeams[0]);
             setTeamMembers(dbMembers);
             setTeamsWorkspaces(dbWorkspaces);
+            setTeamsIdeas(dbTeamIdeas);
             setIsLoading(false);
           }
         )
@@ -114,17 +125,79 @@ export default function Team() {
                 </div>
               </header>
             )}
+            {teamsWorkspaces.length > 0 ? (
+              <section className="workspaces">
+                <div className="header">Espaces de travail d'équipe</div>
+
+                <Splide
+                  aria-label="Teams Workspaces"
+                  className="container"
+                  options={{
+                    rewind: true,
+
+                    focus: 0,
+                    omitEnd: true,
+                    arrows: false,
+                    perPage: 3.5,
+                    perMove: 1,
+                    gap: "1rem",
+                    pagination: false,
+                    wheel: true,
+                    breakpoints: {
+                      1200: {
+                        perPage: 2.5,
+                      },
+                      768: {
+                        perPage: 1.25,
+                      },
+                    },
+                  }}
+                >
+                  {teamsWorkspaces.map((workspace) => (
+                    <SplideSlide key={workspace.id}>
+                      <WorkspaceCard workspace={workspace} />
+                    </SplideSlide>
+                  ))}
+                </Splide>
+              </section>
+            ) : null}
+            {teamsIdeas.length > 0 ? (
+              <section className="ideas">
+                <div className="header">Idées d'équipe</div>
+
+                <Splide
+                  aria-label="Teams Ideas"
+                  className="container"
+                  options={{
+                    rewind: true,
+
+                    focus: 0,
+                    omitEnd: true,
+                    arrows: false,
+                    perPage: 3.5,
+                    perMove: 1,
+                    gap: "1rem",
+                    pagination: false,
+                    wheel: true,
+                    breakpoints: {
+                      1200: {
+                        perPage: 2.5,
+                      },
+                      768: {
+                        perPage: 1.25,
+                      },
+                    },
+                  }}
+                >
+                  {teamsIdeas.map((idea) => (
+                    <SplideSlide key={idea.id}>
+                      <IdeaCard idea={idea} />
+                    </SplideSlide>
+                  ))}
+                </Splide>
+              </section>
+            ) : null}
           </div>
-          {teamsWorkspaces.length > 0 ? (
-            <section className="workspaces">
-              <div className="header">Tableaux d'équipe</div>
-              <div className="container">
-                {teamsWorkspaces.map((workspace) => (
-                  <div className="test">{workspace.name}</div>
-                ))}
-              </div>
-            </section>
-          ) : null}
         </main>
       ) : (
         navigate(`/${company_slug}`)

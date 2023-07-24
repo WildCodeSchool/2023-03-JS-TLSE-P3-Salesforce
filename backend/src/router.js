@@ -134,6 +134,13 @@ router.delete(
   teamControllers.deleteUserFromTeam
 );
 
+// Get all ideas for a team (:user_id is used to get the user's liked ideas)
+router.get(
+  "/teams/:team_id/ideas/:user_id",
+  verifyToken,
+  teamControllers.getTeamIdeas
+);
+
 /* ---- WORKSPACES ROUTES ---- */
 
 const workspaceControllers = require("./controllers/workspaceControllers");
@@ -143,7 +150,8 @@ const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");
 router.get(
   "/teams/:team_id/workspaces/:user_id",
   verifyToken,
-  workspaceMiddlewares.workspaceVerifySalesForceAdminRole,
+  workspaceMiddlewares.workspaceVerifyUserInWorkspace,
+  workspaceMiddlewares.workspaceVerifyRole,
   workspaceControllers.getTeamWorkspaces
 );
 

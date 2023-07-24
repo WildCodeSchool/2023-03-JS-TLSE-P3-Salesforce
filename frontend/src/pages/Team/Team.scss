@@ -3,6 +3,9 @@
 @use "../../styles/button" as *;
 
 .team {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
   header {
     display: flex;
     flex-direction: column;
@@ -11,12 +14,12 @@
 
     .picture {
       width: 100%;
-      min-height: 15rem;
       max-height: 17rem;
       align-self: stretch;
       border-radius: 1.25rem;
       overflow: hidden;
       flex-shrink: 0;
+      order: 1;
 
       img {
         width: 100%;
@@ -65,6 +68,60 @@
       }
     }
   }
+
+  section.workspaces {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--grey-200);
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    .header {
+      display: flex;
+      padding: 1.25rem 1.5rem;
+      align-items: center;
+      gap: 1rem;
+      align-self: stretch;
+      justify-content: space-between;
+      background-color: var(--grey-50);
+      border-bottom: 1px solid var(--grey-200);
+
+      @include text("lg", $weight: 500);
+      color: var(--grey-900);
+    }
+    .container {
+      padding: 1.5rem;
+    }
+  }
+
+  section.ideas {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--grey-200);
+    border-radius: 0.75rem;
+    overflow: hidden;
+
+    .header {
+      display: flex;
+      padding: 1.25rem 1.5rem;
+      align-items: center;
+      gap: 1rem;
+      align-self: stretch;
+      justify-content: space-between;
+      background-color: var(--grey-50);
+      border-bottom: 1px solid var(--grey-200);
+
+      @include text("lg", $weight: 500);
+      color: var(--grey-900);
+    }
+    .container {
+      padding: 1.5rem;
+      .idea-card {
+        cursor: grab;
+        height: 100%;
+      }
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -78,6 +135,7 @@
         border-radius: 1.25rem;
         overflow: hidden;
         flex-shrink: 0;
+        order: 0;
       }
       .container {
         flex-direction: row;

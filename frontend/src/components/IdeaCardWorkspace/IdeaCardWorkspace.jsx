@@ -20,7 +20,7 @@ export default function IdeaCardWorkspace({ idea }) {
 
   return (
     <Draggable bounds="parent" axis="both">
-      <div className="idea-card">
+      <div className="idea-card-workspace">
         <div className="header-card">
           {/* ajout du titre en entete  */}
           <h2 className="title-idea">{idea.title}</h2>
