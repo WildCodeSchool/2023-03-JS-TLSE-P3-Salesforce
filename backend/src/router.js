@@ -157,7 +157,7 @@ router.get(
 router.get(
   "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
-  workspaceControllers.getTeamWorkspaces
+  workspaceControllers.getUserWorkspaces
 );
 
 // Get all users for a workspace

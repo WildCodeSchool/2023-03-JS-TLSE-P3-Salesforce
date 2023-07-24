@@ -28,6 +28,7 @@ const getTeamByWorkspace = (req, res) => {
 
 const getUserWorkspaces = (req, res) => {
   const { user_id, company_id } = req.params;
+
   models.workspace
     .findUserWorkspacesByUserAndCompanyId(user_id, company_id)
     .then(([rows]) => {
