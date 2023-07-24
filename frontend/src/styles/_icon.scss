@@ -55,6 +55,9 @@ $icons: (
   width: map-get($icons-size, width);
   i::before {
     font-size: map-get($icons-size, i-font-size);
+    line-height: unset;
+    display: inline-block;
+    vertical-align: middle;
   }
 
   @if ($shape == "circle") {

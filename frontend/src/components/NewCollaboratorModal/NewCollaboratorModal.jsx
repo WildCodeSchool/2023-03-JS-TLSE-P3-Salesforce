@@ -179,9 +179,9 @@ export default function NewCollaboratorModal({
               <i className="fi fi-rr-user-add" />
             </div>
             <div className="content">
-              <h3>Nouveau membre</h3>
+              <h3>Collaborez</h3>
               <p className="details">
-                Invitez vos collaborateurs à l'espace de travail
+                Donnez vie à vos idées en collaborant avec votre équipe.
               </p>
             </div>
             <button
@@ -196,7 +196,7 @@ export default function NewCollaboratorModal({
             <div className="form">
               {usersByTeam.length !== 0 && (
                 <div className="members-team-modal">
-                  <p>Membres de l'équipe</p>
+                  <p className="label">Membres de l'équipe</p>
                   {usersByTeam.length > 0 &&
                     usersByTeam.map((user) => (
                       <div className="user-and-infos" key={user.id}>
@@ -223,7 +223,7 @@ export default function NewCollaboratorModal({
               )}
               {!allIdsIncludedInWorkspace ? (
                 <div className="search-results">
-                  <p>Membres de l'espace de travail</p>
+                  <p className="label">Membres de l'espace de travail</p>
                   {usersByWorkspace.length !== 0 &&
                     usersByWorkspace.map(
                       (user) =>
@@ -265,7 +265,7 @@ export default function NewCollaboratorModal({
 
               <div className="input-line">
                 <div className="input-field">
-                  <p>Adresse email</p>
+                  <p className="label">Adresse email</p>
                   <div className="input-help">
                     Renseignez l'adresse mail du membre de votre entreprise avec
                     qui collaborer

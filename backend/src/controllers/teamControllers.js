@@ -180,6 +180,19 @@ const deleteUserFromTeam = (req, res) => {
     });
 };
 
+const getTeamIdeas = (req, res) => {
+  const { team_id, user_id } = req.params;
+  models.team
+    .findTeamIdeas(team_id, user_id)
+    .then(([rows]) => {
+      res.status(200).send(rows);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 module.exports = {
   getTeams,
   getTeam,
@@ -190,4 +203,5 @@ module.exports = {
   updateTeamProfile,
   deleteTeamFromCompany,
   deleteUserFromTeam,
+  getTeamIdeas,
 };

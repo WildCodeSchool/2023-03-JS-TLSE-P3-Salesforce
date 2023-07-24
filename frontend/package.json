@@ -7,6 +7,7 @@
     "fix": "prettier --write . && eslint --fix --ext .jsx ."
   },
   "dependencies": {
+    "@splidejs/react-splide": "^0.7.12",
     "@splidejs/splide": "^4.1.4",
     "@vitejs/plugin-react": "^3.0.1",
     "axios": "^1.4.0",
