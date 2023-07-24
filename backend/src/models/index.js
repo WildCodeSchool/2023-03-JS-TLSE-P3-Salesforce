@@ -78,6 +78,12 @@ const CategoryManager = require("./CategoryManager");
 models.category = new CategoryManager();
 models.category.setDatabase(pool);
 
+// CATEGORY_HAS_IDEA
+const CatHasIdeaManager = require("./CatHasIdeaManager");
+
+models.category_has_idea = new CatHasIdeaManager();
+models.category_has_idea.setDatabase(pool);
+
 // COLOR
 const ColorManager = require("./ColorManager");
 

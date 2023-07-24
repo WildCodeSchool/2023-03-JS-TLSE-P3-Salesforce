@@ -3,17 +3,18 @@ const models = require("../models");
 
 const createIdea = (req, res) => {
   const { company_id, user_id } = req.params;
+  const { title, description } = req.body;
   models.idea
-    .insert(req.body, company_id, user_id)
-    .then(([results]) => {
-      if (results.affectedRows) {
-        res.sendStatus(201);
+    .insert(title, description, company_id, user_id)
+    .then(([result]) => {
+      if (result.affectedRows) {
+        res.status(201).json(result);
       } else {
         res.sendStatus(404);
       }
     })
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.error(error);
       res.sendStatus(500);
     });
 };
