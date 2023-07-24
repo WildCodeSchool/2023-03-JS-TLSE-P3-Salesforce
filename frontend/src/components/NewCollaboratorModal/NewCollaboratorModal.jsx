@@ -194,31 +194,33 @@ export default function NewCollaboratorModal({
           </div>
           <div className="body">
             <div className="form">
-              <div className="members-team-modal">
-                <p>Membres de l'équipe</p>
-                {usersByTeam.length > 0 &&
-                  usersByTeam.map((user) => (
-                    <div className="user-and-infos" key={user.id}>
-                      <div className="user">
-                        <Avatar
-                          type="table"
-                          pictureUrl={user.picture_url || null}
-                          initials={
-                            !user.picture_url
-                              ? user.firstname[0] + user.lastname[0]
-                              : null
-                          }
-                        />
-                        <div className="infos">
-                          <div className="name">
-                            {user.firstname} {user.lastname.toUpperCase()}
+              {usersByTeam.length !== 0 && (
+                <div className="members-team-modal">
+                  <p>Membres de l'équipe</p>
+                  {usersByTeam.length > 0 &&
+                    usersByTeam.map((user) => (
+                      <div className="user-and-infos" key={user.id}>
+                        <div className="user">
+                          <Avatar
+                            type="table"
+                            pictureUrl={user.picture_url || null}
+                            initials={
+                              !user.picture_url
+                                ? user.firstname[0] + user.lastname[0]
+                                : null
+                            }
+                          />
+                          <div className="infos">
+                            <div className="name">
+                              {user.firstname} {user.lastname.toUpperCase()}
+                            </div>
+                            <div className="email">{user.email}</div>
                           </div>
-                          <div className="email">{user.email}</div>
                         </div>
                       </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
+              )}
               {!allIdsIncludedInWorkspace ? (
                 <div className="search-results">
                   <p>Membres de l'espace de travail</p>

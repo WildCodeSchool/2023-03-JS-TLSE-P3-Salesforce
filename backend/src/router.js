@@ -104,10 +104,16 @@ router.get("/companies/:company_id/teams/:team_id", teamControllers.getTeam);
 router.get("/teams/:team_id/users", teamControllers.getAllUsersFromTeam);
 
 // afficher les équipes d'un utilisateur
-router.get("/users/:user_id/teams", teamControllers.getAllTeamsFromUser);
+router.get(
+  "/companies/:company_id/users/:user_id/teams",
+  teamControllers.getAllTeamsFromUser
+);
 
 // créer une équipe
-router.post("/companies/:company_id/teams", teamControllers.addTeamOnCompany);
+router.post(
+  "/companies/:company_id/users/:user_id/teams",
+  teamControllers.addTeamOnCompany
+);
 
 // ajouter un utilisateur dans une équipe
 
@@ -212,7 +218,7 @@ const ideaControllers = require("./controllers/ideaControllers");
 
 // Get all ideas for a user
 router.get(
-  "/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByUser
 );
@@ -283,7 +289,11 @@ router.post(
 );
 
 // Delete a like to an idea
-router.delete("/likes/:liked_id", verifyToken, likeControllers.deleteLike);
+router.delete(
+  "/ideas/:idea_id/likes/users/:user_id",
+  verifyToken,
+  likeControllers.deleteLike
+);
 
 /* ---- COMMENTS ROUTES ---- */
 
@@ -348,14 +358,16 @@ router.delete(
 const categoryControllers = require("./controllers/categoryControllers");
 
 router.get("/categories", categoryControllers.browseCategory);
-
 router.get("/categories/:id", categoryControllers.readCategory);
-
 router.put("/categories/:id", categoryControllers.editCategory);
-
 router.post("/categories", categoryControllers.addCategory);
-
 router.delete("/categories/:id", categoryControllers.destroyCategory);
+
+/* ---- CATEGORY HAS IDEA ---- */
+const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
+
+router.get("/cathasidea", catHasIdeaControllers.browsecatHasIdea);
+router.post("/cathasidea", catHasIdeaControllers.addcatHasIdea);
 
 /* ---- COLORS ROUTES ---- */
 const colorControllers = require("./controllers/colorControllers");

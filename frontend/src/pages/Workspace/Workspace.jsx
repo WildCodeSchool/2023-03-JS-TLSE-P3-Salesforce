@@ -12,7 +12,6 @@ import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
 import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
-import ModalNewIdea from "../../components/ModalNewIdea/ModalNewIdea";
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
 
 export default function Workspace() {
@@ -25,7 +24,6 @@ export default function Workspace() {
   const [dataIdeasWorkspace, setDataIdeasWorkspace] = useState([]);
   const [isLoadingDataIdeasWorkspace, setIsLoadingDataIdeasWorkspace] =
     useState(true);
-  const [isModalNewIdeaOpen, setIsModalNewIdeaOpen] = useState(false);
 
   const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
     useState(false);
@@ -163,11 +161,7 @@ export default function Workspace() {
 
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
-          <button
-            className="button-md-primary-solid"
-            type="button"
-            onClick={() => setIsModalNewIdeaOpen(true)}
-          >
+          <button className="button-md-primary-solid" type="button">
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
@@ -261,9 +255,9 @@ export default function Workspace() {
           </div>
         </div>
       </div>
-      {isModalNewIdeaOpen && (
-        <ModalNewIdea setIsModalNewIdeaOpen={setIsModalNewIdeaOpen} />
-      )}
+      {/* {isNewIdeaModalOpen && (
+        <NewIdeaModal setIsNewIdeaModalOpen={setIsNewIdeaModalOpen} />
+      )} */}
     </main>
   ) : (
     <Home />

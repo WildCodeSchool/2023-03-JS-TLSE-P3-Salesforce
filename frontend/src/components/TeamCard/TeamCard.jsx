@@ -1,8 +1,5 @@
-import React from "react";
 import PropTypes from "prop-types";
-
 import "./TeamCard.scss";
-
 import Badge from "../Badge/Badge";
 
 export default function TeamCard({ team }) {
@@ -41,6 +38,6 @@ TeamCard.defaultProps = {
     name: "titre de l'équipe",
     description: "description de l'équipe",
     objective: "objectif de l'équipe",
-    status: "Inactive", // Mettez ici la valeur de statut par défaut appropriée
+    status: "Inactive",
   },
 };
