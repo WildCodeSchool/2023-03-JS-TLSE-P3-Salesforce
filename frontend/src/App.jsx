@@ -9,6 +9,7 @@ import Workspace from "./pages/Workspace/Workspace";
 import UserIdeas from "./pages/UserIdeas/UserIdeas";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
+import UserTeams from "./pages/UserTeams/UserTeams";
 
 import "./styles/reset.css";
 import "./styles/index.scss";
@@ -28,6 +29,11 @@ function App() {
               <Route
                 path="/:company_slug/users/ideas"
                 element={<UserIdeas />}
+              />
+
+              <Route
+                path="/:company_slug/users/teams"
+                element={<UserTeams />}
               />
 
               <Route
