@@ -3,7 +3,7 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/icon" as *;
 
-.new-user-modal {
+.new-idea-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -52,7 +52,12 @@
       border-bottom: 1px solid var(--grey-200);
 
       .icon {
-        @include icon("lg", $color: "grey", $style: "border", $shape: "square");
+        @include icon(
+          "lg",
+          $color: "primary",
+          $style: "outline",
+          $shape: "square"
+        );
       }
 
       .content {
@@ -60,11 +65,9 @@
         h3 {
           color: var(--grey-800);
           @include text("lg", $weight: 500);
-          text-wrap: balance;
         }
         .details {
           color: var(--grey-500);
-          text-wrap: balance;
         }
       }
       .close {
@@ -85,15 +88,10 @@
     }
     .body {
       padding: 1.5rem;
-
       form {
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        .input-line {
-          display: flex;
-          flex-direction: column;
-        }
       }
       .actions {
         display: flex;
@@ -110,7 +108,7 @@
 }
 
 @media screen and (min-width: 768px) {
-  .new-user-modal {
+  .new-idea-modal {
     .container {
       background-color: var(--white);
       width: clamp(40%, 50%, 50%);

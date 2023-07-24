@@ -121,4 +121,18 @@
       }
     }
   }
+  &-grey {
+    border: 1px solid var(--grey-200);
+    .icon {
+      @include icon("md", $color: "grey", $style: "border", $shape: "square");
+    }
+    .alert-content {
+      color: var(--grey-700);
+    }
+    .close {
+      i {
+        color: var(--grey-500);
+      }
+    }
+  }
 }

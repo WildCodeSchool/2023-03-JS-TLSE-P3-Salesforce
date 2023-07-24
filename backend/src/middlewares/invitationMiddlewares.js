@@ -32,6 +32,20 @@ const invitationVerifyUserInCompany = (req, res, next) => {
   });
 };
 
+const invitationVerifyUserInTeam = (req, res, next) => {
+  const { team_id, user_id } = req.params;
+
+  models.user.getUsersInTeam(team_id, user_id).then(([rows]) => {
+    const rowsLength = rows.length;
+    if (rowsLength > 0) {
+      req.userInTeam = true;
+    } else {
+      req.userInTeam = false;
+    }
+    next();
+  });
+};
+
 const sendInvitationMail = (req, res, next) => {
   const {
     email,
@@ -232,6 +246,7 @@ const invitationNewUser = (req, res, next) => {
 module.exports = {
   invitationVerifyUserExists,
   invitationVerifyUserInCompany,
+  invitationVerifyUserInTeam,
   invitationNewUser,
   sendInvitationMail,
 };
