@@ -9,7 +9,6 @@ import Badge from "../Badge/Badge";
 import "./ModalNewIdea.scss";
 
 export default function NewIdeaModal({ setIsIdeaModalOpen }) {
-  // const AuthValue = useContext(AuthContext);
   const { userToken, userInfos } = useContext(AuthContext);
   const { companyInfos } = useContext(CompanyContext);
   const [titleIdea, setTitleIdea] = useState([]);
@@ -59,23 +58,6 @@ export default function NewIdeaModal({ setIsIdeaModalOpen }) {
       parseInt(companyInfos.id, 10),
       userInfos.id,
     ];
-    // console.log(formObject);
-
-    // axios
-    //   .post(`${import.meta.env.VITE_BACKEND_URL}/ideas`, formObject, {
-    //     headers: {
-    //       Authorization: `Bearer ${userToken}`,
-    //     },
-    //   })
-    //   .then((response) => {
-    //     if (response.status === 201) {
-    //       setIsNewIdeaModalOpen(false);
-    //     }
-    //     mysql;
-    //   })
-    //   .catch((error) => {
-    //     console.error(error.message);
-    //   });
   };
 
   return (

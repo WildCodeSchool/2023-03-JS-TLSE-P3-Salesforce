@@ -222,12 +222,6 @@ export default function Workspace() {
                                 value.title
                                   .toLowerCase()
                                   .includes(searchTerm.toLowerCase())
-                                // value.description
-                                //   .toLowerCase()
-                                //   .includes(searchTerm.toLowerCase()) ||
-                                // value.categories
-                                //   .toLowerCase()
-                                //   .includes(searchTerm.toLowerCase())
                               ) {
                                 return true;
                               }
@@ -255,9 +249,6 @@ export default function Workspace() {
           </div>
         </div>
       </div>
-      {/* {isNewIdeaModalOpen && (
-        <NewIdeaModal setIsNewIdeaModalOpen={setIsNewIdeaModalOpen} />
-      )} */}
     </main>
   ) : (
     <Home />

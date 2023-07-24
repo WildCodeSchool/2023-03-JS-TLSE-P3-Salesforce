@@ -167,10 +167,3 @@ class IdeaManager extends AbstractManager {
 }
 
 module.exports = IdeaManager;
-
-// UPDATE idea
-// LEFT JOIN workspace ON workspace.id = idea.workspace_id
-// SET
-//   x_coordinate = 150,
-//   y_coordinate = 350
-// WHERE idea.id = ;

@@ -61,7 +61,6 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
     <Draggable
       bounds="parent"
       axis="both"
-      // onDrag={handleDrag}
       onStop={handleStop}
       position={{ x: position.xcoordinate, y: position.ycoordinate }}
       defaultPosition={{
@@ -71,7 +70,6 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
     >
       <div className="idea-card">
         <div className="header-card">
-          {/* ajout du titre en entete  */}
           <h2 className="title-idea">{idea.title}</h2>
           <SubmenuIdeaButton
             showSubmenu={showSubmenu}

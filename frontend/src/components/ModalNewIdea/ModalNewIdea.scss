@@ -65,11 +65,9 @@
         h3 {
           color: var(--grey-800);
           @include text("lg", $weight: 500);
-          // text-wrap: balance;
         }
         .details {
           color: var(--grey-500);
-          // text-wrap: balance;
         }
       }
       .close {
