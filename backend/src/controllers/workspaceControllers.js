@@ -2,14 +2,9 @@
 const models = require("../models");
 
 const getTeamWorkspaces = (req, res) => {
-  const { team_id } = req.params;
+  const { team_id, user_id } = req.params;
   models.workspace
-    .findWorkspacesByTeamId(
-      team_id,
-      req.isInWorkspace,
-      req.isSalesForceAdmin,
-      req.isCompanyAdmin
-    )
+    .findWorkspacesByTeamId(team_id, user_id, req.isSalesForceAdmin)
     .then(([rows]) => {
       res.status(200).send(rows);
     })
@@ -33,7 +28,6 @@ const getTeamByWorkspace = (req, res) => {
 
 const getUserWorkspaces = (req, res) => {
   const { user_id, company_id } = req.params;
-
   models.workspace
     .findUserWorkspacesByUserAndCompanyId(user_id, company_id)
     .then(([rows]) => {
@@ -46,9 +40,8 @@ const getUserWorkspaces = (req, res) => {
 };
 
 const getWorkspaceUsers = (req, res) => {
-  const { user_id, company_id } = req.params;
   models.workspace
-    .findUserWorkspacesByUserAndCompanyId(user_id, company_id)
+    .findWorkspacesUsersById(req.params.workspace_id)
     .then(([rows]) => {
       res.status(200).send(rows);
     })
