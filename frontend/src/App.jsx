@@ -11,6 +11,7 @@ import UserIdeas from "./pages/UserIdeas/UserIdeas";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
 import UserTeams from "./pages/UserTeams/UserTeams";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 import "./styles/reset.css";
 import "./styles/index.scss";
@@ -54,6 +55,7 @@ function App() {
                 element={<NewPassword />}
               />
               <Route path="/:company_slug/teams/:team_id" element={<Team />} />
+              <Route path="/:company_slug/profile" element={<UserProfile />} />
             </Routes>
           </Router>
         </div>
