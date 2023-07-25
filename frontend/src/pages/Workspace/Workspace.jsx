@@ -13,6 +13,7 @@ import Home from "../Home/Home";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
 import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -28,6 +29,7 @@ export default function Workspace() {
   const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
     useState(false);
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -83,7 +85,7 @@ export default function Workspace() {
         setDataIdeasWorkspace(res.data);
         setIsLoadingDataIdeasWorkspace(false);
       });
-  }, [workspace_id, userInfos.id]);
+  }, [workspace_id, userInfos.id, isNewIdeaModalOpen]);
 
   let creationDateWorkspaceInitial;
   let creationDateWorkspaceSplited;
@@ -173,11 +175,21 @@ export default function Workspace() {
 
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
-          <button className="button-md-primary-solid" type="button">
+          <button
+            className="button-md-primary-solid"
+            type="button"
+            onClick={() => setIsNewIdeaModalOpen(true)}
+          >
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
         </div>
+        {isNewIdeaModalOpen && (
+          <NewIdeaModal
+            isNewIdeaModalOpen={isNewIdeaModalOpen}
+            setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+          />
+        )}
 
         <div className="large-container-workspace">
           <div

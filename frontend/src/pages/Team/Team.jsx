@@ -82,7 +82,6 @@ export default function Team() {
         });
     }
   }, [team_id]);
-
   return (
     <div>
       {userToken &&

@@ -1,6 +1,8 @@
+/* eslint-disable camelcase */
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
 import SearchCategories from "../SearchCategories/SearchCategories";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -16,6 +18,13 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [emptyField, setEmptyField] = useState(false);
   const [colorBadge, setColorBadge] = useState([]);
+  const { workspace_id } = useParams();
+
+  let workspaceId = null;
+  if (workspace_id) {
+    workspaceId = workspace_id;
+  }
+
   /* ---- recupère les catégories ---- */
   useEffect(() => {
     axios
@@ -73,6 +82,7 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
         title: titleIdea,
         description: textIdea,
         fileId: null,
+        workspace_id: workspaceId,
       };
       axios
         .post(
@@ -170,7 +180,9 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
             </div>
             <div className="input-line">
               <div className="input-field">
-                <label htmlFor="company-biography">Description</label>
+                <label htmlFor="company-biography">
+                  Description (obligatoire)
+                </label>
                 <div className="textarea">
                   <textarea
                     name="company-biography"
@@ -178,6 +190,7 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
                     id="company-biography"
                     rows="4"
                     onChange={handleChangeText}
+                    required
                   />
                 </div>
               </div>

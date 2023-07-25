@@ -3,9 +3,9 @@ const models = require("../models");
 
 const createIdea = (req, res) => {
   const { company_id, user_id } = req.params;
-  const { title, description } = req.body;
+  const { title, description, workspace_id } = req.body;
   models.idea
-    .insert(title, description, company_id, user_id)
+    .insert(title, description, company_id, user_id, workspace_id)
     .then(([result]) => {
       if (result.affectedRows) {
         res.status(201).json(result);
