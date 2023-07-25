@@ -105,12 +105,6 @@ export default function Home() {
 
   return (
     <div>
-      {pagePart === "ideas" && isNewIdeaModalOpen && (
-        <NewIdeaModal
-          isNewIdeaModalOpen={isNewIdeaModalOpen}
-          setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
-        />
-      )}
       {userToken &&
       Object.keys(userInfos).length &&
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
@@ -202,7 +196,12 @@ export default function Home() {
                     })
                     .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
               </div>
-              {/* Ajouter la modale de l'idea ci-dessous */}
+              {isNewIdeaModalOpen && (
+                <NewIdeaModal
+                  isNewIdeaModalOpen={isNewIdeaModalOpen}
+                  setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+                />
+              )}
             </>
           )}
 
@@ -248,13 +247,6 @@ export default function Home() {
                   <NewTeamModal
                     isNewTeamModalOpen={isNewTeamModalOpen}
                     setIsNewTeamModalOpen={setIsNewTeamModalOpen}
-                  />
-                )}
-
-                {isNewIdeaModalOpen && (
-                  <NewIdeaModal
-                    isNewIdeaModalOpen={isNewIdeaModalOpen}
-                    setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
                   />
                 )}
               </div>
