@@ -142,6 +142,7 @@ export default function Workspace() {
             {openAlertDelete && (
               <NewDeleteUsersByWorkspaceModal
                 setOpenAlertDelete={setOpenAlertDelete}
+                setDataIdeasWorkspace={setDataIdeasWorkspace}
               />
             )}
             <button

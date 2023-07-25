@@ -6,7 +6,10 @@ import propTypes from "prop-types";
 import AuthContext from "../../contexts/AuthContext";
 import "./NewDeleteUsersByWorkspaceModal.scss";
 
-export default function NewDeleteUsersByWorkspaceModal({ setOpenAlertDelete }) {
+export default function NewDeleteUsersByWorkspaceModal({
+  setOpenAlertDelete,
+  setDataIdeasWorkspace,
+}) {
   const { userToken, userInfos } = useContext(AuthContext);
   const { workspace_id } = useParams();
   const deleteAllIdeasWorkspace = () => {
@@ -22,6 +25,7 @@ export default function NewDeleteUsersByWorkspaceModal({ setOpenAlertDelete }) {
           console.error("les idées n'ont pas été supprimées");
         } else {
           setOpenAlertDelete(false);
+          setDataIdeasWorkspace([]);
         }
       })
       .catch((err) => {
@@ -69,8 +73,10 @@ export default function NewDeleteUsersByWorkspaceModal({ setOpenAlertDelete }) {
 
 NewDeleteUsersByWorkspaceModal.propTypes = {
   setOpenAlertDelete: propTypes.func,
+  setDataIdeasWorkspace: propTypes.func,
 };
 
 NewDeleteUsersByWorkspaceModal.defaultProps = {
   setOpenAlertDelete: () => {},
+  setDataIdeasWorkspace: () => {},
 };
