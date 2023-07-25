@@ -167,12 +167,12 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  insertWorkspace(workspace, companyId) {
-    const { name, isPrivate, description, userId, teamId } = workspace;
+  insertWorkspace(workspace, userId, companyId) {
+    const { name, isPrivate, description, teamId } = workspace;
 
     return this.database.query(
-      `INSERT INTO ${this.table} (name, is_private, description, user_id, team_id, company_id) VALUES ( ?, ?, ?, ?, ?, ?);`,
-      [name, isPrivate, description, userId, teamId, companyId]
+      `INSERT INTO ${this.table} (name, is_private, description, team_id,user_id, company_id) VALUES ( ?, ?, ?, ?, ?, ?);`,
+      [name, isPrivate, description, teamId, userId, companyId]
     );
   }
 

@@ -192,7 +192,7 @@ router.get(
 
 // Create a new workspace and add the creator in the workspace_has_user table
 router.post(
-  "/companies/:company_id/workspaces",
+  "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
   workspaceControllers.createWorkspace
 );
