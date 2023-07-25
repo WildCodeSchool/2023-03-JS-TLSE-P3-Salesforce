@@ -52,15 +52,14 @@ export default function NewDeleteUsersByWorkspaceModal({
               <div className="buttons">
                 <button type="button" className="icon" onClick={closeModal}>
                   Annuler
-                  <i className="fi fi-rr-cross" />
                 </button>
                 <button
                   type="button"
                   className="submit"
                   onClick={deleteAllIdeasWorkspace}
                 >
-                  Valider
-                  <i className="fi fi-rr-check" />
+                  <i className="fi fi-rr-trash" />
+                  Supprimer
                 </button>
               </div>
             </div>

@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Draggable from "react-draggable";
 import "./Workspace.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -96,7 +95,7 @@ export default function Workspace() {
     creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
     creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
     creationDateDayFirst = creationDateWorkspaceSplited[0].split("-");
-    creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
+    creationDateWorkspace = `${creationDateDayFirst[2]}/${creationDateDayFirst[1]}/${creationDateDayFirst[0]}`;
   }
 
   // for save ideas and their position in workspace
@@ -128,7 +127,7 @@ export default function Workspace() {
       {!isLoadingDataUsers && (
         <PageHeader
           title={dataUsersByCompany[0].name}
-          subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+          subtitle={`${dataUsersByCompany[0].team_name} • Créé le  : ${creationDateWorkspace}`}
         >
           <div className="actions">
             <button
@@ -232,11 +231,6 @@ export default function Workspace() {
                           ))}
                       </div>
                     </div>
-                    <Draggable bounds="parent">
-                      <div>
-                        <IdeaCardWorkspace />
-                      </div>
-                    </Draggable>
                   </div>
                 </div>
               </div>
