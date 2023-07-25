@@ -33,7 +33,6 @@ export default function NavBar({ activeLink }) {
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
   const [isNewWorkspaceModalOpen, setIsNewWorkspaceModalOpen] = useState(false);
   const [dataWorkspace, setDataWorkspace] = useState([]);
-  const [setIsLoading] = useState(true);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
@@ -70,7 +69,6 @@ export default function NavBar({ activeLink }) {
         )
         .then((response) => {
           setDataWorkspace(response.data);
-          setIsLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching workspaces:", error);
@@ -128,6 +126,7 @@ export default function NavBar({ activeLink }) {
                 type="button"
                 className={activeLink === "teams" ? "active" : ""}
                 onClick={() => {
+                  closeSubNavBar();
                   navigate(`/${companyInfos.slug}/users/teams/`);
                 }}
                 aria-hidden="true"

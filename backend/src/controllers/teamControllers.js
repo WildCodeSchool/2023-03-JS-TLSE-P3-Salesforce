@@ -60,8 +60,9 @@ const getAllUsersFromTeam = (req, res) => {
 
 // afficher les équipes d'un utilisateur
 const getAllTeamsFromUser = (req, res) => {
+  const { user_id, company_id } = req.params;
   models.team
-    .getTeamsByUserId(req.params.user_id)
+    .getTeamsByUserId(user_id, company_id)
     .then(([result]) => {
       if (result) {
         res.status(200).json(result);

@@ -40,7 +40,7 @@ class TeamManager extends AbstractManager {
   }
 
   // récupérer toutes les teams d'un membre
-  getTeamsByUserId(userId) {
+  getTeamsByUserId(userId, companyId) {
     return this.database.query(
       `SELECT ${this.table}.id,
        ${this.table}.name,
@@ -52,8 +52,8 @@ class TeamManager extends AbstractManager {
           thu.joining_date
        FROM ${this.table} 
        JOIN team_has_user thu ON ${this.table}.id = thu.team_id
-       WHERE thu.user_id = ?`,
-      [userId]
+       WHERE thu.user_id = ? AND ${this.table}.company_id = ? AND ${this.table}.status = "active"`,
+      [userId, companyId]
     );
   }
 
