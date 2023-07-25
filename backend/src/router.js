@@ -173,7 +173,7 @@ router.get(
 router.get(
   "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
-  workspaceControllers.getTeamWorkspaces
+  workspaceControllers.getUserWorkspaces
 );
 
 // Get all users for a workspace
@@ -192,7 +192,7 @@ router.get(
 
 // Create a new workspace and add the creator in the workspace_has_user table
 router.post(
-  "/companies/:company_id/workspaces",
+  "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
   workspaceControllers.createWorkspace
 );
@@ -277,6 +277,13 @@ router.delete(
   "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.deleteIdea
+);
+
+// Delete ideas's workspace
+router.delete(
+  "/workspaces/:workspace_id/ideas",
+  verifyToken,
+  ideaControllers.deleteIdeasWorkspace
 );
 
 /* ---- LIKES ROUTES ---- */

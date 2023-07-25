@@ -10,9 +10,10 @@ import CompanyContext from "../../contexts/CompanyContext";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
-import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
+import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -27,7 +28,8 @@ export default function Workspace() {
 
   const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
     useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [openAlertDelete, setOpenAlertDelete] = useState(false);
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -83,7 +85,7 @@ export default function Workspace() {
         setDataIdeasWorkspace(res.data);
         setIsLoadingDataIdeasWorkspace(false);
       });
-  }, [workspace_id, userInfos.id]);
+  }, [workspace_id, userInfos.id, isNewIdeaModalOpen]);
 
   let creationDateWorkspaceInitial;
   let creationDateWorkspaceSplited;
@@ -129,10 +131,22 @@ export default function Workspace() {
           subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
         >
           <div className="actions">
-            <button className="button-md-red-outline" type="button">
+            <button
+              className="button-md-red-outline"
+              type="button"
+              onClick={() => {
+                setOpenAlertDelete(true);
+              }}
+            >
               <i className="fi fi-rr-trash" />
               Supprimer
             </button>
+            {openAlertDelete && (
+              <NewDeleteUsersByWorkspaceModal
+                setOpenAlertDelete={setOpenAlertDelete}
+                setDataIdeasWorkspace={setDataIdeasWorkspace}
+              />
+            )}
             <button
               className="button-md-grey-outline"
               type="button"
@@ -161,25 +175,21 @@ export default function Workspace() {
 
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
-          <button className="button-md-primary-solid" type="button">
+          <button
+            className="button-md-primary-solid"
+            type="button"
+            onClick={() => setIsNewIdeaModalOpen(true)}
+          >
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
-
-          <div className="search-ideas-workspace">
-            <DataSearchBar
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-              placeholderText="Rechercher une idée"
-            />
-            <div className="filter-and-selecting">
-              <button className="button-md-grey-outline" type="button">
-                <i className="i fi-rr-bars-filter" />
-                filtrer
-              </button>
-            </div>
-          </div>
         </div>
+        {isNewIdeaModalOpen && (
+          <NewIdeaModal
+            isNewIdeaModalOpen={isNewIdeaModalOpen}
+            setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+          />
+        )}
 
         <div className="large-container-workspace">
           <div
@@ -213,27 +223,13 @@ export default function Workspace() {
                         }}
                       >
                         {!isLoadingDataIdeasWorkspace &&
-                          dataIdeasWorkspace
-                            .filter((value) => {
-                              if (searchTerm === "") {
-                                return true;
-                              }
-                              if (
-                                value.title
-                                  .toLowerCase()
-                                  .includes(searchTerm.toLowerCase())
-                              ) {
-                                return true;
-                              }
-                              return false;
-                            })
-                            .map((idea) => (
-                              <IdeaCardWorkspace
-                                key={idea.id}
-                                idea={idea}
-                                setDataIdeasWorkspace={setDataIdeasWorkspace}
-                              />
-                            ))}
+                          dataIdeasWorkspace.map((idea) => (
+                            <IdeaCardWorkspace
+                              key={idea.id}
+                              idea={idea}
+                              setDataIdeasWorkspace={setDataIdeasWorkspace}
+                            />
+                          ))}
                       </div>
                     </div>
                     <Draggable bounds="parent">

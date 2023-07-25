@@ -1,11 +1,13 @@
+/* eslint-disable camelcase */
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import "./TeamCard.scss";
+import { Link, useParams } from "react-router-dom";
 import Badge from "../Badge/Badge";
 
 export default function TeamCard({ team }) {
+  const { company_slug } = useParams();
   return (
-    <Link to={`teams/${team.id}`} className="team-card">
+    <Link to={`/${company_slug}/teams/${team.id}`} className="team-card">
       <div className="team-picture">
         {team.picture_url ? (
           <img src={team.picture_url} alt="team_picture" />

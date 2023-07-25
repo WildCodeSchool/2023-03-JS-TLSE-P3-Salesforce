@@ -1,18 +1,18 @@
 import "./NavBar.scss";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
-
+import axios from "axios";
+import PropTypes from "prop-types";
+import NewWorkspaceModal from "../NewWorkspaceModal/NewWorkspaceModal";
 import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
 import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
-
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
 import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { setUser, userInfos } = useContext(AuthContext);
+  const { setUser, userInfos, userToken } = useContext(AuthContext);
   let initials = "";
   if (userInfos.firstname && userInfos.lastname) {
     initials = userInfos.firstname[0] + userInfos.lastname[0];
@@ -31,6 +31,8 @@ export default function NavBar({ activeLink }) {
   const [showMenu, setShowMenu] = useState(false);
   const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
+  const [isNewWorkspaceModalOpen, setIsNewWorkspaceModalOpen] = useState(false);
+  const [dataWorkspace, setDataWorkspace] = useState([]);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
@@ -41,6 +43,10 @@ export default function NavBar({ activeLink }) {
     }
   }
 
+  function openNewWorkspaceModal() {
+    setIsNewWorkspaceModalOpen(true);
+  }
+
   /* au click, ferme les navbar pouvant être ouvertes ailleurs */
   function closeSubNavBar() {
     if (isSubNavBarWorkspaceOpen === true) {
@@ -49,6 +55,26 @@ export default function NavBar({ activeLink }) {
       setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
     }
   }
+
+  useEffect(() => {
+    if (companyInfos.id && userInfos.id) {
+      axios
+        .get(
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${
+            companyInfos.id
+          }/users/${userInfos.id}/workspaces/`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        )
+        .then((response) => {
+          setDataWorkspace(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching workspaces:", error);
+        });
+    }
+  }, [companyInfos.id, userInfos.id, userToken]);
 
   return (
     <div className="global-nav-bar">
@@ -70,6 +96,7 @@ export default function NavBar({ activeLink }) {
             aria-hidden="true"
           />
         </div>
+
         <div className="main-nav-bar">
           <div className="first-part-buttons-nav-bar">
             <div
@@ -82,7 +109,6 @@ export default function NavBar({ activeLink }) {
               <img src={companyLogoUrl} alt={`Logo de ${companyInfos.name}`} />
             </div>
             <div className="icon-nav-bar">
-              {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
               <button
                 type="button"
                 className={activeLink === "home" ? "active" : ""}
@@ -100,6 +126,7 @@ export default function NavBar({ activeLink }) {
                 type="button"
                 className={activeLink === "teams" ? "active" : ""}
                 onClick={() => {
+                  closeSubNavBar();
                   navigate(`/${companyInfos.slug}/users/teams/`);
                 }}
                 aria-hidden="true"
@@ -112,8 +139,9 @@ export default function NavBar({ activeLink }) {
               <button
                 type="button"
                 className={activeLink === "workspace" ? "active" : ""}
-                // au click, on fait apparaitre le sous-menu
-                onClick={() => openNavBarWorkspace()}
+                onClick={() => {
+                  openNavBarWorkspace();
+                }}
               >
                 <i className="fi fi-rr-apps" />
                 <div className="tooltip">
@@ -201,20 +229,39 @@ export default function NavBar({ activeLink }) {
           {/* ternaire pour faire apparaitre le sous menu des tableaux en fonction du state */}
         </div>
       </nav>
+
       {isSubNavBarWorkspaceOpen && (
         <div className="first-sub-nav-bar">
           <p className="title-sub-nav-bar">Mes espaces de travail</p>
-          <button className="nav-bar-button" type="button">
+          <button
+            className="nav-bar-button"
+            type="button"
+            onClick={openNewWorkspaceModal} // Appeler la fonction pour ouvrir la modal
+          >
             <i className="fi fi-rr-plus" />
             Nouvel espace
           </button>
-          <div className="links-sub-nav-bar">
-            <SubNavBarLink
-              title="Refonte des extranets"
-              subtitle="Pierre DUPONT"
-              navigateLink={`/${companyInfos.slug}/workspaces/1`}
+          {isNewWorkspaceModalOpen && (
+            <NewWorkspaceModal
+              setIsNewWorkspaceModalOpen={setIsNewWorkspaceModalOpen}
             />
-            <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
+          )}
+          <div className="links-sub-nav-bar">
+            {/* Utilisez map pour afficher chaque espace de travail */}
+            {dataWorkspace.map((workspace) => (
+              <SubNavBarLink
+                key={workspace.id}
+                title={workspace.name}
+                subtitle={
+                  workspace.team_name !== null
+                    ? `${workspace.team_name}`
+                    : `${
+                        workspace.creator_firstname
+                      } ${workspace.creator_lastname.toUpperCase()}`
+                }
+                navigateLink={`/${companyInfos.slug}/workspaces/${workspace.id}`}
+              />
+            ))}
           </div>
         </div>
       )}
@@ -343,7 +390,6 @@ export default function NavBar({ activeLink }) {
               <div className="link">
                 <div className="text">
                   <i className="fi fi-rr-interrogation" />
-
                   <p>Mentions légales</p>
                 </div>
               </div>
@@ -392,7 +438,6 @@ export default function NavBar({ activeLink }) {
                   </button>
                 </div>
               </div>
-
               <a
                 className="salesforce-logo"
                 href="https://www.salesforce.com/"
@@ -403,7 +448,6 @@ export default function NavBar({ activeLink }) {
               </a>
             </div>
           </div>
-
           <div className="close-menu-burger">
             <div
               className="icon-nav-bar"
@@ -419,6 +463,7 @@ export default function NavBar({ activeLink }) {
           </div>
         </div>
       )}
+
       {isSubNavBarWorkspaceOpen || isSubNavBarTeamOpen || showMenu ? (
         <div className="filter" onClick={closeSubNavBar} aria-hidden="true" />
       ) : null}
@@ -427,7 +472,7 @@ export default function NavBar({ activeLink }) {
 }
 
 NavBar.propTypes = {
-  activeLink: propTypes.string,
+  activeLink: PropTypes.string,
 };
 
 NavBar.defaultProps = {
