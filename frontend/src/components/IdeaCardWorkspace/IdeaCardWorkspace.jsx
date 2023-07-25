@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import propTypes from "prop-types";
 import Draggable from "react-draggable";
+import LikeButton from "../LikeButton/LikeButton";
 
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 
@@ -9,7 +10,9 @@ import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
 export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
+  const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
+  const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
 
   let ideaXCoordinate;
   if (idea.x_coordinate === null) {
@@ -92,6 +95,15 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
 
           <p className="idea-description">{idea.description}</p>
         </div>
+        <div className="footer-idea">
+          <LikeButton
+            ideaId={idea.id}
+            likeActive={likeActive}
+            likeCount={likeCount}
+            setLikeCount={setLikeCount}
+            setLikeActive={setLikeActive}
+          />
+        </div>
       </div>
     </Draggable>
   );
@@ -105,6 +117,8 @@ IdeaCardWorkspace.propTypes = {
     x_coordinate: propTypes.number,
     y_coordinate: propTypes.number,
     id: propTypes.number,
+    likes_count: propTypes.number,
+    is_liked_by_user: propTypes.number,
   }),
 
   setDataIdeasWorkspace: propTypes.func,
@@ -118,6 +132,8 @@ IdeaCardWorkspace.defaultProps = {
     x_coordinate: 0,
     y_coordinate: 0,
     id: 0,
+    likes_count: 0,
+    is_liked_by_user: 0,
   },
 
   setDataIdeasWorkspace: () => {},
