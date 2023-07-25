@@ -1,31 +1,34 @@
-/* eslint-disable no-restricted-syntax */
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import SearchCategories from "../SearchCategories/SearchCategories";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
-import Badge from "../Badge/Badge";
 import "./NewIdeaModal.scss";
 
 export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
   const [isModalVisible, setIsModalVisible] = useState(true);
   const { userToken, userInfos } = useContext(AuthContext);
   const { companyInfos } = useContext(CompanyContext);
-  const [titleIdea, setTitleIdea] = useState([]);
+  const [titleIdea, setTitleIdea] = useState("");
   const [textIdea, setTextIdea] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [emptyField, setEmptyField] = useState("input-title");
+  const [emptyField, setEmptyField] = useState(false);
   const [colorBadge, setColorBadge] = useState([]);
   /* ---- recupère les catégories ---- */
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/categories`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/companies/${
+          companyInfos.id
+        }/categories`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      )
       .then((response) => {
         if (response.status === 200) {
           setCategories(response.data);
@@ -56,22 +59,11 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
 
   const handleChangeTitle = (e) => {
     setTitleIdea(e.target.value);
-    setEmptyField("input-title");
+    setEmptyField(false);
   };
 
   const handleChangeText = (e) => {
     setTextIdea(e.target.value);
-  };
-
-  const handleKillCategory = (categoryId) => {
-    const newSelectedCategories = [...selectedCategories];
-    const index = newSelectedCategories.findIndex(
-      (category) => category.id === categoryId
-    );
-    if (index > -1) {
-      newSelectedCategories.splice(index, 1);
-    }
-    setSelectedCategories(newSelectedCategories);
   };
 
   const handleSubmit = (e) => {
@@ -123,7 +115,7 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
           console.error(error.message);
         });
     } else {
-      setEmptyField("input-title-empty");
+      setEmptyField(true);
     }
   };
 
@@ -143,63 +135,77 @@ export default function NewIdeaModal({ setIsNewIdeaModalOpen }) {
             </div>
             <div className="content">
               <h3>Nouvelle idée</h3>
-              <p>Faites briller votre imagination avec cette nouvelle idée.</p>
+              <p className="details">
+                Faites briller votre imagination avec cette nouvelle idée.
+              </p>
             </div>
-            <button
-              type="button"
-              className="close"
-              onClick={closeModal}
-              aria-hidden="true"
-            >
+            <button type="button" className="close" onClick={closeModal}>
               <i className="fi fi-rr-cross" />
             </button>
           </div>
           <div className="body">
-            <h3 className="input-label">Titre (obligatoire)</h3>
-            <input
-              className={emptyField} // change
-              type="text"
-              onChange={handleChangeTitle}
-            />
-            <h3 className="input-label">Description</h3>
-            <textarea className="input-text" onChange={handleChangeText} />
-            <h3 className="input-label">Categorie</h3>
+            <div className="input-line">
+              <div
+                className={`input-field ${emptyField && "empty-input-field"}`}
+              >
+                <label htmlFor="title">Titre (obligatoire)</label>
+                <div className="input">
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    value={titleIdea}
+                    placeholder="Donnez un titre à votre idée"
+                    onChange={handleChangeTitle}
+                    required
+                  />
+                  {emptyField && <i className="fi fi-rr-exclamation" />}
+                </div>
+                {emptyField && (
+                  <div className="input-help">
+                    Vous devez indiquer le titre de votre idée
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="input-line">
+              <div className="input-field">
+                <label htmlFor="company-biography">Description</label>
+                <div className="textarea">
+                  <textarea
+                    name="company-biography"
+                    placeholder="Décrivez votre idée en quelques mots"
+                    id="company-biography"
+                    rows="4"
+                    onChange={handleChangeText}
+                  />
+                </div>
+              </div>
+            </div>
+
             <SearchCategories
               categories={categories}
               setSelectedCategories={setSelectedCategories}
               selectedCategories={selectedCategories}
+              colorBadge={colorBadge}
             />
-            <div className="search-badges">
-              {selectedCategories
-                .filter(
-                  (category, index, self) =>
-                    index === self.findIndex((c) => c.id === category.id)
-                )
-                .map((data) => (
-                  <Badge color={colorBadge[data.color].name} key={data.id}>
-                    {data.name}
-                    <i
-                      type="button"
-                      aria-hidden="true"
-                      className="fi fi-rr-cross-small"
-                      onClick={() => handleKillCategory(data.id)}
-                    />
-                  </Badge>
-                ))}
-            </div>
 
             <div className="actions">
               <button
                 type="button"
                 aria-hidden="true"
-                className="cancel"
+                className="button-md-grey-outline"
                 onClick={closeModal}
               >
-                Annuler <i className="fi fi-rr-check" />
+                Annuler
               </button>
-              <button type="button" className="submit" onClick={handleSubmit}>
+              <button
+                type="button"
+                className="button-md-primary-solid"
+                onClick={handleSubmit}
+              >
+                <i className="fi fi-rr-plus" />
                 Ajouter
-                <i className="fi fi-rr-check" />
               </button>
             </div>
           </div>

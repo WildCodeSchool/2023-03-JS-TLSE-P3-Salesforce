@@ -1,54 +1,35 @@
 @use "../../styles/typography" as *;
 @use "../../styles/shadows" as *;
 
-.search-categories {
-  .search-container {
+.search-categories-results {
+  @include shadow("xs");
+  border-radius: 0.75rem;
+  border: 1px solid var(--grey-200);
+  display: flex;
+  flex-direction: column;
+  max-height: 300px;
+  overflow-y: auto;
+  li {
     display: flex;
-    flex-direction: column;
+    padding: 0.75rem;
+    &:hover {
+      background-color: var(--grey-100);
+    }
+    button {
+      padding: 0;
+      margin: 0;
+      text-align: left;
+      width: 100%;
+      border: none;
+      background-color: transparent;
+      @include text("sm");
+      color: var(--grey-700);
+      cursor: pointer;
+    }
   }
-  .search-bar {
-    display: flex;
-  }
-  .search-bar input {
-    font-size: 1rem;
-    border-radius: 0.2rem;
-    padding: 0.2rem;
-    outline: none;
-    border: 1px solid var(--grey-400);
-  }
-  .list {
-    display: initial;
-    position: absolute;
-    z-index: 10;
-    width: 13rem;
-    max-height: 14vh;
-    background-color: var(--grey-200);
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    overflow: scroll;
-  }
-  .list-none {
-    display: none;
-  }
-  .search-button {
-    background-color: var(--white);
-    border-radius: 0.2rem;
-    border: 1px solid var(--grey-400);
-  }
-  .search-button:hover {
-    cursor: pointer;
-  }
-  .search-result {
-    padding: 0.3rem;
-    border-radius: 0.2rem;
-  }
-  .search-result:hover {
-    background-color: var(--grey-100);
-    cursor: pointer;
-  }
-  .result-line {
-    border: none;
-    padding: 0.2rem;
-  }
+}
+.search-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }

@@ -68,7 +68,7 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
         y: ideaYCoordinate,
       }}
     >
-      <div className="idea-card">
+      <div className="idea-card-workspace">
         <div className="header-card">
           <h2 className="title-idea">{idea.title}</h2>
           <SubmenuIdeaButton

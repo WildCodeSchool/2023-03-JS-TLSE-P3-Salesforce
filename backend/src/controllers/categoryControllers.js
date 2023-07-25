@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 const models = require("../models");
 
-const browseCategory = (req, res) => {
+const browseCompanyCategories = (req, res) => {
   models.category
-    .findAll()
+    .findByCompanyId(req.params.company_id)
     .then(([rows]) => {
       res.send(rows);
     })
@@ -79,7 +79,7 @@ const destroyCategory = (req, res) => {
 };
 
 module.exports = {
-  browseCategory,
+  browseCompanyCategories,
   readCategory,
   editCategory,
   addCategory,

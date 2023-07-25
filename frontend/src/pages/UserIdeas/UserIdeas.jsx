@@ -63,7 +63,7 @@ export default function UserIdeas() {
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
         userInfos.is_salesforce_admin) ? (
         <main>
-          <NavBar activeLink="home" />
+          <NavBar activeLink="ideas" />
           <PageHeader
             title="Mes idées"
             subtitle="Voici l'ensemble des idées que vous avez créé, souhaitez-vous en ajouter une autre?"

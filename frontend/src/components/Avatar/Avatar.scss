@@ -26,6 +26,7 @@
     }
   }
   &-table {
+    cursor: default;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,5 +44,43 @@
       width: 100%;
       object-fit: cover;
     }
+  }
+
+  &-avatar-list {
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--grey-50);
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 2.5rem;
+    @include text("md", $weight: 500);
+    color: var(--grey-600);
+    overflow: hidden;
+    border: 1px solid var(--grey-200);
+    @include shadow("lg");
+
+    img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+  &-avatar-list-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-900);
+    min-width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 2.5rem;
+    padding: 0.75rem;
+    @include text("sm", $weight: 500);
+    color: var(--grey-50);
+    overflow: hidden;
+    border: 1px solid var(--primary-800);
+    white-space: nowrap;
+    @include shadow("lg");
   }
 }

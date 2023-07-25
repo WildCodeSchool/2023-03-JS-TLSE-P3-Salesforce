@@ -65,7 +65,7 @@ export default function UserTeams() {
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
         userInfos.is_salesforce_admin) ? (
         <main>
-          <NavBar activeLink="home" />
+          <NavBar activeLink="teams" />
           <PageHeader
             title="Mes équipes"
             subtitle="Voici l'ensemble des équipes dans lesquelles vous faites partie, souhaitez-vous en ajouter une autre?"
@@ -95,22 +95,13 @@ export default function UserTeams() {
                   if (searchTermTeam === "") {
                     return true;
                   }
-
-                  const titleLower = value.title?.toLowerCase();
+                  // on recherche par nom ou via la description
+                  const nameLower = value.name?.toLowerCase();
                   const descriptionLower = value.description?.toLowerCase();
-                  const creatorFirstNameLower =
-                    value.creator_firstname?.toLowerCase();
-                  const creatorLastNameLower =
-                    value.creator_lastname?.toLowerCase();
-
                   // Vérification que les valeurs existent avant d'appeler toLowerCase()
                   return (
-                    titleLower?.includes(searchTermTeam.toLowerCase()) ||
-                    descriptionLower?.includes(searchTermTeam.toLowerCase()) ||
-                    creatorFirstNameLower?.includes(
-                      searchTermTeam.toLowerCase()
-                    ) ||
-                    creatorLastNameLower?.includes(searchTermTeam.toLowerCase())
+                    nameLower?.includes(searchTermTeam.toLowerCase()) ||
+                    descriptionLower?.includes(searchTermTeam.toLowerCase())
                   );
                 })
                 .map((team) => <TeamCard key={team.id} team={team} />)}
