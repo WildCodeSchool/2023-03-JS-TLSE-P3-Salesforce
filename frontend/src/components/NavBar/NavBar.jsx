@@ -476,5 +476,5 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  activeLink: "home",
+  activeLink: null,
 };
