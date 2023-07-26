@@ -151,7 +151,6 @@ export default function NewWorkspaceModal({ setIsNewWorkspaceModalOpen }) {
               </div>
             </div>
 
-           
             {hasConnectionFailed && (
               <div className="error-message">
                 Erreur lors de la création de l'espace personnel. Veuillez

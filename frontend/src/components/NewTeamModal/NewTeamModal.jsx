@@ -179,7 +179,6 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
               </div>
             </div>
 
-        
             {hasConnectionFailed && (
               <div className="error-message">
                 Erreur lors de la création de l'équipe. Veuillez réessayer.
