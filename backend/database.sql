@@ -765,6 +765,16 @@ VALUES
         4,
         3
     ),
+     (
+        'Analyse des données pour la prise de décision',
+        '2023-07-21 12:00:00',
+        '2023-07-21 14:30:00',
+        "Investissez dans des solutions d'analyse de données pour collecter, traiter et interpréter les informations pertinentes sur les performances de l'entreprise. Cela peut aider à prendre des décisions plus éclairées et à anticiper les tendances du marché.",
+        0,
+        6,
+        4,
+        3
+    ),
     (
         'Workspace 2',
         '2023-06-21 13:30:00',
@@ -843,7 +853,7 @@ VALUES
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         1
     ),
@@ -911,7 +921,7 @@ VALUES
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ),
@@ -928,7 +938,7 @@ VALUES
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ),
@@ -945,7 +955,7 @@ VALUES
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ),
@@ -962,7 +972,7 @@ VALUES
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ),
@@ -1030,7 +1040,7 @@ VALUES
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ),
@@ -1047,7 +1057,7 @@ VALUES
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ),
@@ -1064,7 +1074,7 @@ VALUES
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     );
