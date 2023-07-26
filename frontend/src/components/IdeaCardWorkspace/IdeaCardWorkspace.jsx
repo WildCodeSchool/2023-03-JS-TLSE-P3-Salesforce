@@ -9,7 +9,12 @@ import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
-export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
+export default function IdeaCardWorkspace({
+  idea,
+  setDataIdeasWorkspace,
+  setHigherZIndex,
+  higherZIndex,
+}) {
   const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
   const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
@@ -53,6 +58,12 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
       })
     );
   };
+  const [currentZIndex, setCurrentZIndex] = useState(0);
+
+  const handleStart = () => {
+    setHigherZIndex((prevHigherZIndex) => prevHigherZIndex + 1);
+    setCurrentZIndex(higherZIndex);
+  };
 
   if (idea.categories) {
     const nameAndColorCategories = idea.categories;
@@ -70,8 +81,14 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
         x: ideaXCoordinate,
         y: ideaYCoordinate,
       }}
+      onStart={handleStart}
     >
-      <div className="idea-card-workspace">
+      <div
+        className="idea-card-workspace"
+        style={{
+          zIndex: currentZIndex,
+        }}
+      >
         <div className="header-card">
           <h2 className="title-idea">{idea.title}</h2>
           <SubmenuIdeaButton
@@ -122,6 +139,8 @@ IdeaCardWorkspace.propTypes = {
   }),
 
   setDataIdeasWorkspace: propTypes.func,
+  setHigherZIndex: propTypes.func,
+  higherZIndex: propTypes.number,
 };
 
 IdeaCardWorkspace.defaultProps = {
@@ -137,4 +156,6 @@ IdeaCardWorkspace.defaultProps = {
   },
 
   setDataIdeasWorkspace: () => {},
+  setHigherZIndex: () => {},
+  higherZIndex: 0,
 };
