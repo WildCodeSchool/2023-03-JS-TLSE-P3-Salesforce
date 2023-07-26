@@ -10,6 +10,8 @@ class UserManager extends AbstractManager {
     return this.database.query(
       `SELECT
       ${this.table}.*,
+      uhc.function,
+      uhc.biography,
       (
         SELECT
           GROUP_CONCAT(DISTINCT uhc.company_id)
@@ -51,7 +53,7 @@ class UserManager extends AbstractManager {
   // récupérer un utilisateur
   getOneUser(company_id, user_id) {
     return this.database.query(
-      `SELECT ${this.table}.id, ${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=? AND ${this.table}.id =?`,
+      `SELECT ${this.table}.id, ${this.table}.firstname,${this.table}.lastname,${this.table}.email,${this.table}.picture_url, uhc.function, uhc.biography FROM ${this.table} JOIN user_has_company AS uhc ON uhc.user_id=${this.table}.id JOIN company AS c ON c.id=uhc.company_id WHERE c.id=? AND ${this.table}.id =?`,
       [company_id, user_id]
     );
   }

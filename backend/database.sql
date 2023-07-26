@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `team` (
     `creation_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `is_private` TINYINT NOT NULL DEFAULT 0,
     `picture_url` LONGTEXT NULL,
-    `description` VARCHAR(255) NULL,
+    `description` TEXT NULL,
     `objective` VARCHAR(255) NULL,
     `status` VARCHAR(45) NULL,
     `user_id` INT NOT NULL,
@@ -414,7 +414,7 @@ VALUES
         'Cédric',
         'Palacio-Vidal',
         'cedric.palacio@gmail.com',
-        '$argon2id$v=19$m=65536,t=5,p=1$4PxtA5qNt2r39SyKbo2kaQ$24kugoP+Kh+xzTTFDJdYxYR/hDfAT3By+wIQtepQy8U',
+        '$argon2id$v=19$m=65536,t=5,p=1$tO0qzpUMyBpwYBKHzuUWzg$0RSZDMuf6ts+u4VDGSOTGj+JDhYVSSN/sGlc9jAXGg8',
         'https://res.cloudinary.com/dmmifezda/image/upload/v1689019795/profile-pictures/cedric_wxfm8y.jpg',
         1,
         1
@@ -688,14 +688,47 @@ VALUES
         1
     ),
     (
-        'Team 4',
+        'Exploration culinaire',
         '2023-06-21 15:15:00',
-        1,
-        NULL,
-        NULL,
+        0,
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2671&q=80",
+        "Des experts passionnés par la découverte de nouvelles saveurs et tendances culinaires, chargés d'explorer et de dénicher des recettes uniques et innovantes pour enrichir constamment notre base de données.",
         NULL,
         'Active',
-        3,
+        4,
+        3
+    ),
+    (
+        'Développement de contenu',
+        '2023-06-21 15:15:00',
+        0,
+        "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
+        "Des créatifs talentueux spécialisés dans la création de contenu culinaire attrayant et engageant, chargés de développer des descriptions de recettes, des vidéos tutoriels et des articles pour inspirer et guider nos utilisateurs.",
+        NULL,
+        'Active',
+        4,
+        3
+    ),
+    (
+        'Expérience utilisateur',
+        '2023-06-21 15:15:00',
+        0,
+        "https://images.unsplash.com/photo-1572021335469-31706a17aaef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2670&q=80",
+        "Des professionnels dédiés à garantir une expérience utilisateur exceptionnelle sur notre application, en travaillant sur l'interface conviviale, la navigation fluide et les fonctionnalités intuitives pour faciliter la recherche et la suggestion de recettes adaptées aux besoins et préférences de chacun.",
+        NULL,
+        'Active',
+        4,
+        3
+    ),
+    (
+        'Partenariats gastronomiques',
+        '2023-06-21 15:15:00',
+        0,
+        NULL,
+        "Des négociateurs et relationnistes compétents établissant des partenariats avec des chefs renommés, des marques alimentaires et des experts culinaires pour offrir des collaborations exclusives, des conseils d'experts et des événements spéciaux à notre communauté d'utilisateurs passionnés de cuisine.",
+        NULL,
+        'Active',
+        4,
         3
     );
 
@@ -718,7 +751,17 @@ VALUES
         '2023-06-21 14:30:00',
         'Nouvelles fonctionnalités à développer',
         1,
-        1,
+        5,
+        4,
+        3
+    ),
+    (
+        'Interface 2.0',
+        '2023-06-21 12:00:00',
+        '2023-06-21 14:30:00',
+        'Nouvelles fonctionnalités à développer',
+        0,
+        6,
         4,
         3
     ),
@@ -830,10 +873,10 @@ VALUES
         300,
         400,
         2,
-        2,
-        2,
-        1,
-        1,
+        3,
+        3,
+        3,
+        NULL,
         NULL,
         NULL,
         1
@@ -866,7 +909,7 @@ VALUES
         NULL,
         3,
         1,
-        1,
+        NULL,
         NULL,
         NULL,
         NULL,
@@ -900,7 +943,7 @@ VALUES
         NULL,
         3,
         1,
-        1,
+        NULL,
         NULL,
         NULL,
         NULL,
@@ -934,7 +977,7 @@ VALUES
         NULL,
         3,
         1,
-        1,
+        NULL,
         NULL,
         NULL,
         NULL,
@@ -985,7 +1028,7 @@ VALUES
         NULL,
         3,
         1,
-        1,
+        NULL,
         NULL,
         NULL,
         NULL,
@@ -1156,16 +1199,16 @@ VALUES
 INSERT INTO
     `liked` (`date`, `idea_id`, `user_id`)
 VALUES
-    ('2023-06-21 12:00:00', 1, 1),
-    ('2023-06-21 13:30:00', 2, 2),
-    ('2023-06-21 14:45:11', 3, 1),
-    ('2023-06-21 15:15:22', 4, 3),
-    ('2023-06-21 12:00:35', 1, 2),
-    ('2023-06-21 13:30:08', 2, 3),
+    ('2023-06-21 12:00:00', 14, 1),
+    ('2023-06-21 13:30:00', 14, 2),
+    ('2023-06-21 14:45:11', 5, 7),
+    ('2023-06-21 15:15:22', 5, 3),
+    ('2023-06-21 12:00:35', 5, 2),
+    ('2023-06-21 13:30:08', 14, 3),
     ('2023-06-21 14:45:50', 3, 6),
     ('2023-06-21 15:15:00', 4, 2),
-    ('2023-06-21 12:00:02', 1, 3),
-    ('2023-06-21 13:30:09', 2, 4),
+    ('2023-06-21 12:00:02', 5, 3),
+    ('2023-06-21 13:30:09', 5, 4),
     ('2023-06-21 14:45:30', 3, 5),
     ('2023-06-21 15:15:10', 4, 1);
 
@@ -1207,6 +1250,21 @@ VALUES
     (1, 1, '2023-06-21 12:00:00', 1),
     (2, 2, '2023-06-21 13:30:00', 0),
     (3, 2, '2023-06-21 14:45:00', 1),
+    (4, 3, '2023-06-21 15:15:00', 0),
+    (4, 5, '2023-06-21 15:15:00', 0),
+    (5, 3, '2023-06-21 15:15:00', 0),
+    (5, 6, '2023-06-21 15:15:00', 0),
+    (5, 8, '2023-06-21 15:15:00', 0),
+    (6, 3, '2023-06-21 15:15:00', 0),
+    (6, 9, '2023-06-21 15:15:00', 0),
+    (6, 10, '2023-06-21 15:15:00', 0),
+    (6, 11, '2023-06-21 15:15:00', 0),
+    (6, 12, '2023-06-21 15:15:00', 0),
+    (7, 3, '2023-06-21 15:15:00', 0),
+    (7, 1, '2023-06-21 15:15:00', 0),
+    (7, 3, '2023-06-21 15:15:00', 0),
+    (7, 5, '2023-06-21 15:15:00', 0),
+    (7, 8, '2023-06-21 15:15:00', 0),
     (1, 4, '2023-06-21 15:15:00', 0);
 
 --  CATEGORY HAS IDEA
@@ -1261,19 +1319,20 @@ VALUES
         1
     ),
     (
-        4,
-        3,
-        '',
-        'Fondateur de CookBuddy',
-        0
-    ),
-    (
         5,
         4,
         'Biography 5',
         'Function 5',
         0
-    );
+    ),
+    (6, 3, null, null, 0),
+    (7, 3, null, null, 0),
+    (8, 3, null, "Fondatrice de Cookbuddy", 1),
+    (9, 3, null, null, 0),
+    (10, 3, null, null, 0),
+    (11, 3, null, null, 0),
+    (12, 3, null, null, 0),
+    (5, 3, null, null, 0);
 
 --  WORKSPACE HAS USER
 INSERT INTO

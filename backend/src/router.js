@@ -95,10 +95,18 @@ router.put(
 const teamControllers = require("./controllers/teamControllers");
 
 // afficher les équipes d'une entreprise
-router.get("/companies/:company_id/teams", teamControllers.getTeams);
+router.get(
+  "/companies/:company_id/teams",
+  verifyToken,
+  teamControllers.getTeams
+);
 
 // afficher une équipe
-router.get("/companies/:company_id/teams/:team_id", teamControllers.getTeam);
+router.get(
+  "/companies/:company_id/teams/:team_id",
+  verifyToken,
+  teamControllers.getTeam
+);
 
 // afficher les membres d'une équipe
 router.get("/teams/:team_id/users", teamControllers.getAllUsersFromTeam);
@@ -133,6 +141,13 @@ router.delete(
   teamControllers.deleteUserFromTeam
 );
 
+// Get all ideas for a team (:user_id is used to get the user's liked ideas)
+router.get(
+  "/teams/:team_id/ideas/:user_id",
+  verifyToken,
+  teamControllers.getTeamIdeas
+);
+
 /* ---- WORKSPACES ROUTES ---- */
 
 const workspaceControllers = require("./controllers/workspaceControllers");
@@ -142,7 +157,8 @@ const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");
 router.get(
   "/teams/:team_id/workspaces/:user_id",
   verifyToken,
-  workspaceMiddlewares.workspaceVerifySalesForceAdminRole,
+  workspaceMiddlewares.workspaceVerifyUserInWorkspace,
+  workspaceMiddlewares.workspaceVerifyRole,
   workspaceControllers.getTeamWorkspaces
 );
 
@@ -157,7 +173,7 @@ router.get(
 router.get(
   "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
-  workspaceControllers.getTeamWorkspaces
+  workspaceControllers.getUserWorkspaces
 );
 
 // Get all users for a workspace
@@ -176,7 +192,7 @@ router.get(
 
 // Create a new workspace and add the creator in the workspace_has_user table
 router.post(
-  "/companies/:company_id/workspaces",
+  "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
   workspaceControllers.createWorkspace
 );
@@ -261,6 +277,13 @@ router.delete(
   "/companies/:company_id/users/:user_id/ideas/:idea_id",
   verifyToken,
   ideaControllers.deleteIdea
+);
+
+// Delete ideas's workspace
+router.delete(
+  "/workspaces/:workspace_id/ideas",
+  verifyToken,
+  ideaControllers.deleteIdeasWorkspace
 );
 
 /* ---- LIKES ROUTES ---- */
@@ -357,7 +380,10 @@ router.delete(
 /* ---- CATEGORIES ROUTES ---- */
 const categoryControllers = require("./controllers/categoryControllers");
 
-router.get("/categories", categoryControllers.browseCategory);
+router.get(
+  "/companies/:company_id/categories",
+  categoryControllers.browseCompanyCategories
+);
 router.get("/categories/:id", categoryControllers.readCategory);
 router.put("/categories/:id", categoryControllers.editCategory);
 router.post("/categories", categoryControllers.addCategory);

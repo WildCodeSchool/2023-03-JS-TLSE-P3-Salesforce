@@ -40,7 +40,7 @@ class TeamManager extends AbstractManager {
   }
 
   // récupérer toutes les teams d'un membre
-  getTeamsByUserId(userId) {
+  getTeamsByUserId(userId, companyId) {
     return this.database.query(
       `SELECT ${this.table}.id,
        ${this.table}.name,
@@ -52,8 +52,8 @@ class TeamManager extends AbstractManager {
           thu.joining_date
        FROM ${this.table} 
        JOIN team_has_user thu ON ${this.table}.id = thu.team_id
-       WHERE thu.user_id = ?`,
-      [userId]
+       WHERE thu.user_id = ? AND ${this.table}.company_id = ? AND ${this.table}.status = "active"`,
+      [userId, companyId]
     );
   }
 
@@ -109,6 +109,50 @@ class TeamManager extends AbstractManager {
   deleteUser(userId, teamId) {
     return this.database.query(
       `DELETE FROM team_has_user WHERE user_id = ? AND team_id = ?`,
+      [userId, teamId]
+    );
+  }
+
+  findTeamIdeas(teamId, userId) {
+    return this.database.query(
+      `SELECT
+      i.id,
+      i.creation_date,
+      i.title,
+      i.description,
+      i.status,
+      i.x_coordinate,
+      i.y_coordinate,
+      i.color_id,
+      i.is_in_board,
+      i.ideas_group_id,
+      u.firstname AS creator_firstname,
+      u.lastname AS creator_lastname,
+      u.email AS creator_email,
+      u.picture_url AS creator_picture_url,
+      likes.likes_count AS likes_count,
+      COUNT(DISTINCT comment.id) AS comments_count,
+      GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
+      CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
+    FROM
+      idea i
+      LEFT JOIN user u ON u.id = i.user_id
+      LEFT JOIN (
+        SELECT idea_id, COUNT(*) AS likes_count
+        FROM liked
+        GROUP BY idea_id
+      ) likes ON likes.idea_id = i.id
+      LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = i.id AND liked_by_user.user_id = ?
+      LEFT JOIN comment ON comment.idea_id = i.id
+      LEFT JOIN category_has_idea chi ON chi.idea_id = i.id
+      LEFT JOIN category cat ON cat.id = chi.category_id
+      LEFT JOIN color col ON col.id = cat.color_id
+    WHERE
+      i.team_id = ?
+    GROUP BY
+      i.id
+    ORDER BY
+      i.id DESC;`,
       [userId, teamId]
     );
   }

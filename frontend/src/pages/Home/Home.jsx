@@ -65,24 +65,25 @@ export default function Home() {
           console.error("Error fetching ideas:", error);
         });
     }
-  }, [companyInfos.id, userInfos.id]);
+  }, [companyInfos.id, userInfos.id, isNewIdeaModalOpen]);
 
   useEffect(() => {
-    if (companyInfos.id) {
-      axios
-        .get(
-          `${import.meta.env.VITE_BACKEND_URL}/companies/${
-            companyInfos.id
-          }/teams`
-        )
-        .then((response) => {
-          setTeams(response.data);
-          setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching teams:", error);
-        });
-    }
+    axios
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/companies/${
+          companyInfos.id
+        }/teams`,
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
+      )
+      .then((response) => {
+        setTeams(response.data);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching teams:", error);
+      });
   }, [companyInfos.id]);
 
   let title = "";
@@ -104,12 +105,6 @@ export default function Home() {
 
   return (
     <div>
-      {pagePart === "ideas" && isNewIdeaModalOpen && (
-        <NewIdeaModal
-          isNewIdeaModalOpen={isNewIdeaModalOpen}
-          setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
-        />
-      )}
       {userToken &&
       Object.keys(userInfos).length &&
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
@@ -201,7 +196,12 @@ export default function Home() {
                     })
                     .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
               </div>
-              {/* Ajouter la modale de l'idea ci-dessous */}
+              {isNewIdeaModalOpen && (
+                <NewIdeaModal
+                  isNewIdeaModalOpen={isNewIdeaModalOpen}
+                  setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+                />
+              )}
             </>
           )}
 
@@ -247,13 +247,6 @@ export default function Home() {
                   <NewTeamModal
                     isNewTeamModalOpen={isNewTeamModalOpen}
                     setIsNewTeamModalOpen={setIsNewTeamModalOpen}
-                  />
-                )}
-
-                {isNewIdeaModalOpen && (
-                  <NewIdeaModal
-                    isNewIdeaModalOpen={isNewIdeaModalOpen}
-                    setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
                   />
                 )}
               </div>

@@ -1,82 +1,118 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import "./SearchCategories.scss";
+import Badge from "../Badge/Badge";
 
-function SearchCategories({
+export default function SearchCategories({
   categories,
   setSelectedCategories,
   selectedCategories,
+  colorBadge,
 }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [searchClass, setSearchClass] = useState("list-none");
+  const [areCategoriesVisible, setAreCategoriesVisible] = useState(false);
 
   const handleSearchTerm = (e) => {
     const { value } = e.target;
     setSearchTerm(value);
-    setSearchClass("list");
+    setAreCategoriesVisible(true);
   };
-  const Handleselect = (data) => {
+  const handleSelect = (data) => {
     const selectedCategory = {
       name: data.name,
       id: data.id,
       color: data.color_id,
     };
     setSelectedCategories([...selectedCategories, selectedCategory]);
-    setSearchClass("list-none");
-  };
-  const handleClear = () => {
+    setAreCategoriesVisible(false);
     setSearchTerm("");
-    setSearchClass("list");
+  };
+
+  const handleBlur = () => {
+    setAreCategoriesVisible(false);
+  };
+
+  const handleKillCategory = (categoryId) => {
+    const newSelectedCategories = [...selectedCategories];
+    const index = newSelectedCategories.findIndex(
+      (category) => category.id === categoryId
+    );
+    if (index > -1) {
+      newSelectedCategories.splice(index, 1);
+    }
+    setSelectedCategories(newSelectedCategories);
   };
 
   return (
-    <div className="search-categories">
-      <div className="search-container">
-        <div className="search-bar">
-          <input
-            type="text"
-            name="searchbar"
-            id="searchbar"
-            placeholder="Rechercher"
-            value={searchTerm}
-            onChange={handleSearchTerm}
-          />
-          <button type="button" className="search-button" onClick={handleClear}>
+    <>
+      <div className="input-line">
+        <div className="input-field">
+          <label htmlFor="searchbar">Catégories</label>
+          <div className="input">
             <i className="fi fi-rr-search" />
-          </button>
+            <input
+              type="text"
+              name="searchbar"
+              id="searchbar"
+              placeholder="Rechercher une catégorie"
+              value={searchTerm}
+              onChange={handleSearchTerm}
+              onBlur={() => setTimeout(() => handleBlur(), 1000)}
+            />
+          </div>
+          {areCategoriesVisible &&
+            categories.some((data) => {
+              return data.name.toLowerCase().includes(searchTerm.toLowerCase());
+            }) && (
+              <ul className="search-categories-results">
+                {categories
+                  ? categories
+                      .filter((data) => {
+                        return data.name
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase());
+                      })
+                      .map((data) => {
+                        return (
+                          <li
+                            className="search-categories-result"
+                            key={data.id}
+                          >
+                            <button
+                              type="button"
+                              aria-hidden="true"
+                              className="result-line"
+                              onClick={() => handleSelect(data)}
+                            >
+                              {data.name}
+                            </button>
+                          </li>
+                        );
+                      })
+                  : null}
+              </ul>
+            )}
         </div>
       </div>
-      <div className={searchClass}>
-        <ul>
-          {categories
-            ? categories
-                .filter((data) => {
-                  return data.name
-                    .toLowerCase()
-                    .includes(searchTerm.toLowerCase());
-                })
-                .map((data) => {
-                  return (
-                    <li
-                      className="search-result"
-                      type="button"
-                      aria-hidden="true"
-                      key={data.id}
-                      onClick={() => Handleselect(data)}
-                    >
-                      <button
-                        type="button"
-                        aria-hidden="true"
-                        className="result-line"
-                      />
-                      {data.name}
-                    </li>
-                  );
-                })
-            : null}
-        </ul>
+      <div className="search-badges">
+        {selectedCategories
+          .filter(
+            (category, index, self) =>
+              index === self.findIndex((c) => c.id === category.id)
+          )
+          .map((data) => (
+            <Badge color={colorBadge[data.color].name} key={data.id}>
+              {data.name}
+              <i
+                type="button"
+                aria-hidden="true"
+                className="fi fi-rr-cross-small"
+                onClick={() => handleKillCategory(data.id)}
+              />
+            </Badge>
+          ))}
       </div>
-    </div>
+    </>
   );
 }
 SearchCategories.propTypes = {
@@ -95,6 +131,8 @@ SearchCategories.propTypes = {
       color: PropTypes.number,
     })
   ).isRequired,
+  colorBadge: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+  }).isRequired,
 };
-
-export default SearchCategories;

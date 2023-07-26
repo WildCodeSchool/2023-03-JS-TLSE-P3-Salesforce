@@ -3,9 +3,9 @@ const models = require("../models");
 
 const createIdea = (req, res) => {
   const { company_id, user_id } = req.params;
-  const { title, description } = req.body;
+  const { title, description, workspace_id } = req.body;
   models.idea
-    .insert(title, description, company_id, user_id)
+    .insert(title, description, company_id, user_id, workspace_id)
     .then(([result]) => {
       if (result.affectedRows) {
         res.status(201).json(result);
@@ -119,6 +119,21 @@ const deleteIdea = (req, res) => {
     });
 };
 
+const deleteIdeasWorkspace = (req, res) => {
+  models.idea
+    .deleteAllIdeasWorkspace(req.params.workspace_id)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(204).send("les idées ont bien été supprimées");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 module.exports = {
   getAllIdeasByUser,
   getAllIdeasByCompany,
@@ -127,4 +142,5 @@ module.exports = {
   updateCoordinatesIdeaWorkspace,
   createIdea,
   deleteIdea,
+  deleteIdeasWorkspace,
 };

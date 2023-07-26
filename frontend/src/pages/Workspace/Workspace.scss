@@ -2,6 +2,31 @@
 @use "../../styles/shadows" as *;
 @use "../../styles/button" as *;
 @use "../../styles/icon" as *;
+.part-alert-success {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  border: none;
+  width: 100%;
+  top: 1.75rem;
+  animation: show-alert 0.5s ease-in-out;
+
+  .alert-success {
+    display: flex;
+    background-color: var(--white);
+    width: 300px;
+    @include shadow("xl");
+
+    .icon {
+      @include icon(
+        "md",
+        $color: "success",
+        $style: "border",
+        $shape: "square"
+      );
+    }
+  }
+}
 
 .board-container {
   display: flex;
@@ -43,7 +68,8 @@
   align-items: center;
 
   position: relative;
-  height: 85vh;
+
+  height: calc(100vh - 0.75rem - 0.75rem - 4rem - 80px - 2rem - 70px);
   border-top: 1px solid var(--grey-200);
   background-color: var(--white);
 
@@ -63,7 +89,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
-    height: 85vh;
+    height: calc(100% - 0.75rem - 4rem - 80px - 2rem - 64px);
     width: 300px;
 
     .ideas-workspace {
@@ -82,7 +108,7 @@
           flex-wrap: wrap;
           width: 100%;
         }
-        .idea-card {
+        .idea-card-workspace {
           margin-bottom: 10px;
           width: 350px;
           transition: box-shadow 0.2s;
@@ -97,5 +123,13 @@
         }
       }
     }
+  }
+}
+@keyframes show-alert {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
   }
 }

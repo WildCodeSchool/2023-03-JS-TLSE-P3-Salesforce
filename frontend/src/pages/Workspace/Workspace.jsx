@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Draggable from "react-draggable";
 import "./Workspace.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -10,9 +9,11 @@ import CompanyContext from "../../contexts/CompanyContext";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
-import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
+import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
+import Alert from "../../components/Alert/Alert";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -27,7 +28,10 @@ export default function Workspace() {
 
   const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
     useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [openAlertDelete, setOpenAlertDelete] = useState(false);
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [alertSuccessSave, setAlertSuccessSave] = useState(false);
+  const [higherZIndex, setHigherZIndex] = useState(1);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -83,7 +87,7 @@ export default function Workspace() {
         setDataIdeasWorkspace(res.data);
         setIsLoadingDataIdeasWorkspace(false);
       });
-  }, [workspace_id, userInfos.id]);
+  }, [workspace_id, userInfos.id, isNewIdeaModalOpen]);
 
   let creationDateWorkspaceInitial;
   let creationDateWorkspaceSplited;
@@ -94,7 +98,7 @@ export default function Workspace() {
     creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
     creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
     creationDateDayFirst = creationDateWorkspaceSplited[0].split("-");
-    creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
+    creationDateWorkspace = `${creationDateDayFirst[2]}/${creationDateDayFirst[1]}/${creationDateDayFirst[0]}`;
   }
 
   // for save ideas and their position in workspace
@@ -107,7 +111,12 @@ export default function Workspace() {
         })
         .then((res) => {
           if (res.affectedRows === 0) {
-            console.error("l'idée n'a pas été modifiée");
+            console.error("L'idée n'a pas été modifiée");
+          } else {
+            setAlertSuccessSave(true);
+            setTimeout(() => {
+              setAlertSuccessSave(false);
+            }, 3000);
           }
         })
         .catch((err) => {
@@ -126,13 +135,25 @@ export default function Workspace() {
       {!isLoadingDataUsers && (
         <PageHeader
           title={dataUsersByCompany[0].name}
-          subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+          subtitle={`${dataUsersByCompany[0].team_name} • Créé le  : ${creationDateWorkspace}`}
         >
           <div className="actions">
-            <button className="button-md-red-outline" type="button">
+            <button
+              className="button-md-red-outline"
+              type="button"
+              onClick={() => {
+                setOpenAlertDelete(true);
+              }}
+            >
               <i className="fi fi-rr-trash" />
               Supprimer
             </button>
+            {openAlertDelete && (
+              <NewDeleteUsersByWorkspaceModal
+                setOpenAlertDelete={setOpenAlertDelete}
+                setDataIdeasWorkspace={setDataIdeasWorkspace}
+              />
+            )}
             <button
               className="button-md-grey-outline"
               type="button"
@@ -158,28 +179,32 @@ export default function Workspace() {
           </div>
         </PageHeader>
       )}
-
+      {alertSuccessSave && (
+        <div className="part-alert-success">
+          <Alert
+            type="success"
+            text="Espace de travail sauvegardé"
+            icon="assept-document"
+          />
+        </div>
+      )}
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
-          <button className="button-md-primary-solid" type="button">
+          <button
+            className="button-md-primary-solid"
+            type="button"
+            onClick={() => setIsNewIdeaModalOpen(true)}
+          >
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
-
-          <div className="search-ideas-workspace">
-            <DataSearchBar
-              setSearchTerm={setSearchTerm}
-              searchTerm={searchTerm}
-              placeholderText="Rechercher une idée"
-            />
-            <div className="filter-and-selecting">
-              <button className="button-md-grey-outline" type="button">
-                <i className="i fi-rr-bars-filter" />
-                filtrer
-              </button>
-            </div>
-          </div>
         </div>
+        {isNewIdeaModalOpen && (
+          <NewIdeaModal
+            isNewIdeaModalOpen={isNewIdeaModalOpen}
+            setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+          />
+        )}
 
         <div className="large-container-workspace">
           <div
@@ -200,6 +225,7 @@ export default function Workspace() {
                     height: "3000px",
                     width: "3000px",
                     position: "relative",
+                    zIndex: 0,
 
                     padding: "0",
                   }}
@@ -213,34 +239,17 @@ export default function Workspace() {
                         }}
                       >
                         {!isLoadingDataIdeasWorkspace &&
-                          dataIdeasWorkspace
-                            .filter((value) => {
-                              if (searchTerm === "") {
-                                return true;
-                              }
-                              if (
-                                value.title
-                                  .toLowerCase()
-                                  .includes(searchTerm.toLowerCase())
-                              ) {
-                                return true;
-                              }
-                              return false;
-                            })
-                            .map((idea) => (
-                              <IdeaCardWorkspace
-                                key={idea.id}
-                                idea={idea}
-                                setDataIdeasWorkspace={setDataIdeasWorkspace}
-                              />
-                            ))}
+                          dataIdeasWorkspace.map((idea) => (
+                            <IdeaCardWorkspace
+                              key={idea.id}
+                              idea={idea}
+                              setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              setHigherZIndex={setHigherZIndex}
+                              higherZIndex={higherZIndex}
+                            />
+                          ))}
                       </div>
                     </div>
-                    <Draggable bounds="parent">
-                      <div>
-                        <IdeaCardWorkspace />
-                      </div>
-                    </Draggable>
                   </div>
                 </div>
               </div>

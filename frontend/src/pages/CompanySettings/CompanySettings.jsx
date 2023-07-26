@@ -217,7 +217,13 @@ export default function CompanySettings() {
                             id="logo_url"
                             value={companyNewLogoUrl}
                             onChange={(event) => {
-                              setCompanyNewLogoUrl(event.target.value);
+                              if (event.target.value) {
+                                setCompanyNewLogoUrl(event.target.value);
+                              } else {
+                                setCompanyNewLogoUrl(
+                                  "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg"
+                                );
+                              }
                             }}
                             autoComplete="off"
                           />

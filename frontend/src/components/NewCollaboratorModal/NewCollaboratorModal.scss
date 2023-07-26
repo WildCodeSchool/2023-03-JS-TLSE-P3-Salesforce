@@ -89,31 +89,42 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+
+        .label {
+          @include text("md", $weight: 500);
+          color: var(--grey-700);
+        }
+        .user-and-infos {
+          display: flex;
+          justify-content: space-between;
+
+          .user {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            .avatar.avatar-table {
+              width: 40px;
+              height: 40px;
+            }
+            .infos {
+              display: flex;
+              flex-direction: column;
+              margin-left: 10px;
+              .name {
+                color: var(--grey-700);
+                @include text("sm", $weight: 500);
+              }
+              .email {
+                @include text("sm");
+                color: var(--grey-700);
+              }
+            }
+          }
+        }
         .members-team-modal {
           display: flex;
           flex-direction: column;
           gap: 0.75rem;
-
-          .user-and-infos {
-            display: flex;
-            justify-content: space-between;
-
-            .user {
-              display: flex;
-              align-items: center;
-              width: 100%;
-              .avatar.avatar-table {
-                width: 40px;
-                height: 40px;
-              }
-              .infos {
-                display: flex;
-                flex-direction: column;
-                margin-left: 10px;
-                gap: 3px;
-              }
-            }
-          }
         }
         .actions {
           display: flex;

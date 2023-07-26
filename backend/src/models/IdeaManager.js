@@ -6,10 +6,10 @@ class IdeaManager extends AbstractManager {
     super({ table: "idea" });
   }
 
-  insert(title, description, company_id, user_id) {
+  insert(title, description, company_id, user_id, workspace_id) {
     return this.database.query(
-      `insert into ${this.table} (title, description, company_id, user_id) values ( ?, ?, ?, ?);`,
-      [title, description, company_id, user_id]
+      `insert into ${this.table} (title, description, company_id, user_id, workspace_id) values ( ?, ?, ?, ?, ?);`,
+      [title, description, company_id, user_id, workspace_id]
     );
   }
 
@@ -90,7 +90,7 @@ class IdeaManager extends AbstractManager {
              LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
              LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = ?
              LEFT JOIN color col ON col.id = cat.color_id
-             WHERE comp.id = ?
+             WHERE comp.id = ? AND ${this.table}.workspace_id IS NULL
              GROUP BY ${this.table}.id, comp.name
              ORDER BY
              ${this.table}.id DESC;`,
@@ -162,6 +162,13 @@ class IdeaManager extends AbstractManager {
       y_coordinate = ?
     WHERE ${this.table}.id = ?`,
       [x_coordinate, y_coordinate, id]
+    );
+  }
+
+  deleteAllIdeasWorkspace(workspace_id) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE workspace_id = ?`,
+      [workspace_id]
     );
   }
 }

@@ -2,14 +2,22 @@
 import React, { useState } from "react";
 import propTypes from "prop-types";
 import Draggable from "react-draggable";
+import LikeButton from "../LikeButton/LikeButton";
 
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 
 import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
-export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
+export default function IdeaCardWorkspace({
+  idea,
+  setDataIdeasWorkspace,
+  setHigherZIndex,
+  higherZIndex,
+}) {
+  const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [showSubmenu, setShowSubmenu] = useState(false);
+  const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
 
   let ideaXCoordinate;
   if (idea.x_coordinate === null) {
@@ -50,6 +58,12 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
       })
     );
   };
+  const [currentZIndex, setCurrentZIndex] = useState(0);
+
+  const handleStart = () => {
+    setHigherZIndex((prevHigherZIndex) => prevHigherZIndex + 1);
+    setCurrentZIndex(higherZIndex);
+  };
 
   if (idea.categories) {
     const nameAndColorCategories = idea.categories;
@@ -67,8 +81,14 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
         x: ideaXCoordinate,
         y: ideaYCoordinate,
       }}
+      onStart={handleStart}
     >
-      <div className="idea-card">
+      <div
+        className="idea-card-workspace"
+        style={{
+          zIndex: currentZIndex,
+        }}
+      >
         <div className="header-card">
           <h2 className="title-idea">{idea.title}</h2>
           <SubmenuIdeaButton
@@ -92,6 +112,15 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
 
           <p className="idea-description">{idea.description}</p>
         </div>
+        <div className="footer-idea">
+          <LikeButton
+            ideaId={idea.id}
+            likeActive={likeActive}
+            likeCount={likeCount}
+            setLikeCount={setLikeCount}
+            setLikeActive={setLikeActive}
+          />
+        </div>
       </div>
     </Draggable>
   );
@@ -105,9 +134,13 @@ IdeaCardWorkspace.propTypes = {
     x_coordinate: propTypes.number,
     y_coordinate: propTypes.number,
     id: propTypes.number,
+    likes_count: propTypes.number,
+    is_liked_by_user: propTypes.number,
   }),
 
   setDataIdeasWorkspace: propTypes.func,
+  setHigherZIndex: propTypes.func,
+  higherZIndex: propTypes.number,
 };
 
 IdeaCardWorkspace.defaultProps = {
@@ -118,7 +151,11 @@ IdeaCardWorkspace.defaultProps = {
     x_coordinate: 0,
     y_coordinate: 0,
     id: 0,
+    likes_count: 0,
+    is_liked_by_user: 0,
   },
 
   setDataIdeasWorkspace: () => {},
+  setHigherZIndex: () => {},
+  higherZIndex: 0,
 };

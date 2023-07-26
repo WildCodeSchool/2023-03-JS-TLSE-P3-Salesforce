@@ -38,7 +38,7 @@ export default function CompanySettingsMembers() {
           console.error(error);
         });
     }
-  }, [companyInfos]);
+  }, [companyInfos, isNewUserModalOpen]);
 
   const sorting = (column) => {
     if (order === "asc") {

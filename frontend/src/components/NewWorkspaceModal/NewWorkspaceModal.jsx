@@ -3,45 +3,37 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import CompanyContext from "../../contexts/CompanyContext";
 import AuthContext from "../../contexts/AuthContext";
-import "./NewTeamModal.scss";
+import "./NewWorkspaceModal.scss";
 
-export default function NewTeamModal({ setIsNewTeamModalOpen }) {
+export default function NewWorkspaceModal({ setIsNewWorkspaceModalOpen }) {
   const { companyInfos } = useContext(CompanyContext);
   const { userToken, userInfos } = useContext(AuthContext);
   const [hasConnectionFailed, setHasConnectionFailed] = useState(false);
-  const [teamName, setTeamName] = useState("");
-  const [teamDescription, setTeamDescription] = useState("");
-  const [teamPictureUrl, setTeamPictureUrl] = useState("");
+  const [workspaceName, setWorkspaceName] = useState("");
+  const [workspaceDescription, setWorkspaceDescription] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     const form = event.target;
     // Vérifier les champs obligatoires
-    if (!teamName || !userInfos.id) {
+    if (!workspaceName || !userInfos.id) {
       console.error("Missing required values");
       return;
     }
-
     // Créer l'objet FormData et y ajouter les données du formulaire
+
     const formData = new FormData(form);
 
     const dataFromForm = Object.fromEntries(formData.entries());
-    if (dataFromForm.is_private) {
-      dataFromForm.is_private = 1;
-    } else {
-      dataFromForm.is_private = 0;
-    }
-    dataFromForm.status = "Active";
-    dataFromForm.userId = userInfos.id;
+    dataFromForm.isPrivate = isPrivate ? 1 : 0;
 
     // Envoyer la requête POST pour créer l'équipe
     axios
       .post(
         `${import.meta.env.VITE_BACKEND_URL}/companies/${
           companyInfos.id
-        }/users/${userInfos.id}/teams`,
+        }/users/${userInfos.id}/workspaces`,
         dataFromForm,
         {
           headers: {
@@ -50,7 +42,7 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
         }
       )
       .then(() => {
-        setIsNewTeamModalOpen(false);
+        setIsNewWorkspaceModalOpen(false);
       })
       .catch((error) => {
         console.error("Failed to create team:", error.message);
@@ -59,10 +51,10 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
   };
 
   return (
-    <div className="modal new-team-modal">
+    <div className="modal new-workspace-modal">
       <div
         className="filter"
-        onClick={() => setIsNewTeamModalOpen(false)}
+        onClick={() => setIsNewWorkspaceModalOpen(false)}
         aria-hidden="true"
       />
       <div className="container">
@@ -71,14 +63,14 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
             <i className="fi fi-rr-user-add" />
           </div>
           <div className="content">
-            <h3>Nouvelle équipe</h3>
+            <h3>Nouvel Espace de travail</h3>
             <p className="details">
-              Rassemblez vos collègues et lancez une nouvelle équipe dynamique.
+              Rassemblez vos collègues et lancez un nouvel espace de travail.
             </p>
           </div>
           <button
             className="close"
-            onClick={() => setIsNewTeamModalOpen(false)}
+            onClick={() => setIsNewWorkspaceModalOpen(false)}
             type="button"
           >
             <i className="fi fi-rr-cross" />
@@ -89,37 +81,14 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
           <form onSubmit={handleSubmit}>
             <div className="input-line">
               <div className="input-field">
-                <label htmlFor="picture_url">Lien vers votre logo</label>
-                <p className="input-help">
-                  Il sera visible dans la navigation.
-                </p>
-                <div className="input">
-                  <i className="fi fi-rr-link-alt" />
-                  <input
-                    type="url"
-                    name="picture_url"
-                    placeholder="Le lien vers votre photo de profil"
-                    id="picture_url"
-                    value={teamPictureUrl}
-                    onChange={(event) => {
-                      setTeamPictureUrl(event.target.value);
-                    }}
-                    autoComplete="off"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="input-line">
-              <div className="input-field">
-                <label htmlFor="name">Nom (obligatoire)</label>
+                <label htmlFor="name">Nom de votre espace personnel</label>
                 <div className="input">
                   <input
                     type="text"
                     name="name"
-                    value={teamName}
-                    onChange={(event) => setTeamName(event.target.value)}
-                    placeholder="Donnez un nom à votre équipe"
+                    value={workspaceName}
+                    onChange={(event) => setWorkspaceName(event.target.value)}
+                    placeholder="Donnez un nom à votre espace"
                     id="name"
                     autoComplete="off"
                     required
@@ -135,9 +104,11 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
                   <input
                     type="text"
                     name="description"
-                    value={teamDescription}
-                    onChange={(event) => setTeamDescription(event.target.value)}
-                    placeholder="Décrivez l'objectif de votre équipe, sa raison d'être"
+                    value={workspaceDescription}
+                    onChange={(event) =>
+                      setWorkspaceDescription(event.target.value)
+                    }
+                    placeholder="Décrivez l'objectif de votre espace, sa raison d'être"
                     id="description"
                     autoComplete="off"
                     required
@@ -148,11 +119,12 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
 
             <div className="input-line">
               <div className="input-switch input-switch--sm">
-                <label htmlFor="is_private">
+                <label htmlFor="isPrivate">
                   <input
                     type="checkbox"
-                    name="is_private"
-                    id="is_private"
+                    name="isPrivate"
+                    id="isPrivate"
+                    checked={isPrivate}
                     onChange={(event) => {
                       setIsPrivate(event.target.checked);
                     }}
@@ -160,17 +132,17 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
                   <div className="toggle-switch" />
                   {isPrivate ? (
                     <div className="label">
-                      <p className="title">Équipe privée</p>
+                      <p className="title">Espace privé</p>
                       <p className="help">
-                        Si vous cochez cette option, votre équipe n’apparaîtra
+                        Si vous cochez cette option, votre espace n’apparaîtra
                         pas dans les résultats de recherche.
                       </p>
                     </div>
                   ) : (
                     <div className="label">
-                      <p className="title">Équipe publique</p>
+                      <p className="title">Espace public</p>
                       <p className="help">
-                        Si vous cochez cette option, votre équipe apparaîtra
+                        Si vous cochez cette option, votre espace apparaîtra
                         dans les résultats de recherche.
                       </p>
                     </div>
@@ -183,21 +155,22 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
               <div className="input-field">
                 <label htmlFor="email">Membres</label>
                 <div className="input-help">
-                  Ajoutez des membres à votre équipe
+                  Ajoutez des membres à votre espace personnel
                 </div>
               </div>
             </div>
 
             {hasConnectionFailed && (
               <div className="error-message">
-                Erreur lors de la création de l'équipe. Veuillez réessayer.
+                Erreur lors de la création de l'espace personnel. Veuillez
+                réessayer.
               </div>
             )}
 
             <div className="actions">
               <button
                 className="cancel"
-                onClick={() => setIsNewTeamModalOpen(false)}
+                onClick={() => setIsNewWorkspaceModalOpen(false)}
                 type="button"
               >
                 Annuler
@@ -214,6 +187,6 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
   );
 }
 
-NewTeamModal.propTypes = {
-  setIsNewTeamModalOpen: PropTypes.func.isRequired,
+NewWorkspaceModal.propTypes = {
+  setIsNewWorkspaceModalOpen: PropTypes.func.isRequired,
 };

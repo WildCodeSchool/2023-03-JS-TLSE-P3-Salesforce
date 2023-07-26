@@ -14,21 +14,28 @@ const workspaceVerifySalesForceAdminRole = (req, res, next) => {
       break;
   }
 };
+const workspaceVerifyRole = (req, res, next) => {
+  const { isCompanyAdmin, isAdmin } = req.payload.role;
+
+  if (isCompanyAdmin) {
+    req.isCompanyAdmin = true;
+  }
+  if (isAdmin) {
+    req.isSalesForceAdmin = true;
+  }
+  next();
+};
 
 const workspaceVerifyUserInWorkspace = (req, res, next) => {
   const { team_id, user_id } = req.params;
   models.workspace.checkIfUserIsInWorkspace(team_id, user_id).then(([rows]) => {
-    const rowsLength = rows.length > 0;
-    switch (rowsLength) {
-      case rowsLength > 0:
-        req.isInWorkspace = true;
-        next();
-        break;
-
-      default:
-        req.isInWorkspace = false;
-        next();
-        break;
+    const isUserInWorkspace = rows.length > 0;
+    if (isUserInWorkspace) {
+      req.isInWorkspace = true;
+      next();
+    } else {
+      req.isInWorkspace = false;
+      next();
     }
   });
 };
@@ -36,4 +43,5 @@ const workspaceVerifyUserInWorkspace = (req, res, next) => {
 module.exports = {
   workspaceVerifyUserInWorkspace,
   workspaceVerifySalesForceAdminRole,
+  workspaceVerifyRole,
 };

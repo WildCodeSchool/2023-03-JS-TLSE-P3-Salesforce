@@ -2,7 +2,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { sanitize } from "isomorphic-dompurify";
-
 import axios from "axios";
 import "./UserIdeas.scss";
 import AuthContext from "../../contexts/AuthContext";
@@ -12,6 +11,7 @@ import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import NavBar from "../../components/NavBar/NavBar";
 import Connection from "../../components/Connection/Connection";
 import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
 
 export default function UserIdeas() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -19,15 +19,15 @@ export default function UserIdeas() {
   const { company_slug } = useParams();
   const [dataIdea, setDataIdea] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [setIsNewIdeaModalOpen] = useState(false);
   const [searchTermIdea, setSearchTermIdea] = useState("");
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
       slug: sanitize(company_slug),
     }));
-  }, [company_slug]);
+  }, [company_slug, setCompanyInfos]);
 
   let userCompaniesArray = [];
   if (userToken && Object.keys(userInfos).length) {
@@ -55,7 +55,8 @@ export default function UserIdeas() {
           console.error("Error fetching ideas:", error);
         });
     }
-  }, [companyInfos.id, userInfos.id]);
+  }, [companyInfos.id, userInfos.id, userToken]);
+
   return (
     <div>
       {userToken &&
@@ -63,10 +64,10 @@ export default function UserIdeas() {
       (userCompaniesArray.includes(companyInfos.id.toString()) ||
         userInfos.is_salesforce_admin) ? (
         <main>
-          <NavBar activeLink="home" />
+          <NavBar activeLink="ideas" />
           <PageHeader
             title="Mes idées"
-            subtitle="Voici l'ensemble des idées que vous avez créé, souhaitez-vous en ajouter une autre?"
+            subtitle="Voici l'ensemble des idées que vous avez créées, souhaitez-vous en ajouter une autre?"
           >
             <button
               className="button-primary-solid"
@@ -113,7 +114,12 @@ export default function UserIdeas() {
                 })
                 .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
           </div>
-          {/* Ajouter la modale de l'idea ci-dessous */}
+          {isNewIdeaModalOpen && (
+            <NewIdeaModal
+              isNewIdeaModalOpen={isNewIdeaModalOpen}
+              setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+            />
+          )}
         </main>
       ) : (
         <Connection />
