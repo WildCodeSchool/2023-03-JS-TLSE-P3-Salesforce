@@ -2,7 +2,11 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "./SearchCategories.scss";
 
-function SearchBar({ categories, setSelectedCategories, selectedCategories }) {
+function SearchCategories({
+  categories,
+  setSelectedCategories,
+  selectedCategories,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchClass, setSearchClass] = useState("list-none");
 
@@ -75,7 +79,7 @@ function SearchBar({ categories, setSelectedCategories, selectedCategories }) {
     </div>
   );
 }
-SearchBar.propTypes = {
+SearchCategories.propTypes = {
   categories: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -93,4 +97,4 @@ SearchBar.propTypes = {
   ).isRequired,
 };
 
-export default SearchBar;
+export default SearchCategories;

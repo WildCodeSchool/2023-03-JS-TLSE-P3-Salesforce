@@ -362,6 +362,7 @@ router.get("/categories/:id", categoryControllers.readCategory);
 router.put("/categories/:id", categoryControllers.editCategory);
 router.post("/categories", categoryControllers.addCategory);
 router.delete("/categories/:id", categoryControllers.destroyCategory);
+/* create new category in a company */
 
 /* ---- CATEGORY HAS IDEA ---- */
 const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
