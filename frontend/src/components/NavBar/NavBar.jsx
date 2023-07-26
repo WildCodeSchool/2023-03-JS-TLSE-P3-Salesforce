@@ -29,7 +29,6 @@ export default function NavBar({ activeLink }) {
     useState(false);
   const [isSubNavBarTeamOpen, setIsSubNavBarTeamOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
   const [isNewWorkspaceModalOpen, setIsNewWorkspaceModalOpen] = useState(false);
   const [dataWorkspace, setDataWorkspace] = useState([]);
