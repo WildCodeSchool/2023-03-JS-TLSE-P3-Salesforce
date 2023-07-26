@@ -78,7 +78,7 @@ export default function LikeButton({
       onMouseEnter={handleHover}
       onMouseLeave={handleHover}
     >
-      {likeCount}
+      {likeCount !== 0 && likeCount}
       <i className={likeIcon} />
     </button>
   );
@@ -87,7 +87,11 @@ export default function LikeButton({
 LikeButton.propTypes = {
   ideaId: PropTypes.number.isRequired,
   likeActive: PropTypes.number.isRequired,
-  likeCount: PropTypes.number.isRequired,
+  likeCount: PropTypes.number,
   setLikeCount: PropTypes.func.isRequired,
   setLikeActive: PropTypes.func.isRequired,
+};
+
+LikeButton.defaultProps = {
+  likeCount: 0,
 };

@@ -200,7 +200,13 @@ export default function NavBar({ activeLink }) {
                 </div>
               </button>
             </div>
-            <div className="avatar">
+            <div
+              className="avatar"
+              aria-hidden="true"
+              onClick={() => {
+                navigate(`/${companyInfos.slug}/profile/`);
+              }}
+            >
               {userInfos.picture_url ? (
                 <Avatar type="navbar" pictureUrl={userInfos.picture_url} />
               ) : (
@@ -388,7 +394,13 @@ export default function NavBar({ activeLink }) {
                 </div>
               </div>
               <div className="profile">
-                <div className="avatar">
+                <div
+                  className="avatar"
+                  aria-hidden="true"
+                  onClick={() => {
+                    navigate(`/${companyInfos.slug}/profile/`);
+                  }}
+                >
                   {userInfos.picture_url ? (
                     <Avatar type="navbar" pictureUrl={userInfos.picture_url} />
                   ) : (
@@ -396,10 +408,24 @@ export default function NavBar({ activeLink }) {
                   )}
                 </div>
                 <div className="content">
-                  <p className="name">
+                  <p
+                    className="name"
+                    aria-hidden="true"
+                    onClick={() => {
+                      navigate(`/${companyInfos.slug}/profile/`);
+                    }}
+                  >
                     {userInfos.firstname} {userInfos.lastname.toUpperCase()}
                   </p>
-                  <p className="email">{userInfos.email}</p>
+                  <p
+                    className="email"
+                    aria-hidden="true"
+                    onClick={() => {
+                      navigate(`/${companyInfos.slug}/profile/`);
+                    }}
+                  >
+                    {userInfos.email}
+                  </p>
                   <button
                     className="log-out"
                     onClick={() => {
@@ -450,5 +476,5 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  activeLink: "home",
+  activeLink: null,
 };

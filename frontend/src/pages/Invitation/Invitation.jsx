@@ -368,7 +368,7 @@ export default function Connection() {
                     <div className="input">
                       <i className="fi fi-rr-lock" />
                       <input
-                        type="password-confirmation"
+                        type="password"
                         name="password-confirmation"
                         placeholder="•••••••••••"
                         id="password-confirmation"
