@@ -31,6 +31,7 @@ export default function Workspace() {
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
   const [alertSuccessSave, setAlertSuccessSave] = useState(false);
+  const [higherZIndex, setHigherZIndex] = useState(1);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -224,6 +225,7 @@ export default function Workspace() {
                     height: "3000px",
                     width: "3000px",
                     position: "relative",
+                    zIndex: 0,
 
                     padding: "0",
                   }}
@@ -242,6 +244,8 @@ export default function Workspace() {
                               key={idea.id}
                               idea={idea}
                               setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              setHigherZIndex={setHigherZIndex}
+                              higherZIndex={higherZIndex}
                             />
                           ))}
                       </div>
