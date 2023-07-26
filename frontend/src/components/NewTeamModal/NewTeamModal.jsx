@@ -179,15 +179,7 @@ export default function NewTeamModal({ setIsNewTeamModalOpen }) {
               </div>
             </div>
 
-            <div className="input-line">
-              <div className="input-field">
-                <label htmlFor="email">Membres</label>
-                <div className="input-help">
-                  Ajoutez des membres à votre équipe
-                </div>
-              </div>
-            </div>
-
+        
             {hasConnectionFailed && (
               <div className="error-message">
                 Erreur lors de la création de l'équipe. Veuillez réessayer.
