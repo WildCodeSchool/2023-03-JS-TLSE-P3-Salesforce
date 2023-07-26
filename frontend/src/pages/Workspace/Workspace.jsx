@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Draggable from "react-draggable";
 import "./Workspace.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -14,6 +13,7 @@ import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorksp
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
 import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
 import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
+import Alert from "../../components/Alert/Alert";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -30,6 +30,7 @@ export default function Workspace() {
     useState(false);
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [alertSuccessSave, setAlertSuccessSave] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -96,7 +97,7 @@ export default function Workspace() {
     creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
     creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
     creationDateDayFirst = creationDateWorkspaceSplited[0].split("-");
-    creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
+    creationDateWorkspace = `${creationDateDayFirst[2]}/${creationDateDayFirst[1]}/${creationDateDayFirst[0]}`;
   }
 
   // for save ideas and their position in workspace
@@ -109,7 +110,12 @@ export default function Workspace() {
         })
         .then((res) => {
           if (res.affectedRows === 0) {
-            console.error("l'idée n'a pas été modifiée");
+            console.error("L'idée n'a pas été modifiée");
+          } else {
+            setAlertSuccessSave(true);
+            setTimeout(() => {
+              setAlertSuccessSave(false);
+            }, 3000);
           }
         })
         .catch((err) => {
@@ -128,7 +134,7 @@ export default function Workspace() {
       {!isLoadingDataUsers && (
         <PageHeader
           title={dataUsersByCompany[0].name}
-          subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+          subtitle={`${dataUsersByCompany[0].team_name} • Créé le  : ${creationDateWorkspace}`}
         >
           <div className="actions">
             <button
@@ -172,7 +178,15 @@ export default function Workspace() {
           </div>
         </PageHeader>
       )}
-
+      {alertSuccessSave && (
+        <div className="part-alert-success">
+          <Alert
+            type="success"
+            text="Espace de travail sauvegardé"
+            icon="assept-document"
+          />
+        </div>
+      )}
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
           <button
@@ -232,11 +246,6 @@ export default function Workspace() {
                           ))}
                       </div>
                     </div>
-                    <Draggable bounds="parent">
-                      <div>
-                        <IdeaCardWorkspace />
-                      </div>
-                    </Draggable>
                   </div>
                 </div>
               </div>
