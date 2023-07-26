@@ -273,11 +273,7 @@ router.put(
 );
 
 // Delete an idea
-router.delete(
-  "/companies/:company_id/users/:user_id/ideas/:idea_id",
-  verifyToken,
-  ideaControllers.deleteIdea
-);
+router.delete("/ideas/:idea_id", verifyToken, ideaControllers.deleteIdea);
 
 // Delete ideas's workspace
 router.delete(

@@ -3,15 +3,20 @@ import React, { useState } from "react";
 import propTypes from "prop-types";
 import Draggable from "react-draggable";
 import LikeButton from "../LikeButton/LikeButton";
+import Alert from "../Alert/Alert";
 
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 
 import "./IdeaCardWorkspace.scss";
 import Badge from "../Badge/Badge";
 
-export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
+export default function IdeaCardWorkspace({
+  idea,
+  setDataIdeasWorkspace,
+  setShowSubmenu,
+  showSubmenu,
+}) {
   const [likeCount, setLikeCount] = useState(idea.likes_count);
-  const [showSubmenu, setShowSubmenu] = useState(false);
   const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
 
   let ideaXCoordinate;
@@ -60,6 +65,7 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
   }
   // for position of the idea in the workspace
 
+  const [isIdeaDeleted, setIsIdeaDeleted] = useState(false);
   return (
     <Draggable
       bounds="parent"
@@ -74,10 +80,31 @@ export default function IdeaCardWorkspace({ idea, setDataIdeasWorkspace }) {
       <div className="idea-card-workspace">
         <div className="header-card">
           <h2 className="title-idea">{idea.title}</h2>
-          <SubmenuIdeaButton
-            showSubmenu={showSubmenu}
-            setShowSubmenu={setShowSubmenu}
-          />
+          <button
+            type="button"
+            className="idea-menu-icon"
+            onClick={() => setShowSubmenu(true)}
+          >
+            <i className="fi fi-rr-menu-dots-vertical" />
+          </button>
+
+          {showSubmenu && (
+            <SubmenuIdeaButton
+              setShowSubmenu={setShowSubmenu}
+              ideaId={idea.id}
+              setIsIdeaDeleted={setIsIdeaDeleted}
+            />
+          )}
+          {isIdeaDeleted && (
+            <div className="part-alert-success">
+              <Alert
+                type="sucess"
+                title=""
+                text="idée supprimée"
+                icon="lightbulb-slash"
+              />
+            </div>
+          )}
         </div>
         <div className="content-idea">
           {idea.categories && (
@@ -122,6 +149,8 @@ IdeaCardWorkspace.propTypes = {
   }),
 
   setDataIdeasWorkspace: propTypes.func,
+  setShowSubmenu: propTypes.func,
+  showSubmenu: propTypes.bool,
 };
 
 IdeaCardWorkspace.defaultProps = {
@@ -137,4 +166,6 @@ IdeaCardWorkspace.defaultProps = {
   },
 
   setDataIdeasWorkspace: () => {},
+  setShowSubmenu: () => {},
+  showSubmenu: false,
 };

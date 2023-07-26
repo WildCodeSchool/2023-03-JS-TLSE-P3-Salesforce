@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Draggable from "react-draggable";
 import "./Workspace.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -32,6 +31,7 @@ export default function Workspace() {
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
   const [alertSuccessSave, setAlertSuccessSave] = useState(false);
+  const [showSubmenu, setShowSubmenu] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -87,7 +87,7 @@ export default function Workspace() {
         setDataIdeasWorkspace(res.data);
         setIsLoadingDataIdeasWorkspace(false);
       });
-  }, [workspace_id, userInfos.id, isNewIdeaModalOpen]);
+  }, [workspace_id, userInfos.id, isNewIdeaModalOpen, showSubmenu]);
 
   let creationDateWorkspaceInitial;
   let creationDateWorkspaceSplited;
@@ -139,22 +139,6 @@ export default function Workspace() {
         >
           <div className="actions">
             <button
-              className="button-md-red-outline"
-              type="button"
-              onClick={() => {
-                setOpenAlertDelete(true);
-              }}
-            >
-              <i className="fi fi-rr-trash" />
-              Supprimer
-            </button>
-            {openAlertDelete && (
-              <NewDeleteUsersByWorkspaceModal
-                setOpenAlertDelete={setOpenAlertDelete}
-                setDataIdeasWorkspace={setDataIdeasWorkspace}
-              />
-            )}
-            <button
               className="button-md-grey-outline"
               type="button"
               onClick={() => {
@@ -198,6 +182,22 @@ export default function Workspace() {
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
+          <button
+            className="button-md-red-outline"
+            type="button"
+            onClick={() => {
+              setOpenAlertDelete(true);
+            }}
+          >
+            <i className="fi fi-rr-broom" />
+            Effacer toutes les idées
+          </button>
+          {openAlertDelete && (
+            <NewDeleteUsersByWorkspaceModal
+              setOpenAlertDelete={setOpenAlertDelete}
+              setDataIdeasWorkspace={setDataIdeasWorkspace}
+            />
+          )}
         </div>
         {isNewIdeaModalOpen && (
           <NewIdeaModal
@@ -243,15 +243,12 @@ export default function Workspace() {
                               key={idea.id}
                               idea={idea}
                               setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              setShowSubmenu={setShowSubmenu}
+                              showSubmenu={showSubmenu}
                             />
                           ))}
                       </div>
                     </div>
-                    <Draggable bounds="parent">
-                      <div>
-                        <IdeaCardWorkspace />
-                      </div>
-                    </Draggable>
                   </div>
                 </div>
               </div>
