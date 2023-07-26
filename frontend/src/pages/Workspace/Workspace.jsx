@@ -13,6 +13,7 @@ import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorksp
 import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
 import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
 import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
+import Alert from "../../components/Alert/Alert";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -29,6 +30,7 @@ export default function Workspace() {
     useState(false);
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [alertSuccessSave, setAlertSuccessSave] = useState(false);
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -108,7 +110,12 @@ export default function Workspace() {
         })
         .then((res) => {
           if (res.affectedRows === 0) {
-            console.error("l'idée n'a pas été modifiée");
+            console.error("L'idée n'a pas été modifiée");
+          } else {
+            setAlertSuccessSave(true);
+            setTimeout(() => {
+              setAlertSuccessSave(false);
+            }, 3000);
           }
         })
         .catch((err) => {
@@ -171,7 +178,15 @@ export default function Workspace() {
           </div>
         </PageHeader>
       )}
-
+      {alertSuccessSave && (
+        <div className="part-alert-success">
+          <Alert
+            type="success"
+            text="Espace de travail sauvegardé"
+            icon="assept-document"
+          />
+        </div>
+      )}
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
           <button
