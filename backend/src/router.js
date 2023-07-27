@@ -384,12 +384,24 @@ const categoryControllers = require("./controllers/categoryControllers");
 
 router.get(
   "/companies/:company_id/categories",
-  categoryControllers.browseCompanyCategories
+  categoryControllers.getCategories
 );
-router.get("/categories/:id", categoryControllers.readCategory);
-router.put("/categories/:id", categoryControllers.editCategory);
-router.post("/categories", categoryControllers.addCategory);
-router.delete("/categories/:id", categoryControllers.destroyCategory);
+router.get(
+  "/companies/:company_id/categories/:id",
+  categoryControllers.readCategory
+);
+router.put(
+  "/companies/:company_idcategories/:id",
+  categoryControllers.editCategory
+);
+router.post(
+  "/companies/:company_id/categories",
+  categoryControllers.addCategory
+);
+router.delete(
+  "/companies/:company_id/categories/:id",
+  categoryControllers.destroyCategory
+);
 
 /* ---- CATEGORY HAS IDEA ---- */
 const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
