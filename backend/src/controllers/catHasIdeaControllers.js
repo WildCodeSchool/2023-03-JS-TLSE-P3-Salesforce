@@ -29,7 +29,25 @@ const addcatHasIdea = (req, res) => {
     });
 };
 
+const deletecatHasIdeaByIdeaId = (req, res) => {
+  const { idea_id } = req.params;
+  models.category_has_idea
+    .destroycatHadIdeaByIdeaId(idea_id)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.sendStatus(204);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
 module.exports = {
   addcatHasIdea,
   browsecatHasIdea,
+  deletecatHasIdeaByIdeaId,
 };
