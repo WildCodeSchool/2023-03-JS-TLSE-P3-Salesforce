@@ -1,0 +1,90 @@
+@use "../../styles/typography" as *;
+@use "../../styles/button" as *;
+@use "../../styles/shadows" as *;
+@use "../../styles/icon" as *;
+
+.new-detele-ideas-by-workspace-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  .filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--grey-900);
+    opacity: 0.8;
+    animation: modal-mobile-show-modal 0.5s ease-in-out;
+  }
+  .container {
+    background-color: var(--white);
+    width: 30%;
+    border-radius: 1rem;
+    animation: modal-mobile-show-container 0.5s ease-out;
+    z-index: 20;
+    overflow: hidden;
+    max-height: 80vh;
+    max-height: 80dvh;
+    margin-inline: 0;
+    transition: all 0.5s ease-in-out;
+    .header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--grey-200);
+
+      .content {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        gap: 2rem;
+        h3 {
+          color: var(--grey-800);
+          @include text("lg", $weight: 500);
+          text-wrap: balance;
+          text-align: center;
+          p {
+            color: var(--grey-900);
+          }
+        }
+        .buttons {
+          display: flex;
+          gap: 1rem;
+          .icon {
+            @include button("md", $color: "grey", $style: "outline");
+          }
+          .submit {
+            @include button("md", $color: "error", $style: "outline");
+          }
+        }
+      }
+    }
+  }
+
+  .close {
+    background-color: transparent;
+    border-width: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    padding: 0;
+    cursor: pointer;
+    i {
+      font-size: 1.5rem;
+      color: var(--grey-500);
+    }
+  }
+}

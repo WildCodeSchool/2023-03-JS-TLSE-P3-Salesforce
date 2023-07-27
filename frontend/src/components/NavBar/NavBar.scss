@@ -442,6 +442,8 @@ body {
       align-items: stretch;
       gap: 1rem;
       z-index: 3;
+      overflow: hidden;
+      overflow-y: auto;
 
       animation: show-sub-nav-container-desktop 0.5s ease-in-out;
       .title-sub-nav-bar {

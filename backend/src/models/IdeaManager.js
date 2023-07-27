@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const AbstractManager = require("./AbstractManager");
 
 class IdeaManager extends AbstractManager {
@@ -5,11 +6,10 @@ class IdeaManager extends AbstractManager {
     super({ table: "idea" });
   }
 
-  insert(idea, companyId, userId) {
-    const { title, description, fileId } = idea;
+  insert(title, description, company_id, user_id, workspace_id) {
     return this.database.query(
-      `insert into ${this.table} (title, description, file_id, company_id, user_id) values ( ?, ?, ?, ?, ?);`,
-      [title, description, fileId, companyId, userId]
+      `insert into ${this.table} (title, description, company_id, user_id, workspace_id) values ( ?, ?, ?, ?, ?);`,
+      [title, description, company_id, user_id, workspace_id]
     );
   }
 
@@ -67,7 +67,7 @@ class IdeaManager extends AbstractManager {
                u.email AS creator_email,
                u.picture_url AS creator_picture_url,
                comp.name AS company_name,
-               COUNT(liked.id) AS likes_count,
+               likes.likes_count AS likes_count,
                comments.comments_count AS comments_count,
                GROUP_CONCAT(DISTINCT cat.name, "|", col.name) AS categories,
                CASE WHEN liked_by_user.idea_id IS NOT NULL THEN true ELSE false END AS is_liked_by_user
@@ -79,14 +79,18 @@ class IdeaManager extends AbstractManager {
                FROM comment
                GROUP BY idea_id
              ) comments ON comments.idea_id = ${this.table}.id
-             LEFT JOIN liked ON liked.idea_id = ${this.table}.id
+             LEFT JOIN (
+              SELECT idea_id, COUNT(*) AS likes_count
+              FROM liked
+              GROUP BY idea_id
+            ) likes ON likes.idea_id = ${this.table}.id
              LEFT JOIN comment AS c ON c.idea_id = ${this.table}.id
              LEFT JOIN user AS cu ON cu.id = c.user_id
              LEFT JOIN category_has_idea ON ${this.table}.id = category_has_idea.idea_id
              LEFT JOIN category AS cat ON cat.id = category_has_idea.category_id
              LEFT JOIN liked liked_by_user ON liked_by_user.idea_id = ${this.table}.id AND liked_by_user.user_id = ?
              LEFT JOIN color col ON col.id = cat.color_id
-             WHERE comp.id = ?
+             WHERE comp.id = ? AND ${this.table}.workspace_id IS NULL
              GROUP BY ${this.table}.id, comp.name
              ORDER BY
              ${this.table}.id DESC;`,
@@ -135,17 +139,33 @@ class IdeaManager extends AbstractManager {
     );
   }
 
-  update(idea, companyId, userId, ideaId) {
-    const { title, description, fileId } = idea;
+  update(idea, ideaId) {
+    const { title, description } = idea;
     return this.database.query(
       `UPDATE ${this.table} SET 
         title = ?, 
-        description = ?, 
-        file_id = ?,
-        company_id = ?,
-        user_id = ?
+        description = ?
       WHERE ${this.table}.id = ?`,
-      [title, description, fileId, companyId, userId, ideaId]
+      [title, description, ideaId]
+    );
+  }
+
+  updateCoordinatesIdea(idea) {
+    const { x_coordinate, y_coordinate, id } = idea;
+    return this.database.query(
+      `UPDATE ${this.table} 
+    SET
+      x_coordinate = ?,
+      y_coordinate = ?
+    WHERE ${this.table}.id = ?`,
+      [x_coordinate, y_coordinate, id]
+    );
+  }
+
+  deleteAllIdeasWorkspace(workspace_id) {
+    return this.database.query(
+      `DELETE FROM ${this.table} WHERE workspace_id = ?`,
+      [workspace_id]
     );
   }
 }

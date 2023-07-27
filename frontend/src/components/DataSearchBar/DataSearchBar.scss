@@ -1,0 +1,119 @@
+@use "../../styles/typography" as *;
+@use "../../styles/shadows" as *;
+
+.input-search-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 10;
+  .input {
+    padding-inline: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    height: 40px;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--grey-200);
+    @include shadow("xs");
+    border-radius: 8px;
+
+    &.disabled {
+      background-color: var(--grey-100);
+    }
+    i {
+      color: var(--grey-500);
+    }
+    input,
+    textarea {
+      padding-block: 8px;
+      border: none;
+      height: 100%;
+      width: 100%;
+      outline: none;
+      @include text("md");
+      color: var(--grey-500);
+      resize: none;
+      &:focus {
+        color: var(--grey-800);
+      }
+
+      &:disabled {
+        background-color: var(--grey-100);
+      }
+    }
+  }
+
+  .textarea {
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: center;
+    min-height: 40px;
+    gap: 8px;
+    background: var(--white);
+    border: 1px solid var(--grey-200);
+    @include shadow("xs");
+    border-radius: 8px;
+    overflow: hidden;
+
+    &.disabled {
+      background-color: var(--grey-100);
+    }
+    i {
+      color: var(--grey-500);
+    }
+    textarea {
+      padding: 8px 16px;
+      border: none;
+      height: 100%;
+      width: 100%;
+      outline: none;
+      @include text("md");
+      color: var(--grey-500);
+      resize: none;
+      &:focus {
+        color: var(--grey-800);
+      }
+
+      &:disabled {
+        background-color: var(--grey-100);
+      }
+    }
+  }
+
+  label {
+    @include text("sm", $weight: 500);
+    color: var(--grey-700);
+  }
+  &.field {
+    &--10 {
+      flex: 1;
+    }
+    &--20 {
+      flex: 2;
+    }
+    &--30 {
+      flex: 3;
+    }
+    &--40 {
+      flex: 4;
+    }
+    &--50 {
+      flex: 5;
+    }
+    &--60 {
+      flex: 6;
+    }
+    &--70 {
+      flex: 7;
+    }
+    &--80 {
+      flex: 8;
+    }
+    &--90 {
+      flex: 9;
+    }
+  }
+}

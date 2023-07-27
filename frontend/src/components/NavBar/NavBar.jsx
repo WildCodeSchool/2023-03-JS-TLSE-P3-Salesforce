@@ -1,18 +1,18 @@
 import "./NavBar.scss";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
-
+import axios from "axios";
+import PropTypes from "prop-types";
+import NewWorkspaceModal from "../NewWorkspaceModal/NewWorkspaceModal";
 import SubNavBarLink from "../SubNavBarLink/SubNavBarLink";
 import SalesforceLogo from "../../public/assets/logo/logo_SalesForce_Theme_Clair.svg";
-
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
 import Avatar from "../Avatar/Avatar";
 
 export default function NavBar({ activeLink }) {
   const navigate = useNavigate();
-  const { setUser, userInfos } = useContext(AuthContext);
+  const { setUser, userInfos, userToken } = useContext(AuthContext);
   let initials = "";
   if (userInfos.firstname && userInfos.lastname) {
     initials = userInfos.firstname[0] + userInfos.lastname[0];
@@ -29,8 +29,9 @@ export default function NavBar({ activeLink }) {
     useState(false);
   const [isSubNavBarTeamOpen, setIsSubNavBarTeamOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showSubMenuTeam, setShowSubMenuTeam] = useState(false);
   const [showSubMenuWorkspace, setShowSubMenuWorkspace] = useState(false);
+  const [isNewWorkspaceModalOpen, setIsNewWorkspaceModalOpen] = useState(false);
+  const [dataWorkspace, setDataWorkspace] = useState([]);
 
   /* au click, ouvre ou ferme la subnavbar Tableau et ferme la subnavbar Idea si elle est ouverte */
 
@@ -41,12 +42,8 @@ export default function NavBar({ activeLink }) {
     }
   }
 
-  /* au click, ouvre ou ferme la subnavbar Idea et ferme la subnavbar tableau si elle est ouverte */
-  function openNavBarTeam() {
-    setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
-    if (isSubNavBarWorkspaceOpen === true) {
-      setIsSubNavBarWorkspaceOpen(!isSubNavBarWorkspaceOpen);
-    }
+  function openNewWorkspaceModal() {
+    setIsNewWorkspaceModalOpen(true);
   }
 
   /* au click, ferme les navbar pouvant être ouvertes ailleurs */
@@ -57,6 +54,26 @@ export default function NavBar({ activeLink }) {
       setIsSubNavBarTeamOpen(!isSubNavBarTeamOpen);
     }
   }
+
+  useEffect(() => {
+    if (companyInfos.id && userInfos.id) {
+      axios
+        .get(
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${
+            companyInfos.id
+          }/users/${userInfos.id}/workspaces/`,
+          {
+            headers: { Authorization: `Bearer ${userToken}` },
+          }
+        )
+        .then((response) => {
+          setDataWorkspace(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching workspaces:", error);
+        });
+    }
+  }, [companyInfos.id, userInfos.id, userToken]);
 
   return (
     <div className="global-nav-bar">
@@ -78,6 +95,7 @@ export default function NavBar({ activeLink }) {
             aria-hidden="true"
           />
         </div>
+
         <div className="main-nav-bar">
           <div className="first-part-buttons-nav-bar">
             <div
@@ -90,7 +108,7 @@ export default function NavBar({ activeLink }) {
               <img src={companyLogoUrl} alt={`Logo de ${companyInfos.name}`} />
             </div>
             <div className="icon-nav-bar">
-              {/* au click, ferme les navbar pouvant être ouvertes ailleurs */}
+              {/* menu Accueil */}
               <button
                 type="button"
                 className={activeLink === "home" ? "active" : ""}
@@ -104,29 +122,49 @@ export default function NavBar({ activeLink }) {
                   <span>Accueil</span>
                 </div>
               </button>
-              <button type="button" onClick={() => openNavBarTeam()}>
+              {/* menu Mes équipes */}
+              <button
+                type="button"
+                className={activeLink === "teams" ? "active" : ""}
+                onClick={() => {
+                  closeSubNavBar();
+                  navigate(`/${companyInfos.slug}/users/teams/`);
+                }}
+                aria-hidden="true"
+              >
                 <i className="fi fi-rr-users" />
                 <div className="tooltip">
                   <span>Mes équipes</span>
                 </div>
               </button>
+              {/* menu Mes workspaces */}
               <button
                 type="button"
                 className={activeLink === "workspace" ? "active" : ""}
-                // au click, on fait apparaitre le sous-menu
-                onClick={() => openNavBarWorkspace()}
+                onClick={() => {
+                  openNavBarWorkspace();
+                }}
               >
                 <i className="fi fi-rr-apps" />
                 <div className="tooltip">
                   <span>Mes espaces de travail</span>
                 </div>
               </button>
-              <button type="button">
+              {/* menu Mes idées  */}
+              <button
+                type="button"
+                className={activeLink === "ideas" ? "active" : ""}
+                onClick={() => {
+                  navigate(`/${companyInfos.slug}/users/ideas/`);
+                }}
+                aria-hidden="true"
+              >
                 <i className="fi fi-rr-bulb" />
                 <div className="tooltip">
                   <span>Mes idées</span>
                 </div>
               </button>
+              {/* menu parametres entreprise */}
               {userInfos.is_salesforce_admin || userInfos.is_company_admin ? (
                 <button
                   type="button"
@@ -146,6 +184,7 @@ export default function NavBar({ activeLink }) {
           </div>
           <div className="second-part-buttons-nav-bar">
             <div className="icon-nav-bar">
+              {/* menu mentions légales */}
               <button type="button">
                 <i className="fi fi-rr-interrogation" />
                 <div className="tooltip">
@@ -166,7 +205,13 @@ export default function NavBar({ activeLink }) {
                 </div>
               </button>
             </div>
-            <div className="avatar">
+            <div
+              className="avatar"
+              aria-hidden="true"
+              onClick={() => {
+                navigate(`/${companyInfos.slug}/profile/`);
+              }}
+            >
               {userInfos.picture_url ? (
                 <Avatar type="navbar" pictureUrl={userInfos.picture_url} />
               ) : (
@@ -189,40 +234,43 @@ export default function NavBar({ activeLink }) {
           {/* ternaire pour faire apparaitre le sous menu des tableaux en fonction du state */}
         </div>
       </nav>
+
       {isSubNavBarWorkspaceOpen && (
         <div className="first-sub-nav-bar">
           <p className="title-sub-nav-bar">Mes espaces de travail</p>
-          <button className="nav-bar-button" type="button">
+          <button
+            className="nav-bar-button"
+            type="button"
+            onClick={openNewWorkspaceModal}
+          >
             <i className="fi fi-rr-plus" />
             Nouvel espace
           </button>
-          <div className="links-sub-nav-bar">
-            <SubNavBarLink
-              title="Refonte des extranets"
-              subtitle="Pierre DUPONT"
-              navigateLink={`/${companyInfos.slug}/workspaces/1`}
+          {isNewWorkspaceModalOpen && (
+            <NewWorkspaceModal
+              setIsNewWorkspaceModalOpen={setIsNewWorkspaceModalOpen}
             />
-            <SubNavBarLink title="Bien être au travail" subtitle="Direction" />
+          )}
+          <div className="links-sub-nav-bar">
+            {/* Utilisez map pour afficher chaque espace de travail */}
+            {dataWorkspace.map((workspace) => (
+              <SubNavBarLink
+                key={workspace.id}
+                title={workspace.name}
+                subtitle={
+                  workspace.team_name !== null
+                    ? `${workspace.team_name}`
+                    : `${
+                        workspace.creator_firstname
+                      } ${workspace.creator_lastname.toUpperCase()}`
+                }
+                navigateLink={`/${companyInfos.slug}/workspaces/${workspace.id}`}
+              />
+            ))}
           </div>
         </div>
       )}
-      {/* ternaire pour faire apparaitre le sous menu des équipes en fonction du state */}
-      {isSubNavBarTeamOpen && (
-        <div className="first-sub-nav-bar">
-          <p className="title-sub-nav-bar">Équipes</p>
-          <button className="nav-bar-button" type="button">
-            <i className="fi fi-rr-plus" />
-            Nouvelle équipe
-          </button>
-          <div className="links-sub-nav-bar">
-            <SubNavBarLink title="Direction" subtitle="6 personnes" />
-            <SubNavBarLink
-              title="Ressources Humaines"
-              subtitle="14 personnes"
-            />
-          </div>
-        </div>
-      )}
+
       {showMenu && (
         <div id="nav-links">
           <div className="main-part-nav-bar-menu-burger">
@@ -234,56 +282,40 @@ export default function NavBar({ activeLink }) {
                 />
               </div>
               <div className="content">
-                <div className="link">
+                {/* menu Accueil (mobile) */}
+                <div
+                  className="link"
+                  onClick={() => {
+                    closeSubNavBar();
+                    navigate(`/${companyInfos.slug}/`);
+                  }}
+                  aria-hidden="true"
+                >
                   <div className="text">
                     <i className="fi fi-rr-home" />
                     <p>Accueil</p>
                   </div>
                 </div>
+                {/* menu Mes équipes(mobile) */}
                 <div
-                  className={`link-with-sub-links ${
-                    showSubMenuTeam ? "active" : ""
-                  }`}
+                  className="link"
+                  onClick={() => {
+                    closeSubNavBar();
+                    navigate(`/${companyInfos.slug}/users/teams`);
+                  }}
+                  aria-hidden="true"
                 >
-                  <div
-                    className="link"
-                    onClick={() => setShowSubMenuTeam(!showSubMenuTeam)}
-                    onKeyDown={() => {}}
-                    role="button"
-                    tabIndex="0"
-                  >
-                    <div className="text">
-                      <i className="fi fi-rr-users" />
-                      <p>Équipes</p>
-                    </div>
-                    <div className="arrow">
-                      <i
-                        className={`fi fi-rr-angle-small-${
-                          showSubMenuTeam ? "up" : "down"
-                        }`}
-                      />
-                    </div>
+                  <div className="text">
+                    <i className="fi fi-rr-users" />
+                    <p>Mes équipes</p>
                   </div>
-                  {showSubMenuTeam && (
-                    <div className="sub-links">
-                      <div className="sub-part-menu-burger">
-                        <SubNavBarLink
-                          title="Direction"
-                          subtitle="6 personnes"
-                        />
-                        <SubNavBarLink
-                          title="Ressources Humaines"
-                          subtitle="14 personnes"
-                        />
-                      </div>
-                    </div>
-                  )}
                 </div>
                 <div
                   className={`link-with-sub-links ${
                     showSubMenuWorkspace ? "active" : ""
                   }`}
                 >
+                  {/* menu workspaces (mobile) */}
                   <div
                     className="link"
                     onClick={() =>
@@ -295,7 +327,7 @@ export default function NavBar({ activeLink }) {
                   >
                     <div className="text">
                       <i className="fi fi-rr-apps" />
-                      <p>Tableaux</p>
+                      <p>Espaces de travail</p>
                     </div>
                     <div className="arrow">
                       <i
@@ -308,22 +340,36 @@ export default function NavBar({ activeLink }) {
                   {showSubMenuWorkspace && (
                     <div className="sub-links">
                       <div className="sub-part-menu-burger">
-                        <SubNavBarLink
-                          title="Refonte des extranets"
-                          subtitle="Pierre DUPONT"
-                        />
-                        <SubNavBarLink
-                          title="Bien être au travail"
-                          subtitle="Direction"
-                        />
+                        {dataWorkspace.map((workspace) => (
+                          <SubNavBarLink
+                            key={workspace.id}
+                            title={workspace.name}
+                            subtitle={
+                              workspace.team_name !== null
+                                ? `${workspace.team_name}`
+                                : `${
+                                    workspace.creator_firstname
+                                  } ${workspace.creator_lastname.toUpperCase()}`
+                            }
+                            navigateLink={`/${companyInfos.slug}/workspaces/${workspace.id}`}
+                          />
+                        ))}
                       </div>
                     </div>
                   )}
                 </div>
-                <div className="link">
+                {/* menu Mes idées (mobile) */}
+                <div
+                  className="link"
+                  onClick={() => {
+                    closeSubNavBar();
+                    navigate(`/${companyInfos.slug}/users/ideas`);
+                  }}
+                  aria-hidden="true"
+                >
                   <div className="text">
                     <i className="fi fi-rr-bulb" />
-                    <p>Idées</p>
+                    <p>Mes idées</p>
                   </div>
                 </div>
                 {userInfos.is_salesforce_admin || userInfos.is_company_admin ? (
@@ -335,6 +381,7 @@ export default function NavBar({ activeLink }) {
                     }}
                     aria-hidden="true"
                   >
+                    {/* menu Mes parametres entreprise (mobile) */}
                     <div className="text">
                       <i className="fi fi-rr-settings-sliders" />
                       <p>Paramètres entreprise</p>
@@ -344,15 +391,21 @@ export default function NavBar({ activeLink }) {
               </div>
             </div>
             <div className="bottom">
+              {/* menu mentions legales (mobile) */}
               <div className="link">
                 <div className="text">
                   <i className="fi fi-rr-interrogation" />
-
                   <p>Mentions légales</p>
                 </div>
               </div>
               <div className="profile">
-                <div className="avatar">
+                <div
+                  className="avatar"
+                  aria-hidden="true"
+                  onClick={() => {
+                    navigate(`/${companyInfos.slug}/profile/`);
+                  }}
+                >
                   {userInfos.picture_url ? (
                     <Avatar type="navbar" pictureUrl={userInfos.picture_url} />
                   ) : (
@@ -360,10 +413,24 @@ export default function NavBar({ activeLink }) {
                   )}
                 </div>
                 <div className="content">
-                  <p className="name">
+                  <p
+                    className="name"
+                    aria-hidden="true"
+                    onClick={() => {
+                      navigate(`/${companyInfos.slug}/profile/`);
+                    }}
+                  >
                     {userInfos.firstname} {userInfos.lastname.toUpperCase()}
                   </p>
-                  <p className="email">{userInfos.email}</p>
+                  <p
+                    className="email"
+                    aria-hidden="true"
+                    onClick={() => {
+                      navigate(`/${companyInfos.slug}/profile/`);
+                    }}
+                  >
+                    {userInfos.email}
+                  </p>
                   <button
                     className="log-out"
                     onClick={() => {
@@ -376,7 +443,6 @@ export default function NavBar({ activeLink }) {
                   </button>
                 </div>
               </div>
-
               <a
                 className="salesforce-logo"
                 href="https://www.salesforce.com/"
@@ -387,7 +453,6 @@ export default function NavBar({ activeLink }) {
               </a>
             </div>
           </div>
-
           <div className="close-menu-burger">
             <div
               className="icon-nav-bar"
@@ -403,6 +468,7 @@ export default function NavBar({ activeLink }) {
           </div>
         </div>
       )}
+
       {isSubNavBarWorkspaceOpen || isSubNavBarTeamOpen || showMenu ? (
         <div className="filter" onClick={closeSubNavBar} aria-hidden="true" />
       ) : null}
@@ -411,9 +477,9 @@ export default function NavBar({ activeLink }) {
 }
 
 NavBar.propTypes = {
-  activeLink: propTypes.string,
+  activeLink: PropTypes.string,
 };
 
 NavBar.defaultProps = {
-  activeLink: "home",
+  activeLink: null,
 };

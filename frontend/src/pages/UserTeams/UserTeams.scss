@@ -1,0 +1,43 @@
+.page-actions {
+  border-top: 1px solid var(--grey-200);
+  margin-top: 1rem;
+  padding: 2rem 0;
+  display: flex;
+
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.team-cards-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .page-actions {
+    flex-direction: row;
+    justify-content: flex-end;
+    .input-search-bar {
+      max-width: 300px;
+    }
+  }
+
+  .team-cards-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .team-cards-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .team-cards-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

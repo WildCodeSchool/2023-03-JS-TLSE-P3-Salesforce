@@ -7,13 +7,9 @@
   align-items: stretch;
   border: 1px solid var(--grey-200);
   @include shadow("xs");
-  cursor: pointer;
   border-radius: 12px;
   transition: box-shadow 0.3s;
   background-color: var(--white);
-  &:hover {
-    @include shadow("md");
-  }
 
   .header-card {
     display: flex;

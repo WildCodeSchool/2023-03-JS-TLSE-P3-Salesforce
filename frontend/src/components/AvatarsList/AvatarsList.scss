@@ -1,0 +1,9 @@
+@use "../../styles/shadows" as *;
+@use "../../styles/typography" as *;
+
+.avatars-list {
+  display: flex;
+  & > * {
+    margin-right: -0.75rem;
+  }
+}

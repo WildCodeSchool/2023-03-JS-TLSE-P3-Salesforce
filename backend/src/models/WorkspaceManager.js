@@ -12,8 +12,17 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  findWorkspacesByTeamId(teamId, userId, isSalesForceAdmin) {
-    switch (isSalesForceAdmin) {
+  findWorkspacesByTeamId(
+    teamId,
+    isInWorkspace,
+    isSalesForceAdmin,
+    isCompanyAdmin
+  ) {
+    switch (
+      isInWorkspace === true ||
+      isSalesForceAdmin === true ||
+      isCompanyAdmin === true
+    ) {
       case true:
         return this.database.query(
           `SELECT
@@ -22,7 +31,7 @@ class WorkspaceManager extends AbstractManager {
             ${this.table}.creation_date,
             ${this.table}.description,
             ${this.table}.is_private,
-            COUNT(idea.id) AS total_ideas,
+            COUNT(DISTINCT idea.id) AS total_ideas,
             COUNT(DISTINCT workspace_has_user.user_id) AS total_users
           FROM
             ${this.table}
@@ -51,24 +60,37 @@ class WorkspaceManager extends AbstractManager {
             INNER JOIN idea ON ${this.table}.id = idea.workspace_id
             INNER JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
           WHERE
-            ${this.table}.team_id = ? AND workspace_has_user.user_id = ? 
+            ${this.table}.team_id = ? AND ${this.table}.is_private = 0 
           GROUP BY
             ${this.table}.id,
             workspace_has_user.workspace_id;`,
-          [teamId, userId]
+          [teamId]
         );
     }
   }
 
+  findTeamByWorkspace(workspaceId) {
+    return this.database.query(
+      `SELECT *
+      FROM ${this.table} WHERE ${this.table}.id = ?;`,
+      [workspaceId]
+    );
+  }
+
   findUserWorkspacesByUserAndCompanyId(userId, companyId) {
     return this.database.query(
-      `SELECT
+      `
+      SELECT
       ${this.table}.id,
       ${this.table}.name,
       ${this.table}.creation_date,
       ${this.table}.description,
       ${this.table}.is_private,
-
+      u.firstname AS creator_firstname,
+      u.lastname AS creator_lastname,
+      u.id AS user_id,
+      t.id AS team_id,
+      t.name AS team_name,
       (
         SELECT COUNT(DISTINCT idea.id)
         FROM idea
@@ -79,25 +101,24 @@ class WorkspaceManager extends AbstractManager {
         FROM workspace_has_user
         WHERE workspace_has_user.workspace_id = ${this.table}.id
       ) AS total_users
-    FROM
-      ${this.table}
+      FROM ${this.table}
+      LEFT JOIN user AS u ON ${this.table}.user_id = u.id
+      LEFT JOIN team AS t ON ${this.table}.team_id = t.id
       LEFT JOIN workspace_has_user ON ${this.table}.id = workspace_has_user.workspace_id
-    WHERE
-      ${this.table}.company_id = ?
+      WHERE ${this.table}.company_id = ?
       AND workspace_has_user.user_id = ?
-    GROUP BY
-      ${this.table}.id;`,
+      GROUP BY ${this.table}.id;`,
       [companyId, userId]
     );
   }
 
   findWorkspacesUsersById(workspaceId) {
     return this.database.query(
-      `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id, w.team_id, w.name, w.creation_date, t.name as team_name
+      `SELECT u.id, u.firstname, u.lastname, u.email, u.picture_url, w.id as workspace_id, w.team_id, w.name, w.creation_date, t.name as team_name
       FROM user u INNER JOIN workspace_has_user whu ON u.id = whu.user_id
-      LEFT JOIN workspace w ON w.id = whu.workspace_id
+      LEFT JOIN ${this.table} w ON w.id = whu.workspace_id
       LEFT JOIN team t ON t.id = w.team_id
-      WHERE whu.workspace_id = ?;`,
+      WHERE whu.workspace_id = ? ;`,
       [workspaceId]
     );
   }
@@ -146,12 +167,12 @@ class WorkspaceManager extends AbstractManager {
     );
   }
 
-  insertWorkspace(workspace, companyId) {
-    const { name, isPrivate, description, userId, teamId } = workspace;
+  insertWorkspace(workspace, userId, companyId) {
+    const { name, isPrivate, description, teamId } = workspace;
 
     return this.database.query(
-      `INSERT INTO ${this.table} (name, is_private, description, user_id, team_id, company_id) VALUES ( ?, ?, ?, ?, ?, ?);`,
-      [name, isPrivate, description, userId, teamId, companyId]
+      `INSERT INTO ${this.table} (name, is_private, description, team_id,user_id, company_id) VALUES ( ?, ?, ?, ?, ?, ?);`,
+      [name, isPrivate, description, teamId, userId, companyId]
     );
   }
 

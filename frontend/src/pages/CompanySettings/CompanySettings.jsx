@@ -14,16 +14,15 @@ import PageHeader from "../../components/PageHeader/PageHeader";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import Alert from "../../components/Alert/Alert";
 import NavBar from "../../components/NavBar/NavBar";
-import NewUserModal from "../../components/NewUserModal/NewUserModal";
 import ColorPicker from "../../components/ColorPicker/ColorPicker";
 
 import { defineColorTheme } from "../../../utils";
+import CompanySettingsMembers from "../../components/CompanySettingsMembers/CompanySettingsMembers";
 
 export default function CompanySettings() {
   const { userToken, userInfos } = useContext(AuthContext);
   const { setCompanyInfos, companyInfos } = useContext(CompanyContext);
   const { company_slug } = useParams();
-  const [isNewUserModalOpen, setIsNewUserModalOpen] = useState(false);
   const [activePage, setActivePage] = useState("members");
   const [logoUpdateAlert, setLogoUpdateAlert] = useState("");
   const [colors, setColors] = useState([]);
@@ -177,34 +176,8 @@ export default function CompanySettings() {
           Personnalisation
         </li>
       </HorizontalTabs>
-      {isNewUserModalOpen && (
-        <NewUserModal setIsNewUserModalOpen={setIsNewUserModalOpen} />
-      )}
 
-      {activePage === "members" && (
-        <section id="members">
-          <div className="table">
-            <div className="table-header">
-              <div className="content">
-                <h2>Membres de l’entreprise</h2>
-                <p>Contrôlez l'accès et les permissions des membres.</p>
-              </div>
-              <div className="actions">
-                <button
-                  type="button"
-                  className="button-md-primary-solid"
-                  onClick={() => {
-                    setIsNewUserModalOpen(true);
-                  }}
-                >
-                  <i className="fi fi-rr-user-add" />
-                  Ajouter un membre
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {activePage === "members" && <CompanySettingsMembers />}
 
       {activePage === "categories" && (
         <section id="categories">
@@ -262,7 +235,13 @@ export default function CompanySettings() {
                             id="logo_url"
                             value={companyNewLogoUrl}
                             onChange={(event) => {
-                              setCompanyNewLogoUrl(event.target.value);
+                              if (event.target.value) {
+                                setCompanyNewLogoUrl(event.target.value);
+                              } else {
+                                setCompanyNewLogoUrl(
+                                  "https://res.cloudinary.com/dmmifezda/image/upload/v1689018967/logos/favicon-salesforce_yffz3d.svg"
+                                );
+                              }
                             }}
                             autoComplete="off"
                           />

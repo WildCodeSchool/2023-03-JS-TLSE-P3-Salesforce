@@ -1,13 +1,13 @@
-import React from "react";
+/* eslint-disable camelcase */
 import PropTypes from "prop-types";
-
 import "./TeamCard.scss";
-
+import { Link, useParams } from "react-router-dom";
 import Badge from "../Badge/Badge";
 
 export default function TeamCard({ team }) {
+  const { company_slug } = useParams();
   return (
-    <div className="team-card">
+    <Link to={`/${company_slug}/teams/${team.id}`} className="team-card">
       <div className="team-picture">
         {team.picture_url ? (
           <img src={team.picture_url} alt="team_picture" />
@@ -22,7 +22,7 @@ export default function TeamCard({ team }) {
       <Badge color={team.status === "Active" ? "green" : "red"}>
         {team.status}
       </Badge>
-    </div>
+    </Link>
   );
 }
 
@@ -33,6 +33,7 @@ TeamCard.propTypes = {
     picture_url: PropTypes.string,
     objective: PropTypes.string,
     status: PropTypes.string,
+    id: PropTypes.number,
   }),
 };
 
@@ -41,6 +42,7 @@ TeamCard.defaultProps = {
     name: "titre de l'équipe",
     description: "description de l'équipe",
     objective: "objectif de l'équipe",
-    status: "status",
+    id: 0,
+    status: "Inactive",
   },
 };

@@ -8,6 +8,7 @@ const {
   verifyToken,
   randomPasswordGenerator,
   verifyCompanyAdminOrSalesForceAdminRole,
+  testIfCompanyAdminOrSalesForceAdminRole,
 } = require("./services/auth");
 
 /* ---- USERS ROUTES ---- */
@@ -21,7 +22,12 @@ router.post(
 );
 
 // récupérer les users d'une entreprise
-router.get("/companies/:company_id/users", userControllers.getUsers);
+router.get(
+  "/companies/:company_id/users",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
+  userControllers.getUsers
+);
 
 // récupérer un user d'une société
 router.get("/companies/:company_id/users/:user_id", userControllers.getUser);
@@ -43,6 +49,8 @@ router.put(
 // effacer un profil utilisateur
 router.delete(
   "/companies/:company_id/users/:user_id",
+  verifyToken,
+  verifyCompanyAdminOrSalesForceAdminRole,
   userControllers.deleteUser
 );
 
@@ -87,19 +95,33 @@ router.put(
 const teamControllers = require("./controllers/teamControllers");
 
 // afficher les équipes d'une entreprise
-router.get("/companies/:company_id/teams", teamControllers.getTeams);
+router.get(
+  "/companies/:company_id/teams",
+  verifyToken,
+  teamControllers.getTeams
+);
 
 // afficher une équipe
-router.get("/companies/:company_id/teams/:team_id", teamControllers.getTeam);
+router.get(
+  "/companies/:company_id/teams/:team_id",
+  verifyToken,
+  teamControllers.getTeam
+);
 
 // afficher les membres d'une équipe
 router.get("/teams/:team_id/users", teamControllers.getAllUsersFromTeam);
 
 // afficher les équipes d'un utilisateur
-router.get("/users/:user_id/teams", teamControllers.getAllTeamsFromUser);
+router.get(
+  "/companies/:company_id/users/:user_id/teams",
+  teamControllers.getAllTeamsFromUser
+);
 
 // créer une équipe
-router.post("/companies/:company_id/teams", teamControllers.addTeamOnCompany);
+router.post(
+  "/companies/:company_id/users/:user_id/teams",
+  teamControllers.addTeamOnCompany
+);
 
 // ajouter un utilisateur dans une équipe
 
@@ -119,6 +141,13 @@ router.delete(
   teamControllers.deleteUserFromTeam
 );
 
+// Get all ideas for a team (:user_id is used to get the user's liked ideas)
+router.get(
+  "/teams/:team_id/ideas/:user_id",
+  verifyToken,
+  teamControllers.getTeamIdeas
+);
+
 /* ---- WORKSPACES ROUTES ---- */
 
 const workspaceControllers = require("./controllers/workspaceControllers");
@@ -128,8 +157,16 @@ const workspaceMiddlewares = require("./middlewares/workspaceMiddlewares");
 router.get(
   "/teams/:team_id/workspaces/:user_id",
   verifyToken,
-  workspaceMiddlewares.workspaceVerifySalesForceAdminRole,
+  workspaceMiddlewares.workspaceVerifyUserInWorkspace,
+  workspaceMiddlewares.workspaceVerifyRole,
   workspaceControllers.getTeamWorkspaces
+);
+
+// Get the team of a workspace
+router.get(
+  "/workspaces/:workspace_id",
+  verifyToken,
+  workspaceControllers.getTeamByWorkspace
 );
 
 // Get all workspaces for a user
@@ -155,7 +192,7 @@ router.get(
 
 // Create a new workspace and add the creator in the workspace_has_user table
 router.post(
-  "/companies/:company_id/workspaces",
+  "/companies/:company_id/users/:user_id/workspaces",
   verifyToken,
   workspaceControllers.createWorkspace
 );
@@ -164,6 +201,9 @@ router.post(
 router.post(
   "/workspaces/:workspace_id/users/:user_id",
   verifyToken,
+  testIfCompanyAdminOrSalesForceAdminRole,
+  invitationMiddlewares.invitationVerifyUserInTeam,
+  workspaceMiddlewares.workspaceVerifyUserInWorkspace,
   workspaceControllers.addUserToWorkspace
 );
 
@@ -194,7 +234,7 @@ const ideaControllers = require("./controllers/ideaControllers");
 
 // Get all ideas for a user
 router.get(
-  "/users/:user_id/ideas",
+  "/companies/:company_id/users/:user_id/ideas",
   verifyToken,
   ideaControllers.getAllIdeasByUser
 );
@@ -225,12 +265,27 @@ router.put(
   verifyToken,
   ideaControllers.updateIdeaById
 );
+// Update coordoorates of an idea for a workspace
+router.put(
+  "/ideas/:idea_id",
+  verifyToken,
+  ideaControllers.updateCoordinatesIdeaWorkspace
+);
+
+router.put(
+  "/companies/ideas/:idea_id",
+  verifyToken,
+  ideaControllers.updateIdeaById
+);
 
 // Delete an idea
+router.delete("/ideas/:idea_id", verifyToken, ideaControllers.deleteIdea);
+
+// Delete ideas's workspace
 router.delete(
-  "/companies/:company_id/users/:user_id/ideas/:idea_id",
+  "/workspaces/:workspace_id/ideas",
   verifyToken,
-  ideaControllers.deleteIdea
+  ideaControllers.deleteIdeasWorkspace
 );
 
 /* ---- LIKES ROUTES ---- */
@@ -259,7 +314,11 @@ router.post(
 );
 
 // Delete a like to an idea
-router.delete("/likes/:liked_id", verifyToken, likeControllers.deleteLike);
+router.delete(
+  "/ideas/:idea_id/likes/users/:user_id",
+  verifyToken,
+  likeControllers.deleteLike
+);
 
 /* ---- COMMENTS ROUTES ---- */
 
@@ -323,15 +382,24 @@ router.delete(
 /* ---- CATEGORIES ROUTES ---- */
 const categoryControllers = require("./controllers/categoryControllers");
 
-router.get("/categories", categoryControllers.browseCategory);
-
+router.get(
+  "/companies/:company_id/categories",
+  categoryControllers.browseCompanyCategories
+);
 router.get("/categories/:id", categoryControllers.readCategory);
-
 router.put("/categories/:id", categoryControllers.editCategory);
-
 router.post("/categories", categoryControllers.addCategory);
-
 router.delete("/categories/:id", categoryControllers.destroyCategory);
+
+/* ---- CATEGORY HAS IDEA ---- */
+const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
+
+router.get("/cathasidea", catHasIdeaControllers.browsecatHasIdea);
+router.post("/cathasidea", catHasIdeaControllers.addcatHasIdea);
+router.delete(
+  "/cathasidea/:idea_id",
+  catHasIdeaControllers.deletecatHasIdeaByIdeaId
+);
 
 /* ---- COLORS ROUTES ---- */
 const colorControllers = require("./controllers/colorControllers");

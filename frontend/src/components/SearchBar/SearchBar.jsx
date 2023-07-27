@@ -1,28 +1,36 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./SearchBar.scss";
-import { availableNames } from "../../../utils";
+import propTypes from "prop-types";
 
-function SearchBar() {
+export default function SearchBar({ pagePart }) {
   const [datas, setDatas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const handleSearchTerm = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
-  };
+
+  let placeholder = "";
+
+  if (pagePart === "ideas") {
+    placeholder = "Rechercher une idée";
+  } else if (pagePart === "teams") {
+    placeholder = "Rechercher une équipe";
+  }
+
   return (
-    <div className="search-component">
-      <div className="search-bar">
+    <div className="input-search-bar">
+      <div className="input">
+        <i className="fi fi-rr-search" />
         <input
-          className="search-input"
           type="text"
-          placeholder="Rechercher une idée"
-          onChange={handleSearchTerm}
+          className="input-search-bar"
+          placeholder={placeholder}
+          value={searchTerm}
+          onChange={(event) => {
+            setSearchTerm(event.target.value);
+          }}
         />
         <button
           type="button"
           className="search-search"
-          // A venir: un toggle pour activer/désactiver la searchbar et lui fixer le focus à l'activation.
-          onClick={() => setDatas(availableNames)}
+          onClick={() => setDatas()}
         >
           <i className="fi fi-rr-search" />
         </button>
@@ -44,4 +52,10 @@ function SearchBar() {
   );
 }
 
-export default SearchBar;
+SearchBar.propTypes = {
+  pagePart: propTypes.string,
+};
+
+SearchBar.defaultProps = {
+  pagePart: "ideas",
+};

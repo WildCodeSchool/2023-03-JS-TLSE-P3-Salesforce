@@ -6,9 +6,12 @@ import Invitation from "./pages/Invitation/Invitation";
 import PasswordReset from "./pages/PasswordReset/PasswordReset";
 import NewPassword from "./pages/NewPassword/NewPassword";
 import Workspace from "./pages/Workspace/Workspace";
-
+import Team from "./pages/Team/Team";
+import UserIdeas from "./pages/UserIdeas/UserIdeas";
 import { AuthProvider } from "./contexts/AuthContext";
 import { CompanyProvider } from "./contexts/CompanyContext";
+import UserTeams from "./pages/UserTeams/UserTeams";
+import UserProfile from "./pages/UserProfile/UserProfile";
 
 import "./styles/reset.css";
 import "./styles/index.scss";
@@ -24,6 +27,15 @@ function App() {
               <Route
                 path="/:company_slug/workspaces/:workspace_id"
                 element={<Workspace />}
+              />
+              <Route
+                path="/:company_slug/users/ideas"
+                element={<UserIdeas />}
+              />
+
+              <Route
+                path="/:company_slug/users/teams"
+                element={<UserTeams />}
               />
 
               <Route
@@ -42,6 +54,8 @@ function App() {
                 path="/:company_slug/new-password"
                 element={<NewPassword />}
               />
+              <Route path="/:company_slug/teams/:team_id" element={<Team />} />
+              <Route path="/:company_slug/profile" element={<UserProfile />} />
             </Routes>
           </Router>
         </div>

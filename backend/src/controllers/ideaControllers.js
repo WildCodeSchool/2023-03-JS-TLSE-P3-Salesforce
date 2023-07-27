@@ -3,18 +3,18 @@ const models = require("../models");
 
 const createIdea = (req, res) => {
   const { company_id, user_id } = req.params;
-
+  const { title, description, workspace_id } = req.body;
   models.idea
-    .insert(req.body, company_id, user_id)
-    .then(([results]) => {
-      if (results.length) {
-        res.sendStatus(201);
+    .insert(title, description, company_id, user_id, workspace_id)
+    .then(([result]) => {
+      if (result.affectedRows) {
+        res.status(201).json(result);
       } else {
         res.sendStatus(404);
       }
     })
-    .catch((err) => {
-      console.error(err);
+    .catch((error) => {
+      console.error(error);
       res.sendStatus(500);
     });
 };
@@ -69,12 +69,23 @@ const getAllIdeasByIdeasGroup = (req, res) => {
 };
 const updateIdeaById = (req, res) => {
   models.idea
-    .update(
-      req.body,
-      req.params.company_id,
-      req.params.user_id,
-      req.params.idea_id
-    )
+    .update(req.body, req.params.idea_id)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(201).send("l'idée a bien été modifiée");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
+
+const updateCoordinatesIdeaWorkspace = (req, res) => {
+  models.idea
+    .updateCoordinatesIdea(req.body, req.params.idea_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -87,7 +98,6 @@ const updateIdeaById = (req, res) => {
       res.sendStatus(500);
     });
 };
-
 const deleteIdea = (req, res) => {
   models.idea
     .delete(req.params.idea_id)
@@ -104,11 +114,28 @@ const deleteIdea = (req, res) => {
     });
 };
 
+const deleteIdeasWorkspace = (req, res) => {
+  models.idea
+    .deleteAllIdeasWorkspace(req.params.workspace_id)
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.sendStatus(404);
+      } else {
+        res.status(204).send("les idées ont bien été supprimées");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 module.exports = {
   getAllIdeasByUser,
   getAllIdeasByCompany,
   getAllIdeasByIdeasGroup,
   updateIdeaById,
+  updateCoordinatesIdeaWorkspace,
   createIdea,
   deleteIdea,
+  deleteIdeasWorkspace,
 };

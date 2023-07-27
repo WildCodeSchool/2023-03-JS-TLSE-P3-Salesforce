@@ -51,8 +51,9 @@ const getAllLikesByIdea = (req, res) => {
 };
 
 const deleteLike = (req, res) => {
+  const { idea_id, user_id } = req.params;
   models.like
-    .delete(req.params.liked_id)
+    .delete(idea_id, user_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);

@@ -2,7 +2,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Draggable from "react-draggable";
 import "./Workspace.scss";
 import AuthContext from "../../contexts/AuthContext";
 import CompanyContext from "../../contexts/CompanyContext";
@@ -10,9 +9,12 @@ import CompanyContext from "../../contexts/CompanyContext";
 import PageHeader from "../../components/PageHeader/PageHeader";
 import NavBar from "../../components/NavBar/NavBar";
 import Home from "../Home/Home";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import IdeaCardWorkspace from "../../components/IdeaCardWorkspace/IdeaCardWorkspace";
-import ModalNewIdea from "../../components/ModalNewIdea/ModalNewIdea";
+import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewCollaboratorModal";
+import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
+import Alert from "../../components/Alert/Alert";
+import ModifiedIdeaModal from "../../components/ModifiedIdeaModal/ModifiedIdeaModal";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -24,7 +26,16 @@ export default function Workspace() {
   const [dataIdeasWorkspace, setDataIdeasWorkspace] = useState([]);
   const [isLoadingDataIdeasWorkspace, setIsLoadingDataIdeasWorkspace] =
     useState(true);
-  const [isModalNewIdeaOpen, setIsModalNewIdeaOpen] = useState(false);
+
+  const [isNewCollaboratorModalOpen, setIsNewCollaboratorModalOpen] =
+    useState(false);
+  const [openAlertDelete, setOpenAlertDelete] = useState(false);
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [alertSuccessSave, setAlertSuccessSave] = useState(false);
+  const [higherZIndex, setHigherZIndex] = useState(1);
+  const [isModifiedIdeaModalOpen, setIsModifiedIdeaModalOpen] = useState(false);
+  const [isIdeaDeleted, setIsIdeaDeleted] = useState(false);
+  const [dataThisIdea, setDataThisIdea] = useState({});
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -80,7 +91,13 @@ export default function Workspace() {
         setDataIdeasWorkspace(res.data);
         setIsLoadingDataIdeasWorkspace(false);
       });
-  }, [workspace_id, userInfos.id]);
+  }, [
+    workspace_id,
+    userInfos.id,
+    isNewIdeaModalOpen,
+    isIdeaDeleted,
+    isModifiedIdeaModalOpen,
+  ]);
 
   let creationDateWorkspaceInitial;
   let creationDateWorkspaceSplited;
@@ -91,8 +108,32 @@ export default function Workspace() {
     creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
     creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
     creationDateDayFirst = creationDateWorkspaceSplited[0].split("-");
-    creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
+    creationDateWorkspace = `${creationDateDayFirst[2]}/${creationDateDayFirst[1]}/${creationDateDayFirst[0]}`;
   }
+
+  // for save ideas and their position in workspace
+
+  const handleSaveIdeas = () => {
+    dataIdeasWorkspace.forEach((idea) => {
+      axios
+        .put(`${import.meta.env.VITE_BACKEND_URL}/ideas/${idea.id}`, idea, {
+          headers: { Authorization: `Bearer ${userToken}` },
+        })
+        .then((res) => {
+          if (res.affectedRows === 0) {
+            console.error("L'idée n'a pas été modifiée");
+          } else {
+            setAlertSuccessSave(true);
+            setTimeout(() => {
+              setAlertSuccessSave(false);
+            }, 3000);
+          }
+        })
+        .catch((err) => {
+          console.error(err).sendStatus(500);
+        });
+    });
+  };
 
   return userToken &&
     Object.keys(userInfos).length &&
@@ -104,49 +145,87 @@ export default function Workspace() {
       {!isLoadingDataUsers && (
         <PageHeader
           title={dataUsersByCompany[0].name}
-          subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+          subtitle={`${dataUsersByCompany[0].team_name} • Créé le  : ${creationDateWorkspace}`}
         >
           <div className="actions">
-            <button className="button-md-red-outline" type="button">
-              <i className="fi fi-rr-trash" />
-              Supprimer
-            </button>
-            <button className="button-md-grey-outline" type="button">
+            <button
+              className="button-md-grey-outline"
+              type="button"
+              onClick={() => {
+                setIsNewCollaboratorModalOpen(true);
+              }}
+            >
               <i className="fi fi-rr-users" />
               Collaborer
             </button>
-            <button className="button-primary-solid" type="button">
+            {isNewCollaboratorModalOpen && (
+              <NewCollaboratorModal
+                setIsNewCollaboratorModalOpen={setIsNewCollaboratorModalOpen}
+              />
+            )}
+            <button
+              className="button-primary-solid"
+              type="button"
+              onClick={handleSaveIdeas}
+            >
               Sauvegarder
             </button>
           </div>
         </PageHeader>
       )}
-
+      {alertSuccessSave && (
+        <div className="part-alert-success">
+          <Alert
+            type="success"
+            text="Espace de travail sauvegardé"
+            icon="assept-document"
+          />
+        </div>
+      )}
+      {isIdeaDeleted && (
+        <div className="part-alert-success">
+          <Alert
+            type="success"
+            title=""
+            text="Idée supprimée"
+            icon="lightbulb-slash"
+          />
+        </div>
+      )}
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
           <button
             className="button-md-primary-solid"
             type="button"
-            onClick={() => setIsModalNewIdeaOpen(true)}
+            onClick={() => setIsNewIdeaModalOpen(true)}
           >
             <i className="fi fi-rr-plus" />
             Ajouter une idée
           </button>
-
-          <div className="search-ideas-workspace">
-            <SearchBar />
-            <div className="filter-and-selecting">
-              <button className="button-md-grey-outline" type="button">
-                <i className="fi-rr-angle-small-down" />
-                trier
-              </button>
-              <button className="button-md-grey-outline" type="button">
-                <i className="i fi-rr-bars-filter" />
-                filtrer
-              </button>
-            </div>
-          </div>
+          <button
+            className="button-md-red-outline"
+            type="button"
+            onClick={() => {
+              setOpenAlertDelete(true);
+            }}
+          >
+            <i className="fi fi-rr-broom" />
+            Effacer toutes les idées
+          </button>
+          {openAlertDelete && (
+            <NewDeleteUsersByWorkspaceModal
+              setOpenAlertDelete={setOpenAlertDelete}
+              setDataIdeasWorkspace={setDataIdeasWorkspace}
+            />
+          )}
         </div>
+        {isNewIdeaModalOpen && (
+          <NewIdeaModal
+            isNewIdeaModalOpen={isNewIdeaModalOpen}
+            setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+          />
+        )}
+
         <div className="large-container-workspace">
           <div
             className="box"
@@ -166,6 +245,7 @@ export default function Workspace() {
                     height: "3000px",
                     width: "3000px",
                     position: "relative",
+                    zIndex: 0,
 
                     padding: "0",
                   }}
@@ -180,15 +260,22 @@ export default function Workspace() {
                       >
                         {!isLoadingDataIdeasWorkspace &&
                           dataIdeasWorkspace.map((idea) => (
-                            <IdeaCardWorkspace key={idea.id} idea={idea} />
+                            <IdeaCardWorkspace
+                              key={idea.id}
+                              idea={idea}
+                              setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              setHigherZIndex={setHigherZIndex}
+                              higherZIndex={higherZIndex}
+                              setIsModifiedIdeaModalOpen={
+                                setIsModifiedIdeaModalOpen
+                              }
+                              setIsIdeaDeleted={setIsIdeaDeleted}
+                              setDataThisIdea={setDataThisIdea}
+                              isModifiedIdeaModalOpen={isModifiedIdeaModalOpen}
+                            />
                           ))}
                       </div>
                     </div>
-                    <Draggable bounds="parent">
-                      <div>
-                        <IdeaCardWorkspace />
-                      </div>
-                    </Draggable>
                   </div>
                 </div>
               </div>
@@ -196,10 +283,17 @@ export default function Workspace() {
             <div className="drag-and-drop-workspace" />
           </div>
         </div>
+        {/*  il faut insérer la modale ici pour le css sinon ça bug. On doit faire passer les props dont l'id de l'idea en question */}
+        {isModifiedIdeaModalOpen && (
+          <ModifiedIdeaModal
+            setIsModifiedIdeaModalOpen={setIsModifiedIdeaModalOpen}
+            dataIdeasWorkspace={dataIdeasWorkspace}
+            setDataIdeasWorkspace={setDataIdeasWorkspace}
+            currentIdea={dataThisIdea}
+            setCurrentIdea={setDataThisIdea}
+          />
+        )}
       </div>
-      {isModalNewIdeaOpen && (
-        <ModalNewIdea setIsModalNewIdeaOpen={setIsModalNewIdeaOpen} />
-      )}
     </main>
   ) : (
     <Home />

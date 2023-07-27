@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { sanitize } from "isomorphic-dompurify";
+
 import axios from "axios";
 import "./Home.scss";
 import AuthContext from "../../contexts/AuthContext";
@@ -11,8 +12,10 @@ import IdeaCard from "../../components/IdeaCard/IdeaCard";
 import TeamCard from "../../components/TeamCard/TeamCard";
 import HorizontalTabs from "../../components/HorizontalTabs/HorizontalTabs";
 import NavBar from "../../components/NavBar/NavBar";
-import SearchBar from "../../components/SearchBar/SearchBar";
 import Connection from "../../components/Connection/Connection";
+import NewTeamModal from "../../components/NewTeamModal/NewTeamModal";
+import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
+import DataSearchBar from "../../components/DataSearchBar/DataSearchBar";
 
 export default function Home() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -22,7 +25,12 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [teams, setTeams] = useState([]);
   const [pagePart, setPagePart] = useState("ideas");
+  const [isNewTeamModalOpen, setIsNewTeamModalOpen] = useState(false);
 
+  // eslint-disable-next-line no-unused-vars
+  const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
+  const [searchTermIdea, setSearchTermIdea] = useState("");
+  const [searchTermTeam, setSearchTermTeam] = useState("");
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
       ...prevCompanyInfos,
@@ -57,12 +65,17 @@ export default function Home() {
           console.error("Error fetching ideas:", error);
         });
     }
-  }, [companyInfos.id, userInfos.id]);
+  }, [companyInfos.id, userInfos.id, isNewIdeaModalOpen]);
 
   useEffect(() => {
     axios
       .get(
-        `${import.meta.env.VITE_BACKEND_URL}/companies/${companyInfos.id}/teams`
+        `${import.meta.env.VITE_BACKEND_URL}/companies/${
+          companyInfos.id
+        }/teams`,
+        {
+          headers: { Authorization: `Bearer ${userToken}` },
+        }
       )
       .then((response) => {
         setTeams(response.data);
@@ -99,10 +112,30 @@ export default function Home() {
         <main>
           <NavBar activeLink="home" />
           <PageHeader title={title} subtitle={subtitle}>
-            <button className="button-primary-solid" type="button">
-              <i className="fi fi-rr-plus" />
-              {buttonAdd}
-            </button>
+            {pagePart === "teams" && (
+              <button
+                className="button-primary-solid"
+                type="button"
+                onClick={() => {
+                  setIsNewTeamModalOpen(true);
+                }}
+              >
+                <i className="fi fi-rr-plus" />
+                {buttonAdd}
+              </button>
+            )}
+            {pagePart === "ideas" && (
+              <button
+                className="button-primary-solid"
+                type="button"
+                onClick={() => {
+                  setIsNewIdeaModalOpen(true);
+                }}
+              >
+                <i className="fi fi-rr-plus" />
+                {buttonAdd}
+              </button>
+            )}
             <HorizontalTabs type="tabs">
               <li
                 className={pagePart === "ideas" ? "active" : null}
@@ -126,24 +159,98 @@ export default function Home() {
               </li>
             </HorizontalTabs>
           </PageHeader>
-          <div className="page-actions">
-            <SearchBar />
-          </div>
           {pagePart === "ideas" && (
-            <div className="idea-cards-list">
-              {!isLoading &&
-                dataIdea.map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
-            </div>
+            <>
+              <div className="page-actions">
+                <DataSearchBar
+                  searchTerm={searchTermIdea}
+                  setSearchTerm={setSearchTermIdea}
+                  placeholderText="Rechercher une idée"
+                />
+              </div>
+
+              <div className="idea-cards-list">
+                {!isLoading &&
+                  dataIdea
+                    .filter((value) => {
+                      if (searchTermIdea === "") {
+                        return true;
+                      }
+                      if (
+                        value.title
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase()) ||
+                        value.description
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase()) ||
+                        value.creator_firstname
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase()) ||
+                        value.creator_lastname
+                          .toLowerCase()
+                          .includes(searchTermIdea.toLowerCase())
+                      ) {
+                        return true;
+                      }
+                      return false;
+                    })
+                    .map((idea) => <IdeaCard key={idea.id} idea={idea} />)}
+              </div>
+              {isNewIdeaModalOpen && (
+                <NewIdeaModal
+                  isNewIdeaModalOpen={isNewIdeaModalOpen}
+                  setIsNewIdeaModalOpen={setIsNewIdeaModalOpen}
+                />
+              )}
+            </>
           )}
 
           {pagePart === "teams" && (
-            <div>
-              <div className="teams-card-container">
-                {teams.map((team) => {
-                  return <TeamCard team={team} key={team.id} />;
-                })}
+            <>
+              <div className="page-actions">
+                <DataSearchBar
+                  searchTerm={searchTermTeam}
+                  setSearchTerm={setSearchTermTeam}
+                  placeholderText="Rechercher une équipe"
+                />
               </div>
-            </div>
+              <div>
+                <div className="teams-card-container">
+                  {teams
+                    .filter((value) => {
+                      if (searchTermTeam === "") {
+                        return true;
+                      }
+                      if (
+                        value.name
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase()) ||
+                        value.description
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase()) ||
+                        value.objective
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase()) ||
+                        value.status
+                          .toLowerCase()
+                          .includes(searchTermTeam.toLowerCase())
+                      ) {
+                        return true;
+                      }
+                      return false;
+                    })
+                    .map((team) => {
+                      return <TeamCard team={team} key={team.id} />;
+                    })}
+                </div>
+                {isNewTeamModalOpen && (
+                  <NewTeamModal
+                    isNewTeamModalOpen={isNewTeamModalOpen}
+                    setIsNewTeamModalOpen={setIsNewTeamModalOpen}
+                  />
+                )}
+              </div>
+            </>
           )}
         </main>
       ) : (
@@ -152,3 +259,6 @@ export default function Home() {
     </div>
   );
 }
+Home.defaultProps = {
+  pagePart: "ideas",
+};
