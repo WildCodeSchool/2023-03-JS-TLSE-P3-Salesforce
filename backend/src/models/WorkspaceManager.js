@@ -31,7 +31,7 @@ class WorkspaceManager extends AbstractManager {
             ${this.table}.creation_date,
             ${this.table}.description,
             ${this.table}.is_private,
-            COUNT(idea.id) AS total_ideas,
+            COUNT(DISTINCT idea.id) AS total_ideas,
             COUNT(DISTINCT workspace_has_user.user_id) AS total_users
           FROM
             ${this.table}
