@@ -28,7 +28,7 @@
   }
   .container {
     background-color: var(--white);
-    width: 60%;
+    width: 30%;
     border-radius: 1rem;
     animation: modal-mobile-show-container 0.5s ease-out;
     z-index: 20;
@@ -60,12 +60,12 @@
         }
         .buttons {
           display: flex;
-          gap: 3rem;
+          gap: 1rem;
           .icon {
-            @include button("md", $color: "error", $style: "outline");
+            @include button("md", $color: "grey", $style: "outline");
           }
           .submit {
-            @include button("md", $color: "primary", $style: "outline");
+            @include button("md", $color: "error", $style: "outline");
           }
         }
       }

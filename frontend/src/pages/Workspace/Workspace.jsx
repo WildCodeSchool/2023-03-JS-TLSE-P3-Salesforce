@@ -32,6 +32,7 @@ export default function Workspace() {
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
   const [alertSuccessSave, setAlertSuccessSave] = useState(false);
+  const [higherZIndex, setHigherZIndex] = useState(1);
   const [isModifiedIdeaModalOpen, setIsModifiedIdeaModalOpen] = useState(false);
   const [isIdeaDeleted, setIsIdeaDeleted] = useState(false);
   const [dataThisIdea, setDataThisIdea] = useState({});
@@ -107,7 +108,7 @@ export default function Workspace() {
     creationDateWorkspaceInitial = dataUsersByCompany[0].creation_date;
     creationDateWorkspaceSplited = creationDateWorkspaceInitial.split("T");
     creationDateDayFirst = creationDateWorkspaceSplited[0].split("-");
-    creationDateWorkspace = `${creationDateDayFirst[2]}-${creationDateDayFirst[1]}-${creationDateDayFirst[0]}`;
+    creationDateWorkspace = `${creationDateDayFirst[2]}/${creationDateDayFirst[1]}/${creationDateDayFirst[0]}`;
   }
 
   // for save ideas and their position in workspace
@@ -144,7 +145,7 @@ export default function Workspace() {
       {!isLoadingDataUsers && (
         <PageHeader
           title={dataUsersByCompany[0].name}
-          subtitle={`Date de création : ${creationDateWorkspace}, Équipe "${dataUsersByCompany[0].team_name}"`}
+          subtitle={`${dataUsersByCompany[0].team_name} • Créé le  : ${creationDateWorkspace}`}
         >
           <div className="actions">
             <button
@@ -244,6 +245,7 @@ export default function Workspace() {
                     height: "3000px",
                     width: "3000px",
                     position: "relative",
+                    zIndex: 0,
 
                     padding: "0",
                   }}
@@ -262,6 +264,8 @@ export default function Workspace() {
                               key={idea.id}
                               idea={idea}
                               setDataIdeasWorkspace={setDataIdeasWorkspace}
+                              setHigherZIndex={setHigherZIndex}
+                              higherZIndex={higherZIndex}
                               setIsModifiedIdeaModalOpen={
                                 setIsModifiedIdeaModalOpen
                               }
