@@ -151,15 +151,6 @@ export default function NewWorkspaceModal({ setIsNewWorkspaceModalOpen }) {
               </div>
             </div>
 
-            <div className="input-line">
-              <div className="input-field">
-                <label htmlFor="email">Membres</label>
-                <div className="input-help">
-                  Ajoutez des membres à votre espace personnel
-                </div>
-              </div>
-            </div>
-
             {hasConnectionFailed && (
               <div className="error-message">
                 Erreur lors de la création de l'espace personnel. Veuillez

@@ -768,6 +768,15 @@ VALUES (
         4,
         3
     ), (
+        'Analyse des données pour la prise de décision',
+        '2023-07-21 12:00:00',
+        '2023-07-21 14:30:00',
+        "Investissez dans des solutions d'analyse de données pour collecter, traiter et interpréter les informations pertinentes sur les performances de l'entreprise. Cela peut aider à prendre des décisions plus éclairées et à anticiper les tendances du marché.",
+        0,
+        6,
+        4,
+        3
+    ), (
         'Workspace 2',
         '2023-06-21 13:30:00',
         '2023-06-21 16:45:00',
@@ -838,9 +847,9 @@ VALUES (
         1,
         1,
         1,
-        1,
+        2,
         NULL,
-        NULL,
+        5,
         NULL,
         1
     ), (
@@ -904,7 +913,7 @@ VALUES (
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ), (
@@ -913,14 +922,14 @@ VALUES (
         'Section recettes populaires',
         'Mettre en évidence les recettes populaires et les tendances actuelles pour inspirer les utilisateurs.',
         'published',
-        NULL,
-        NULL,
+        873,
+        34,
         NULL,
         3,
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ), (
@@ -936,7 +945,7 @@ VALUES (
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ), (
@@ -945,14 +954,14 @@ VALUES (
         'Partage de recettes',
         'Permettre aux utilisateurs de partager leurs propres recettes avec la communauté de l\'application.',
         'published',
-        NULL,
-        NULL,
+        941,
+        459,
         NULL,
         3,
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ), (
@@ -977,8 +986,8 @@ VALUES (
         'Catégorie recettes végétariennes et véganes',
         'Mettre en évidence les recettes végétariennes et véganes pour répondre aux besoins des utilisateurs ayant des régimes alimentaires spécifiques.',
         'published',
-        NULL,
-        NULL,
+        444,
+        331,
         NULL,
         3,
         1,
@@ -993,8 +1002,8 @@ VALUES (
         'Système de notation et de commentaires',
         'Permettre aux utilisateurs de noter et de commenter les recettes, afin de partager leurs avis et leurs astuces.',
         'published',
-        NULL,
-        NULL,
+        24,
+        419,
         NULL,
         3,
         1,
@@ -1016,7 +1025,7 @@ VALUES (
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ), (
@@ -1025,14 +1034,14 @@ VALUES (
         'Section astuces et conseils culinaires',
         'Fournir aux utilisateurs des astuces et des conseils culinaires pour les aider à améliorer leurs compétences en cuisine.',
         'published',
-        NULL,
-        NULL,
+        355,
+        56,
         NULL,
         3,
         1,
         1,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     ), (
@@ -1048,7 +1057,7 @@ VALUES (
         1,
         NULL,
         NULL,
-        NULL,
+        5,
         NULL,
         0
     );
@@ -1169,7 +1178,7 @@ VALUES (
 
 INSERT INTO
     `liked` (`date`, `idea_id`, `user_id`)
-VALUES ('2023-06-21 12:00:00', 14, 1), ('2023-06-21 13:30:00', 14, 2), ('2023-06-21 14:45:11', 5, 7), ('2023-06-21 15:15:22', 5, 3), ('2023-06-21 12:00:35', 5, 2), ('2023-06-21 13:30:08', 14, 3), ('2023-06-21 14:45:50', 3, 6), ('2023-06-21 15:15:00', 4, 2), ('2023-06-21 12:00:02', 5, 3), ('2023-06-21 13:30:09', 5, 4), ('2023-06-21 14:45:30', 3, 5), ('2023-06-21 15:15:10', 4, 1);
+VALUES ('2023-06-21 12:00:00', 14, 1), ('2023-06-21 13:30:00', 14, 2), ('2023-06-21 14:45:11', 5, 7), ('2023-06-21 15:15:22', 5, 3), ('2023-06-21 12:00:35', 5, 2), ('2023-06-21 13:30:08', 14, 3), ('2023-06-21 14:45:50', 3, 6), ('2023-06-21 15:15:00', 4, 2), ('2023-06-21 12:00:02', 5, 3), ('2023-06-21 13:30:09', 5, 4), ('2023-06-21 14:45:30', 3, 5), ('2023-06-21 15:15:10', 4, 1), ('2023-06-21 15:15:10', 6, 5), ('2023-06-21 15:15:10', 6, 4), ('2023-06-21 15:15:10', 6, 3), ('2023-06-21 15:15:10', 13, 3), ('2023-06-21 15:15:10', 13, 5), ('2023-06-21 15:15:10', 11, 5), ('2023-06-21 15:15:10', 8, 3), ('2023-06-21 15:15:10', 8, 5), ('2023-06-21 15:15:10', 8, 6), ('2023-06-21 15:15:10', 8, 2);
 
 --  CATEGORY
 
@@ -1256,4 +1265,4 @@ INSERT INTO
         `user_id`,
         `is_favorite_workspace`
     )
-VALUES (1, 1, 1), (2, 2, 0), (3, 3, 1), (1, 4, 0);
+VALUES (1, 1, 1), (2, 2, 0), (3, 3, 1), (1, 8, 0);
