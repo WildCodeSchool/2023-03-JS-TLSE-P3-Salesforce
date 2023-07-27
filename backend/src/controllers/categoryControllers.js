@@ -1,14 +1,32 @@
 /* eslint-disable camelcase */
 const models = require("../models");
 
-const browseCompanyCategories = (req, res) => {
+const browseCategories = (req, res) => {
   models.category
-    .findByCompanyId(req.params.company_id)
+    .findCategory(req.params.company_id)
     .then(([rows]) => {
       res.send(rows);
     })
     .catch((err) => {
       console.error(err);
+      res.sendStatus(500);
+    });
+};
+// afficher l'ensemble des categories
+
+const getCategories = (req, res) => {
+  const { company_id } = req.params;
+  models.category
+    .getAllCategories(company_id)
+    .then(([result]) => {
+      if (result) {
+        res.status(200).json(result);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+    .catch((err) => {
+      console.error(err.message);
       res.sendStatus(500);
     });
 };
@@ -62,9 +80,9 @@ const addCategory = (req, res) => {
 };
 
 const destroyCategory = (req, res) => {
-  const { id } = req.params;
+  const { company_id, category_id } = req.params;
   models.category
-    .delete(id)
+    .deleteCategory(company_id, category_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
@@ -79,7 +97,8 @@ const destroyCategory = (req, res) => {
 };
 
 module.exports = {
-  browseCompanyCategories,
+  browseCategories,
+  getCategories,
   readCategory,
   editCategory,
   addCategory,

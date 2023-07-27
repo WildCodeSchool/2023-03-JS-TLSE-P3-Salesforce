@@ -1,8 +1,5 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-
-// import "./CompanySettingsMembers.scss";
-
 import NewCategoryModal from "../NewCategoryModal/NewCategoryModal";
 import DataSearchBar from "../DataSearchBar/DataSearchBar";
 import AuthContext from "../../contexts/AuthContext";
@@ -10,7 +7,7 @@ import CompanyContext from "../../contexts/CompanyContext";
 import Badge from "../Badge/Badge";
 import "./CompanySettingCategories.scss";
 
-export default function CompanySettingsMembers() {
+export default function CompanySettingCategories() {
   const { userToken } = useContext(AuthContext);
   const [isNewCategoryModalOpen, setIsNewCategoryModalOpen] = useState(false);
   const { companyInfos } = useContext(CompanyContext);
@@ -18,40 +15,53 @@ export default function CompanySettingsMembers() {
   const [colors, setColors] = useState([]);
   const [order, setOrder] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
-
+  // eslint-disable-next-line no-restricted-syntax
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND_URL}/colors`, {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-      .then((response) => {
-        setColors(response.data);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const colorsResponse = axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/colors`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
+
+        const categoriesResponse = companyInfos.id
+          ? axios.get(
+              `${import.meta.env.VITE_BACKEND_URL}/companies/${
+                companyInfos.id
+              }/categories`,
+              {
+                headers: {
+                  Authorization: `Bearer ${userToken}`,
+                },
+              }
+            )
+          : Promise.resolve(null);
+
+        const [colorsData, categoriesData] = await Promise.all([
+          colorsResponse,
+          categoriesResponse,
+        ]);
+
+        setColors(colorsData.data);
+
+        if (categoriesData) {
+          setCompanyCategories(categoriesData.data);
+        }
+      } catch (error) {
         console.error(error);
-      });
-  }, []);
+      }
+    };
 
-  useEffect(() => {
-    if (companyInfos.id) {
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/categories`, {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        })
-        .then((response) => {
-          setCompanyCategories(response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
-  }, [companyInfos]);
+    fetchData();
+  }, [userToken, companyInfos.id]);
 
   const handleCategoryDelete = (id) => {
+    // eslint-disable-next-line no-restricted-syntax
+    console.log("id   ", id, " comp____", companyInfos.id);
     axios
       .delete(
         `${import.meta.env.VITE_BACKEND_URL}/companies/${
@@ -64,6 +74,8 @@ export default function CompanySettingsMembers() {
         }
       )
       .then(() => {
+        // eslint-disable-next-line no-restricted-syntax
+        console.log("categorie supprimée");
         setCompanyCategories((prevCompanyCategories) => {
           return prevCompanyCategories.filter((user) => user.id !== id);
         });
@@ -72,6 +84,9 @@ export default function CompanySettingsMembers() {
         console.error(error);
       });
   };
+
+  // Reste du code inchangé...
+
   const sorting = (column) => {
     if (order === "asc") {
       const sortedData = [...companyCategories].sort((a, b) => {
