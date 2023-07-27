@@ -57,6 +57,7 @@ section#categories {
               display: flex;
               gap: 0.75rem;
               .name {
+                padding: 10px;
                 color: var(--grey-700);
                 @include text("sm", $weight: 600);
               }

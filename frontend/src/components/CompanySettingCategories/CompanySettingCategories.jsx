@@ -13,7 +13,6 @@ export default function CompanySettingCategories() {
   const { companyInfos } = useContext(CompanyContext);
   const [companyCategories, setCompanyCategories] = useState([]);
   const [colors, setColors] = useState([]);
-  const [order, setOrder] = useState("asc");
   const [searchTerm, setSearchTerm] = useState("");
   // eslint-disable-next-line no-restricted-syntax
   useEffect(() => {
@@ -79,45 +78,6 @@ export default function CompanySettingCategories() {
       });
   };
 
-  const sorting = (column) => {
-    if (order === "asc") {
-      const sortedData = [...companyCategories].sort((a, b) => {
-        let aData;
-        if (!a[column]) {
-          aData = "";
-        } else {
-          aData = a[column];
-        }
-        let bData;
-        if (!b[column]) {
-          bData = "";
-        } else {
-          bData = b[column];
-        }
-        return aData.toLowerCase() > bData.toLowerCase() ? 1 : -1;
-      });
-      setCompanyCategories(sortedData);
-      setOrder("desc");
-    } else {
-      const sortedData = [...companyCategories].sort((a, b) => {
-        let aData;
-        if (!a[column]) {
-          aData = "";
-        } else {
-          aData = a[column];
-        }
-        let bData;
-        if (!b[column]) {
-          bData = "";
-        } else {
-          bData = b[column];
-        }
-        return aData.toLowerCase() < bData.toLowerCase() ? 1 : -1;
-      });
-      setCompanyCategories(sortedData);
-      setOrder("asc");
-    }
-  };
   return (
     <section id="categories">
       <div className="table">
@@ -146,12 +106,6 @@ export default function CompanySettingCategories() {
         </div>
         <div className="table-body">
           <table>
-            <thead>
-              <tr>
-                <th onClick={() => sorting("name")}>Catégories</th>
-                <th className="actions">Actions</th>
-              </tr>
-            </thead>
             <tbody>
               {companyCategories &&
                 companyCategories
