@@ -13,31 +13,6 @@
     vertical-align: middle;
   }
 }
-// .part-alert-success {
-//   display: flex;
-//   position: fixed;
-//   justify-content: center;
-//   border: none;
-//   width: 100%;
-//   top: 1.75rem;
-//   animation: show-alert 0.5s ease-in-out;
-
-//   .alert-success {
-//     display: flex;
-//     background-color: var(--white);
-//     width: 300px;
-//     @include shadow("xl");
-
-//     .icon {
-//       @include icon(
-//         "md",
-//         $color: "success",
-//         $style: "border",
-//         $shape: "square"
-//       );
-//     }
-//   }
-// }
 
 .header-card {
   position: relative;
