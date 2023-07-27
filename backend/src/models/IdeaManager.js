@@ -139,17 +139,14 @@ class IdeaManager extends AbstractManager {
     );
   }
 
-  update(idea, companyId, userId, ideaId) {
-    const { title, description, fileId } = idea;
+  update(idea, ideaId) {
+    const { title, description } = idea;
     return this.database.query(
       `UPDATE ${this.table} SET 
         title = ?, 
-        description = ?, 
-        file_id = ?,
-        company_id = ?,
-        user_id = ?
+        description = ?
       WHERE ${this.table}.id = ?`,
-      [title, description, fileId, companyId, userId, ideaId]
+      [title, description, ideaId]
     );
   }
 

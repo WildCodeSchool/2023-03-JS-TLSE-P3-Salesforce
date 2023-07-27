@@ -9,6 +9,7 @@ export default function SubmenuIdeaButton({
   setShowSubmenu,
   ideaId,
   setIsIdeaDeleted,
+  setIsModifiedIdeaModalOpen,
 }) {
   // on fait apparaitre/ cache le sous-menu de l'idée quand on clic dessus
   const { userToken } = useContext(AuthContext);
@@ -25,10 +26,10 @@ export default function SubmenuIdeaButton({
           console.error("L'idée n'a pas été supprimée");
         } else {
           setIsIdeaDeleted(true);
+          setShowSubmenu(false);
           setTimeout(() => {
             setIsIdeaDeleted(false);
           }, 3000);
-          setShowSubmenu(false);
         }
       })
       .catch((error) => {
@@ -38,20 +39,24 @@ export default function SubmenuIdeaButton({
   return (
     <>
       {/* ajout du sous menu en entete */}
-
-      <ul className="submenu-idea">
-        <div onClick={() => setShowSubmenu(false)} aria-hidden="true">
-          <i className="fi fi-rr-cross" />
-        </div>
-        <li aria-hidden="true">
-          <i className="fi fi-rr-attribution-pencil" />
-          <a href="/modifier">Modifier</a>
-        </li>
-        <li aria-hidden="true" onClick={handleDeleteIdea}>
-          <i className="fi fi-rr-trash" />
-          <p>Supprimer</p>
-        </li>
-      </ul>
+      <div>
+        <ul className="submenu-idea">
+          <div onClick={() => setShowSubmenu(false)} aria-hidden="true">
+            <i className="fi fi-rr-cross" />
+          </div>
+          <li
+            aria-hidden="true"
+            onClick={() => setIsModifiedIdeaModalOpen(true)}
+          >
+            <i className="fi fi-rr-attribution-pencil" />
+            <p>Modifier</p>
+          </li>
+          <li aria-hidden="true" onClick={handleDeleteIdea}>
+            <i className="fi fi-rr-trash" />
+            <p>Supprimer</p>
+          </li>
+        </ul>
+      </div>
     </>
   );
 }
@@ -60,4 +65,5 @@ SubmenuIdeaButton.propTypes = {
   setShowSubmenu: PropTypes.func.isRequired,
   ideaId: PropTypes.number.isRequired,
   setIsIdeaDeleted: PropTypes.func.isRequired,
+  setIsModifiedIdeaModalOpen: PropTypes.func.isRequired,
 };

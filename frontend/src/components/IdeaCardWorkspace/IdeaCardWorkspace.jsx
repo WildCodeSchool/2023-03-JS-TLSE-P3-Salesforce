@@ -1,9 +1,8 @@
 /* eslint-disable camelcase */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import propTypes from "prop-types";
 import Draggable from "react-draggable";
 import LikeButton from "../LikeButton/LikeButton";
-import Alert from "../Alert/Alert";
 
 import SubmenuIdeaButton from "../SubmenuIdeaButton/SubmenuIdeaButton";
 
@@ -13,11 +12,18 @@ import Badge from "../Badge/Badge";
 export default function IdeaCardWorkspace({
   idea,
   setDataIdeasWorkspace,
-  setShowSubmenu,
-  showSubmenu,
+  setIsModifiedIdeaModalOpen,
+  setIsIdeaDeleted,
+  setDataThisIdea,
+  isModifiedIdeaModalOpen,
 }) {
   const [likeCount, setLikeCount] = useState(idea.likes_count);
   const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
+  const [showSubmenu, setShowSubmenu] = useState(false);
+
+  useEffect(() => {
+    setShowSubmenu(false);
+  }, [isModifiedIdeaModalOpen]);
 
   let ideaXCoordinate;
   if (idea.x_coordinate === null) {
@@ -65,7 +71,6 @@ export default function IdeaCardWorkspace({
   }
   // for position of the idea in the workspace
 
-  const [isIdeaDeleted, setIsIdeaDeleted] = useState(false);
   return (
     <Draggable
       bounds="parent"
@@ -83,7 +88,10 @@ export default function IdeaCardWorkspace({
           <button
             type="button"
             className="idea-menu-icon"
-            onClick={() => setShowSubmenu(true)}
+            onClick={() => {
+              setDataThisIdea(idea);
+              setShowSubmenu(true);
+            }}
           >
             <i className="fi fi-rr-menu-dots-vertical" />
           </button>
@@ -91,19 +99,10 @@ export default function IdeaCardWorkspace({
           {showSubmenu && (
             <SubmenuIdeaButton
               setShowSubmenu={setShowSubmenu}
-              ideaId={idea.id}
               setIsIdeaDeleted={setIsIdeaDeleted}
+              setIsModifiedIdeaModalOpen={setIsModifiedIdeaModalOpen}
+              ideaId={idea.id}
             />
-          )}
-          {isIdeaDeleted && (
-            <div className="part-alert-success">
-              <Alert
-                type="sucess"
-                title=""
-                text="idée supprimée"
-                icon="lightbulb-slash"
-              />
-            </div>
           )}
         </div>
         <div className="content-idea">
@@ -149,8 +148,10 @@ IdeaCardWorkspace.propTypes = {
   }),
 
   setDataIdeasWorkspace: propTypes.func,
-  setShowSubmenu: propTypes.func,
-  showSubmenu: propTypes.bool,
+  setIsModifiedIdeaModalOpen: propTypes.func,
+  setIsIdeaDeleted: propTypes.func,
+  setDataThisIdea: propTypes.func,
+  isModifiedIdeaModalOpen: propTypes.bool,
 };
 
 IdeaCardWorkspace.defaultProps = {
@@ -165,7 +166,9 @@ IdeaCardWorkspace.defaultProps = {
     is_liked_by_user: 0,
   },
 
+  isModifiedIdeaModalOpen: false,
   setDataIdeasWorkspace: () => {},
-  setShowSubmenu: () => {},
-  showSubmenu: false,
+  setIsModifiedIdeaModalOpen: () => {},
+  setIsIdeaDeleted: () => {},
+  setDataThisIdea: () => {},
 };

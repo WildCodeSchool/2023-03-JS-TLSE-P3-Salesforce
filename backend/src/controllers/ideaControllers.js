@@ -69,17 +69,12 @@ const getAllIdeasByIdeasGroup = (req, res) => {
 };
 const updateIdeaById = (req, res) => {
   models.idea
-    .update(
-      req.body,
-      req.params.company_id,
-      req.params.user_id,
-      req.params.idea_id
-    )
+    .update(req.body, req.params.idea_id)
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.sendStatus(404);
       } else {
-        res.status(204).send("l'idée a bien été modifiée");
+        res.status(201).send("l'idée a bien été modifiée");
       }
     })
     .catch((err) => {

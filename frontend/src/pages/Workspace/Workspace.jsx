@@ -14,6 +14,7 @@ import NewCollaboratorModal from "../../components/NewCollaboratorModal/NewColla
 import NewDeleteUsersByWorkspaceModal from "../../components/NewDeleteUsersByWorkspaceModal/NewDeleteUsersByWorkspaceModal";
 import NewIdeaModal from "../../components/NewIdeaModal/NewIdeaModal";
 import Alert from "../../components/Alert/Alert";
+import ModifiedIdeaModal from "../../components/ModifiedIdeaModal/ModifiedIdeaModal";
 
 export default function Workspace() {
   const { userToken, userInfos } = useContext(AuthContext);
@@ -31,7 +32,9 @@ export default function Workspace() {
   const [openAlertDelete, setOpenAlertDelete] = useState(false);
   const [isNewIdeaModalOpen, setIsNewIdeaModalOpen] = useState(false);
   const [alertSuccessSave, setAlertSuccessSave] = useState(false);
-  const [showSubmenu, setShowSubmenu] = useState(false);
+  const [isModifiedIdeaModalOpen, setIsModifiedIdeaModalOpen] = useState(false);
+  const [isIdeaDeleted, setIsIdeaDeleted] = useState(false);
+  const [dataThisIdea, setDataThisIdea] = useState({});
 
   useEffect(() => {
     setCompanyInfos((prevCompanyInfos) => ({
@@ -87,7 +90,13 @@ export default function Workspace() {
         setDataIdeasWorkspace(res.data);
         setIsLoadingDataIdeasWorkspace(false);
       });
-  }, [workspace_id, userInfos.id, isNewIdeaModalOpen, showSubmenu]);
+  }, [
+    workspace_id,
+    userInfos.id,
+    isNewIdeaModalOpen,
+    isIdeaDeleted,
+    isModifiedIdeaModalOpen,
+  ]);
 
   let creationDateWorkspaceInitial;
   let creationDateWorkspaceSplited;
@@ -172,6 +181,16 @@ export default function Workspace() {
           />
         </div>
       )}
+      {isIdeaDeleted && (
+        <div className="part-alert-success">
+          <Alert
+            type="success"
+            title=""
+            text="Idée supprimée"
+            icon="lightbulb-slash"
+          />
+        </div>
+      )}
       <div className="board-container">
         <div className="create-and-search-ideas-workspace">
           <button
@@ -243,8 +262,12 @@ export default function Workspace() {
                               key={idea.id}
                               idea={idea}
                               setDataIdeasWorkspace={setDataIdeasWorkspace}
-                              setShowSubmenu={setShowSubmenu}
-                              showSubmenu={showSubmenu}
+                              setIsModifiedIdeaModalOpen={
+                                setIsModifiedIdeaModalOpen
+                              }
+                              setIsIdeaDeleted={setIsIdeaDeleted}
+                              setDataThisIdea={setDataThisIdea}
+                              isModifiedIdeaModalOpen={isModifiedIdeaModalOpen}
                             />
                           ))}
                       </div>
@@ -256,6 +279,16 @@ export default function Workspace() {
             <div className="drag-and-drop-workspace" />
           </div>
         </div>
+        {/*  il faut insérer la modale ici pour le css sinon ça bug. On doit faire passer les props dont l'id de l'idea en question */}
+        {isModifiedIdeaModalOpen && (
+          <ModifiedIdeaModal
+            setIsModifiedIdeaModalOpen={setIsModifiedIdeaModalOpen}
+            dataIdeasWorkspace={dataIdeasWorkspace}
+            setDataIdeasWorkspace={setDataIdeasWorkspace}
+            currentIdea={dataThisIdea}
+            setCurrentIdea={setDataThisIdea}
+          />
+        )}
       </div>
     </main>
   ) : (
