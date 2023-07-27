@@ -27,7 +27,6 @@ export default function CompanySettingCategories() {
             },
           }
         );
-
         const categoriesResponse = companyInfos.id
           ? axios.get(
               `${import.meta.env.VITE_BACKEND_URL}/companies/${
@@ -45,7 +44,6 @@ export default function CompanySettingCategories() {
           colorsResponse,
           categoriesResponse,
         ]);
-
         setColors(colorsData.data);
 
         if (categoriesData) {
@@ -57,11 +55,9 @@ export default function CompanySettingCategories() {
     };
 
     fetchData();
-  }, [userToken, companyInfos.id]);
+  }, [userToken, companyInfos.id, isNewCategoryModalOpen]);
 
   const handleCategoryDelete = (id) => {
-    // eslint-disable-next-line no-restricted-syntax
-    console.log("id   ", id, " comp____", companyInfos.id);
     axios
       .delete(
         `${import.meta.env.VITE_BACKEND_URL}/companies/${
@@ -74,8 +70,6 @@ export default function CompanySettingCategories() {
         }
       )
       .then(() => {
-        // eslint-disable-next-line no-restricted-syntax
-        console.log("categorie supprimée");
         setCompanyCategories((prevCompanyCategories) => {
           return prevCompanyCategories.filter((user) => user.id !== id);
         });
@@ -84,8 +78,6 @@ export default function CompanySettingCategories() {
         console.error(error);
       });
   };
-
-  // Reste du code inchangé...
 
   const sorting = (column) => {
     if (order === "asc") {
@@ -126,7 +118,6 @@ export default function CompanySettingCategories() {
       setOrder("asc");
     }
   };
-
   return (
     <section id="categories">
       <div className="table">
@@ -182,13 +173,18 @@ export default function CompanySettingCategories() {
                       <td className="user">
                         <div className="infos">
                           <div className="name">
-                            <Badge color={colors[user.color_id].name}>
+                            <Badge
+                              color={
+                                colors.find(
+                                  (color) => color.id === user.color_id
+                                ).name
+                              }
+                            >
                               {user.name}
                             </Badge>
                           </div>
                         </div>
                       </td>
-
                       <td className="actions">
                         <button
                           type="button"

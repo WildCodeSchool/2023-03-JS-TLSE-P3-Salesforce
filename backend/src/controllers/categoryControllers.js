@@ -67,7 +67,8 @@ const editCategory = (req, res) => {
 };
 
 const addCategory = (req, res) => {
-  const { name, color_id, company_id } = req.body;
+  const { name, color_id } = req.body;
+  const { company_id } = req.params;
   models.category
     .insert(name, color_id, company_id)
     .then(([result]) => {

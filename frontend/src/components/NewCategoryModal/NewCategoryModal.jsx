@@ -60,11 +60,17 @@ export default function NewCategoryModal({ setIsNewCategoryModalOpen }) {
         company_id: companyInfos.id,
       };
       axios
-        .post(`${import.meta.env.VITE_BACKEND_URL}/categories`, formObject, {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        })
+        .post(
+          `${import.meta.env.VITE_BACKEND_URL}/companies/${
+            companyInfos.id
+          }/categories`,
+          formObject,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        )
         .then((response) => {
           if (response.status === 201) {
             setIsNewCategoryModalOpen(false);
