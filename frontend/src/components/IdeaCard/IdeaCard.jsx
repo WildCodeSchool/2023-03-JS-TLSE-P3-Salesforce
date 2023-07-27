@@ -23,10 +23,16 @@ export default function IdeaCard({ idea }) {
       <div className="header-card">
         {/* ajout du titre en entete  */}
         <h2 className="title-idea">{idea.title}</h2>
-        <SubmenuIdeaButton
-          showSubmenu={showSubmenu}
-          setShowSubmenu={setShowSubmenu}
-        />
+        <button
+          type="button"
+          className="idea-menu-icon"
+          onClick={() => setShowSubmenu(true)}
+        >
+          <i className="fi fi-rr-menu-dots-vertical" />
+        </button>
+        {showSubmenu && (
+          <SubmenuIdeaButton setShowSubmenu={setShowSubmenu} ideaId={idea.id} />
+        )}
       </div>
 
       {/* on ajoute le descriptif de l'idée ainsi que les catégories  */}

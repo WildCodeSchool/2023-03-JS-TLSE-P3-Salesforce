@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import propTypes from "prop-types";
 import Draggable from "react-draggable";
 import LikeButton from "../LikeButton/LikeButton";
@@ -12,12 +12,20 @@ import Badge from "../Badge/Badge";
 export default function IdeaCardWorkspace({
   idea,
   setDataIdeasWorkspace,
+  setIsModifiedIdeaModalOpen,
+  setIsIdeaDeleted,
+  setDataThisIdea,
+  isModifiedIdeaModalOpen,
   setHigherZIndex,
   higherZIndex,
 }) {
   const [likeCount, setLikeCount] = useState(idea.likes_count);
-  const [showSubmenu, setShowSubmenu] = useState(false);
   const [likeActive, setLikeActive] = useState(idea.is_liked_by_user);
+  const [showSubmenu, setShowSubmenu] = useState(false);
+
+  useEffect(() => {
+    setShowSubmenu(false);
+  }, [isModifiedIdeaModalOpen]);
 
   let ideaXCoordinate;
   if (idea.x_coordinate === null) {
@@ -91,10 +99,25 @@ export default function IdeaCardWorkspace({
       >
         <div className="header-card">
           <h2 className="title-idea">{idea.title}</h2>
-          <SubmenuIdeaButton
-            showSubmenu={showSubmenu}
-            setShowSubmenu={setShowSubmenu}
-          />
+          <button
+            type="button"
+            className="idea-menu-icon"
+            onClick={() => {
+              setDataThisIdea(idea);
+              setShowSubmenu(true);
+            }}
+          >
+            <i className="fi fi-rr-menu-dots-vertical" />
+          </button>
+
+          {showSubmenu && (
+            <SubmenuIdeaButton
+              setShowSubmenu={setShowSubmenu}
+              setIsIdeaDeleted={setIsIdeaDeleted}
+              setIsModifiedIdeaModalOpen={setIsModifiedIdeaModalOpen}
+              ideaId={idea.id}
+            />
+          )}
         </div>
         <div className="content-idea">
           {idea.categories && (
@@ -141,6 +164,10 @@ IdeaCardWorkspace.propTypes = {
   setDataIdeasWorkspace: propTypes.func,
   setHigherZIndex: propTypes.func,
   higherZIndex: propTypes.number,
+  setIsModifiedIdeaModalOpen: propTypes.func,
+  setIsIdeaDeleted: propTypes.func,
+  setDataThisIdea: propTypes.func,
+  isModifiedIdeaModalOpen: propTypes.bool,
 };
 
 IdeaCardWorkspace.defaultProps = {
@@ -155,7 +182,11 @@ IdeaCardWorkspace.defaultProps = {
     is_liked_by_user: 0,
   },
 
+  isModifiedIdeaModalOpen: false,
   setDataIdeasWorkspace: () => {},
   setHigherZIndex: () => {},
   higherZIndex: 0,
+  setIsModifiedIdeaModalOpen: () => {},
+  setIsIdeaDeleted: () => {},
+  setDataThisIdea: () => {},
 };

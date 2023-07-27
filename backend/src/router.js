@@ -265,19 +265,21 @@ router.put(
   verifyToken,
   ideaControllers.updateIdeaById
 );
-// Update idea for a workspace
+// Update coordoorates of an idea for a workspace
 router.put(
   "/ideas/:idea_id",
   verifyToken,
   ideaControllers.updateCoordinatesIdeaWorkspace
 );
 
-// Delete an idea
-router.delete(
-  "/companies/:company_id/users/:user_id/ideas/:idea_id",
+router.put(
+  "/companies/ideas/:idea_id",
   verifyToken,
-  ideaControllers.deleteIdea
+  ideaControllers.updateIdeaById
 );
+
+// Delete an idea
+router.delete("/ideas/:idea_id", verifyToken, ideaControllers.deleteIdea);
 
 // Delete ideas's workspace
 router.delete(
@@ -394,6 +396,10 @@ const catHasIdeaControllers = require("./controllers/catHasIdeaControllers");
 
 router.get("/cathasidea", catHasIdeaControllers.browsecatHasIdea);
 router.post("/cathasidea", catHasIdeaControllers.addcatHasIdea);
+router.delete(
+  "/cathasidea/:idea_id",
+  catHasIdeaControllers.deletecatHasIdeaByIdeaId
+);
 
 /* ---- COLORS ROUTES ---- */
 const colorControllers = require("./controllers/colorControllers");

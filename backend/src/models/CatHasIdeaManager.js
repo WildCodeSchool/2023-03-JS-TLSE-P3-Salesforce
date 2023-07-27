@@ -12,5 +12,11 @@ class CatHasIdeaManager extends AbstractManager {
       [category_id, idea_id]
     );
   }
+
+  destroycatHadIdeaByIdeaId(idea_id) {
+    return this.database.query(`delete from ${this.table} where idea_id = ?`, [
+      idea_id,
+    ]);
+  }
 }
 module.exports = CatHasIdeaManager;
